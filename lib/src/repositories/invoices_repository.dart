@@ -1,0 +1,135 @@
+import 'dart:typed_data';
+import 'package:dio/dio.dart';
+import '../core/responses/paginated_response.dart';
+import '../core/utils/api_utils.dart';
+import '../models/invoice.dart';
+import '../models/enums/invoice_enums.dart';
+
+class InvoicesRepository {
+  final Dio _dio;
+
+  InvoicesRepository(this._dio);
+
+  /// Vrací seznam faktur.
+  ///
+  /// * [since] - Faktury vytvořené po tomto datu.
+  /// * [until] - Faktury vytvořené před tímto datem.
+  /// * [updatedSince] - Faktury vytvořené nebo upravené po tomto datu.
+  /// * [updatedUntil] - Faktury vytvořené nebo upravené před tímto datem.
+  /// * [page] - Číslo stránky (Fakturoid vrací 40 záznamů na stránku).
+  /// * [subjectId] - Filtrování faktur podle ID kontaktu.
+  /// * [customId] - Filtrování podle vlastního ID.
+  /// * [number] - Hledání přesného čísla faktury.
+  /// * [status] - Filtrování podle stavu (např. InvoiceStatus.paid).
+  Future<PaginatedResponse<Invoice>> getInvoices({
+    DateTime? since,
+    DateTime? until,
+    DateTime? updatedSince,
+    DateTime? updatedUntil,
+    int? page,
+    int? subjectId,
+    String? customId,
+    String? number,
+    InvoiceStatus? status,
+    InvoiceListDocumentType? documentType,
+  }) async {
+    final response = await _dio.get(
+      '/invoices.json',
+      queryParameters: ApiUtils.removeNulls({
+        'since': since?.toIso8601String(),
+        'until': until?.toIso8601String(),
+        'updated_since': updatedSince?.toIso8601String(),
+        'updated_until': updatedUntil?.toIso8601String(),
+        'page': page,
+        'subject_id': subjectId,
+        'custom_id': customId,
+        'number': number,
+        'status': status?.name,
+        'document_type': documentType?.value,
+      }),
+    );
+
+    final List<dynamic> data = response.data;
+    final items = data.map((json) => Invoice.fromJson(json)).toList();
+
+    return PaginatedResponse<Invoice>(items: items, currentPage: page ?? 1);
+  }
+
+  /// Vyhledává ve fakturách pomocí fulltextu (vyhledává v čísle, variabilním symbolu, názvu kontaktu apod.).
+  ///
+  /// * [query] - Hledaný výraz.
+  Future<PaginatedResponse<Invoice>> searchInvoices({
+    required String query,
+    int? page,
+    List<String>? tags,
+  }) async {
+    final response = await _dio.get(
+      '/invoices/search.json',
+      queryParameters: ApiUtils.removeNulls({
+        'query': query,
+        'page': page,
+        'tags': tags,
+      }),
+    );
+
+    final List<dynamic> data = response.data;
+    final items = data.map((json) => Invoice.fromJson(json)).toList();
+
+    return PaginatedResponse<Invoice>(items: items, currentPage: page ?? 1);
+  }
+
+  /// Získá detail jedné faktury podle ID.
+  Future<Invoice> getInvoice(int id) async {
+    final response = await _dio.get('/invoices/$id.json');
+    return Invoice.fromJson(response.data);
+  }
+
+  /// Vytvoří novou fakturu (nebo jiný dokument na základě atributu `document_type`).
+  Future<Invoice> createInvoice(Invoice invoice) async {
+    final response = await _dio.post(
+      '/invoices.json',
+      data: ApiUtils.removeNulls(invoice.toJson()),
+    );
+    return Invoice.fromJson(response.data);
+  }
+
+  /// Upraví existující fakturu.
+  Future<Invoice> updateInvoice(int id, Invoice invoice) async {
+    final response = await _dio.patch(
+      '/invoices/$id.json',
+      data: ApiUtils.removeNulls(invoice.toJson()),
+    );
+    return Invoice.fromJson(response.data);
+  }
+
+  /// Smaže fakturu podle ID.
+  Future<void> deleteInvoice(int id) async {
+    await _dio.delete('/invoices/$id.json');
+  }
+
+  /// Provede akci s fakturou (např. označí jako odeslanou, stornuje atd.).
+  Future<void> fireAction(int id, InvoiceFireAction action) async {
+    await _dio.post(
+      '/invoices/$id/fire.json',
+      queryParameters: {'event': action.value},
+    );
+  }
+
+  /// Stáhne PDF faktury jako pole bajtů (Uint8List), které můžete následně uložit do souboru nebo zobrazit.
+  Future<Uint8List> downloadInvoicePdf(int id) async {
+    final response = await _dio.get(
+      '/invoices/$id/download.pdf',
+      options: Options(responseType: ResponseType.bytes),
+    );
+    return Uint8List.fromList(response.data);
+  }
+
+  /// Stáhne konkrétní přílohu z faktury jako pole bajtů.
+  Future<Uint8List> downloadAttachment(int invoiceId, int attachmentId) async {
+    final response = await _dio.get(
+      '/invoices/$invoiceId/attachments/$attachmentId/download',
+      options: Options(responseType: ResponseType.bytes),
+    );
+    return Uint8List.fromList(response.data);
+  }
+}
