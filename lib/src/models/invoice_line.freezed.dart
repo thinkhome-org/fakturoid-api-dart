@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 mixin _$InvoiceLine {
 
  int? get id; String get name;/// Fakturoid API vrací a přijímá decimální čísla jako String (např. "1.0")
- String? get quantity;@JsonKey(name: 'unit_name') String? get unitName;@JsonKey(name: 'unit_price') String get unitPrice;@JsonKey(name: 'vat_rate') num? get vatRate;@JsonKey(name: 'unit_price_without_vat') String? get unitPriceWithoutVat;@JsonKey(name: 'unit_price_with_vat') String? get unitPriceWithVat;@JsonKey(name: 'total_price_without_vat') String? get totalPriceWithoutVat;@JsonKey(name: 'total_vat') String? get totalVat;@JsonKey(name: 'native_total_price_without_vat') String? get nativeTotalPriceWithoutVat;@JsonKey(name: 'native_total_vat') String? get nativeTotalVat;@JsonKey(name: 'inventory_item_id') int? get inventoryItemId; String? get sku;
+ String? get quantity;@JsonKey(name: 'unit_name') String? get unitName;@JsonKey(name: 'unit_price') String get unitPrice;@JsonKey(name: 'vat_rate') num? get vatRate;@JsonKey(name: 'unit_price_without_vat') String? get unitPriceWithoutVat;@JsonKey(name: 'unit_price_with_vat') String? get unitPriceWithVat;@JsonKey(name: 'total_price_without_vat') String? get totalPriceWithoutVat;@JsonKey(name: 'total_price_with_vat') String? get totalPriceWithVat;@JsonKey(name: 'total_vat') String? get totalVat;@JsonKey(name: 'native_total_price_without_vat') String? get nativeTotalPriceWithoutVat;@JsonKey(name: 'native_total_price_with_vat') String? get nativeTotalPriceWithVat;@JsonKey(name: 'native_total_vat') String? get nativeTotalVat;@JsonKey(name: 'inventory_item_id') int? get inventoryItemId; String? get sku;@JsonKey(name: 'inventory', includeToJson: false) LineInventory? get inventory;@JsonKey(name: '_destroy') bool? get destroy;
 /// Create a copy of InvoiceLine
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $InvoiceLineCopyWith<InvoiceLine> get copyWith => _$InvoiceLineCopyWithImpl<Invo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is InvoiceLine&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unitName, unitName) || other.unitName == unitName)&&(identical(other.unitPrice, unitPrice) || other.unitPrice == unitPrice)&&(identical(other.vatRate, vatRate) || other.vatRate == vatRate)&&(identical(other.unitPriceWithoutVat, unitPriceWithoutVat) || other.unitPriceWithoutVat == unitPriceWithoutVat)&&(identical(other.unitPriceWithVat, unitPriceWithVat) || other.unitPriceWithVat == unitPriceWithVat)&&(identical(other.totalPriceWithoutVat, totalPriceWithoutVat) || other.totalPriceWithoutVat == totalPriceWithoutVat)&&(identical(other.totalVat, totalVat) || other.totalVat == totalVat)&&(identical(other.nativeTotalPriceWithoutVat, nativeTotalPriceWithoutVat) || other.nativeTotalPriceWithoutVat == nativeTotalPriceWithoutVat)&&(identical(other.nativeTotalVat, nativeTotalVat) || other.nativeTotalVat == nativeTotalVat)&&(identical(other.inventoryItemId, inventoryItemId) || other.inventoryItemId == inventoryItemId)&&(identical(other.sku, sku) || other.sku == sku));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is InvoiceLine&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unitName, unitName) || other.unitName == unitName)&&(identical(other.unitPrice, unitPrice) || other.unitPrice == unitPrice)&&(identical(other.vatRate, vatRate) || other.vatRate == vatRate)&&(identical(other.unitPriceWithoutVat, unitPriceWithoutVat) || other.unitPriceWithoutVat == unitPriceWithoutVat)&&(identical(other.unitPriceWithVat, unitPriceWithVat) || other.unitPriceWithVat == unitPriceWithVat)&&(identical(other.totalPriceWithoutVat, totalPriceWithoutVat) || other.totalPriceWithoutVat == totalPriceWithoutVat)&&(identical(other.totalPriceWithVat, totalPriceWithVat) || other.totalPriceWithVat == totalPriceWithVat)&&(identical(other.totalVat, totalVat) || other.totalVat == totalVat)&&(identical(other.nativeTotalPriceWithoutVat, nativeTotalPriceWithoutVat) || other.nativeTotalPriceWithoutVat == nativeTotalPriceWithoutVat)&&(identical(other.nativeTotalPriceWithVat, nativeTotalPriceWithVat) || other.nativeTotalPriceWithVat == nativeTotalPriceWithVat)&&(identical(other.nativeTotalVat, nativeTotalVat) || other.nativeTotalVat == nativeTotalVat)&&(identical(other.inventoryItemId, inventoryItemId) || other.inventoryItemId == inventoryItemId)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.inventory, inventory) || other.inventory == inventory)&&(identical(other.destroy, destroy) || other.destroy == destroy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,quantity,unitName,unitPrice,vatRate,unitPriceWithoutVat,unitPriceWithVat,totalPriceWithoutVat,totalVat,nativeTotalPriceWithoutVat,nativeTotalVat,inventoryItemId,sku);
+int get hashCode => Object.hash(runtimeType,id,name,quantity,unitName,unitPrice,vatRate,unitPriceWithoutVat,unitPriceWithVat,totalPriceWithoutVat,totalPriceWithVat,totalVat,nativeTotalPriceWithoutVat,nativeTotalPriceWithVat,nativeTotalVat,inventoryItemId,sku,inventory,destroy);
 
 @override
 String toString() {
-  return 'InvoiceLine(id: $id, name: $name, quantity: $quantity, unitName: $unitName, unitPrice: $unitPrice, vatRate: $vatRate, unitPriceWithoutVat: $unitPriceWithoutVat, unitPriceWithVat: $unitPriceWithVat, totalPriceWithoutVat: $totalPriceWithoutVat, totalVat: $totalVat, nativeTotalPriceWithoutVat: $nativeTotalPriceWithoutVat, nativeTotalVat: $nativeTotalVat, inventoryItemId: $inventoryItemId, sku: $sku)';
+  return 'InvoiceLine(id: $id, name: $name, quantity: $quantity, unitName: $unitName, unitPrice: $unitPrice, vatRate: $vatRate, unitPriceWithoutVat: $unitPriceWithoutVat, unitPriceWithVat: $unitPriceWithVat, totalPriceWithoutVat: $totalPriceWithoutVat, totalPriceWithVat: $totalPriceWithVat, totalVat: $totalVat, nativeTotalPriceWithoutVat: $nativeTotalPriceWithoutVat, nativeTotalPriceWithVat: $nativeTotalPriceWithVat, nativeTotalVat: $nativeTotalVat, inventoryItemId: $inventoryItemId, sku: $sku, inventory: $inventory, destroy: $destroy)';
 }
 
 
@@ -49,11 +49,11 @@ abstract mixin class $InvoiceLineCopyWith<$Res>  {
   factory $InvoiceLineCopyWith(InvoiceLine value, $Res Function(InvoiceLine) _then) = _$InvoiceLineCopyWithImpl;
 @useResult
 $Res call({
- int? id, String name, String? quantity,@JsonKey(name: 'unit_name') String? unitName,@JsonKey(name: 'unit_price') String unitPrice,@JsonKey(name: 'vat_rate') num? vatRate,@JsonKey(name: 'unit_price_without_vat') String? unitPriceWithoutVat,@JsonKey(name: 'unit_price_with_vat') String? unitPriceWithVat,@JsonKey(name: 'total_price_without_vat') String? totalPriceWithoutVat,@JsonKey(name: 'total_vat') String? totalVat,@JsonKey(name: 'native_total_price_without_vat') String? nativeTotalPriceWithoutVat,@JsonKey(name: 'native_total_vat') String? nativeTotalVat,@JsonKey(name: 'inventory_item_id') int? inventoryItemId, String? sku
+ int? id, String name, String? quantity,@JsonKey(name: 'unit_name') String? unitName,@JsonKey(name: 'unit_price') String unitPrice,@JsonKey(name: 'vat_rate') num? vatRate,@JsonKey(name: 'unit_price_without_vat') String? unitPriceWithoutVat,@JsonKey(name: 'unit_price_with_vat') String? unitPriceWithVat,@JsonKey(name: 'total_price_without_vat') String? totalPriceWithoutVat,@JsonKey(name: 'total_price_with_vat') String? totalPriceWithVat,@JsonKey(name: 'total_vat') String? totalVat,@JsonKey(name: 'native_total_price_without_vat') String? nativeTotalPriceWithoutVat,@JsonKey(name: 'native_total_price_with_vat') String? nativeTotalPriceWithVat,@JsonKey(name: 'native_total_vat') String? nativeTotalVat,@JsonKey(name: 'inventory_item_id') int? inventoryItemId, String? sku,@JsonKey(name: 'inventory', includeToJson: false) LineInventory? inventory,@JsonKey(name: '_destroy') bool? destroy
 });
 
 
-
+$LineInventoryCopyWith<$Res>? get inventory;
 
 }
 /// @nodoc
@@ -66,7 +66,7 @@ class _$InvoiceLineCopyWithImpl<$Res>
 
 /// Create a copy of InvoiceLine
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? quantity = freezed,Object? unitName = freezed,Object? unitPrice = null,Object? vatRate = freezed,Object? unitPriceWithoutVat = freezed,Object? unitPriceWithVat = freezed,Object? totalPriceWithoutVat = freezed,Object? totalVat = freezed,Object? nativeTotalPriceWithoutVat = freezed,Object? nativeTotalVat = freezed,Object? inventoryItemId = freezed,Object? sku = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? quantity = freezed,Object? unitName = freezed,Object? unitPrice = null,Object? vatRate = freezed,Object? unitPriceWithoutVat = freezed,Object? unitPriceWithVat = freezed,Object? totalPriceWithoutVat = freezed,Object? totalPriceWithVat = freezed,Object? totalVat = freezed,Object? nativeTotalPriceWithoutVat = freezed,Object? nativeTotalPriceWithVat = freezed,Object? nativeTotalVat = freezed,Object? inventoryItemId = freezed,Object? sku = freezed,Object? inventory = freezed,Object? destroy = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -77,15 +77,31 @@ as String,vatRate: freezed == vatRate ? _self.vatRate : vatRate // ignore: cast_
 as num?,unitPriceWithoutVat: freezed == unitPriceWithoutVat ? _self.unitPriceWithoutVat : unitPriceWithoutVat // ignore: cast_nullable_to_non_nullable
 as String?,unitPriceWithVat: freezed == unitPriceWithVat ? _self.unitPriceWithVat : unitPriceWithVat // ignore: cast_nullable_to_non_nullable
 as String?,totalPriceWithoutVat: freezed == totalPriceWithoutVat ? _self.totalPriceWithoutVat : totalPriceWithoutVat // ignore: cast_nullable_to_non_nullable
+as String?,totalPriceWithVat: freezed == totalPriceWithVat ? _self.totalPriceWithVat : totalPriceWithVat // ignore: cast_nullable_to_non_nullable
 as String?,totalVat: freezed == totalVat ? _self.totalVat : totalVat // ignore: cast_nullable_to_non_nullable
 as String?,nativeTotalPriceWithoutVat: freezed == nativeTotalPriceWithoutVat ? _self.nativeTotalPriceWithoutVat : nativeTotalPriceWithoutVat // ignore: cast_nullable_to_non_nullable
+as String?,nativeTotalPriceWithVat: freezed == nativeTotalPriceWithVat ? _self.nativeTotalPriceWithVat : nativeTotalPriceWithVat // ignore: cast_nullable_to_non_nullable
 as String?,nativeTotalVat: freezed == nativeTotalVat ? _self.nativeTotalVat : nativeTotalVat // ignore: cast_nullable_to_non_nullable
 as String?,inventoryItemId: freezed == inventoryItemId ? _self.inventoryItemId : inventoryItemId // ignore: cast_nullable_to_non_nullable
 as int?,sku: freezed == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,inventory: freezed == inventory ? _self.inventory : inventory // ignore: cast_nullable_to_non_nullable
+as LineInventory?,destroy: freezed == destroy ? _self.destroy : destroy // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
+/// Create a copy of InvoiceLine
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$LineInventoryCopyWith<$Res>? get inventory {
+    if (_self.inventory == null) {
+    return null;
+  }
 
+  return $LineInventoryCopyWith<$Res>(_self.inventory!, (value) {
+    return _then(_self.copyWith(inventory: value));
+  });
+}
 }
 
 
@@ -167,10 +183,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String name,  String? quantity, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'unit_price')  String unitPrice, @JsonKey(name: 'vat_rate')  num? vatRate, @JsonKey(name: 'unit_price_without_vat')  String? unitPriceWithoutVat, @JsonKey(name: 'unit_price_with_vat')  String? unitPriceWithVat, @JsonKey(name: 'total_price_without_vat')  String? totalPriceWithoutVat, @JsonKey(name: 'total_vat')  String? totalVat, @JsonKey(name: 'native_total_price_without_vat')  String? nativeTotalPriceWithoutVat, @JsonKey(name: 'native_total_vat')  String? nativeTotalVat, @JsonKey(name: 'inventory_item_id')  int? inventoryItemId,  String? sku)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String name,  String? quantity, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'unit_price')  String unitPrice, @JsonKey(name: 'vat_rate')  num? vatRate, @JsonKey(name: 'unit_price_without_vat')  String? unitPriceWithoutVat, @JsonKey(name: 'unit_price_with_vat')  String? unitPriceWithVat, @JsonKey(name: 'total_price_without_vat')  String? totalPriceWithoutVat, @JsonKey(name: 'total_price_with_vat')  String? totalPriceWithVat, @JsonKey(name: 'total_vat')  String? totalVat, @JsonKey(name: 'native_total_price_without_vat')  String? nativeTotalPriceWithoutVat, @JsonKey(name: 'native_total_price_with_vat')  String? nativeTotalPriceWithVat, @JsonKey(name: 'native_total_vat')  String? nativeTotalVat, @JsonKey(name: 'inventory_item_id')  int? inventoryItemId,  String? sku, @JsonKey(name: 'inventory', includeToJson: false)  LineInventory? inventory, @JsonKey(name: '_destroy')  bool? destroy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _InvoiceLine() when $default != null:
-return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPrice,_that.vatRate,_that.unitPriceWithoutVat,_that.unitPriceWithVat,_that.totalPriceWithoutVat,_that.totalVat,_that.nativeTotalPriceWithoutVat,_that.nativeTotalVat,_that.inventoryItemId,_that.sku);case _:
+return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPrice,_that.vatRate,_that.unitPriceWithoutVat,_that.unitPriceWithVat,_that.totalPriceWithoutVat,_that.totalPriceWithVat,_that.totalVat,_that.nativeTotalPriceWithoutVat,_that.nativeTotalPriceWithVat,_that.nativeTotalVat,_that.inventoryItemId,_that.sku,_that.inventory,_that.destroy);case _:
   return orElse();
 
 }
@@ -188,10 +204,10 @@ return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPric
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String name,  String? quantity, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'unit_price')  String unitPrice, @JsonKey(name: 'vat_rate')  num? vatRate, @JsonKey(name: 'unit_price_without_vat')  String? unitPriceWithoutVat, @JsonKey(name: 'unit_price_with_vat')  String? unitPriceWithVat, @JsonKey(name: 'total_price_without_vat')  String? totalPriceWithoutVat, @JsonKey(name: 'total_vat')  String? totalVat, @JsonKey(name: 'native_total_price_without_vat')  String? nativeTotalPriceWithoutVat, @JsonKey(name: 'native_total_vat')  String? nativeTotalVat, @JsonKey(name: 'inventory_item_id')  int? inventoryItemId,  String? sku)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String name,  String? quantity, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'unit_price')  String unitPrice, @JsonKey(name: 'vat_rate')  num? vatRate, @JsonKey(name: 'unit_price_without_vat')  String? unitPriceWithoutVat, @JsonKey(name: 'unit_price_with_vat')  String? unitPriceWithVat, @JsonKey(name: 'total_price_without_vat')  String? totalPriceWithoutVat, @JsonKey(name: 'total_price_with_vat')  String? totalPriceWithVat, @JsonKey(name: 'total_vat')  String? totalVat, @JsonKey(name: 'native_total_price_without_vat')  String? nativeTotalPriceWithoutVat, @JsonKey(name: 'native_total_price_with_vat')  String? nativeTotalPriceWithVat, @JsonKey(name: 'native_total_vat')  String? nativeTotalVat, @JsonKey(name: 'inventory_item_id')  int? inventoryItemId,  String? sku, @JsonKey(name: 'inventory', includeToJson: false)  LineInventory? inventory, @JsonKey(name: '_destroy')  bool? destroy)  $default,) {final _that = this;
 switch (_that) {
 case _InvoiceLine():
-return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPrice,_that.vatRate,_that.unitPriceWithoutVat,_that.unitPriceWithVat,_that.totalPriceWithoutVat,_that.totalVat,_that.nativeTotalPriceWithoutVat,_that.nativeTotalVat,_that.inventoryItemId,_that.sku);case _:
+return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPrice,_that.vatRate,_that.unitPriceWithoutVat,_that.unitPriceWithVat,_that.totalPriceWithoutVat,_that.totalPriceWithVat,_that.totalVat,_that.nativeTotalPriceWithoutVat,_that.nativeTotalPriceWithVat,_that.nativeTotalVat,_that.inventoryItemId,_that.sku,_that.inventory,_that.destroy);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +224,10 @@ return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPric
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String name,  String? quantity, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'unit_price')  String unitPrice, @JsonKey(name: 'vat_rate')  num? vatRate, @JsonKey(name: 'unit_price_without_vat')  String? unitPriceWithoutVat, @JsonKey(name: 'unit_price_with_vat')  String? unitPriceWithVat, @JsonKey(name: 'total_price_without_vat')  String? totalPriceWithoutVat, @JsonKey(name: 'total_vat')  String? totalVat, @JsonKey(name: 'native_total_price_without_vat')  String? nativeTotalPriceWithoutVat, @JsonKey(name: 'native_total_vat')  String? nativeTotalVat, @JsonKey(name: 'inventory_item_id')  int? inventoryItemId,  String? sku)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String name,  String? quantity, @JsonKey(name: 'unit_name')  String? unitName, @JsonKey(name: 'unit_price')  String unitPrice, @JsonKey(name: 'vat_rate')  num? vatRate, @JsonKey(name: 'unit_price_without_vat')  String? unitPriceWithoutVat, @JsonKey(name: 'unit_price_with_vat')  String? unitPriceWithVat, @JsonKey(name: 'total_price_without_vat')  String? totalPriceWithoutVat, @JsonKey(name: 'total_price_with_vat')  String? totalPriceWithVat, @JsonKey(name: 'total_vat')  String? totalVat, @JsonKey(name: 'native_total_price_without_vat')  String? nativeTotalPriceWithoutVat, @JsonKey(name: 'native_total_price_with_vat')  String? nativeTotalPriceWithVat, @JsonKey(name: 'native_total_vat')  String? nativeTotalVat, @JsonKey(name: 'inventory_item_id')  int? inventoryItemId,  String? sku, @JsonKey(name: 'inventory', includeToJson: false)  LineInventory? inventory, @JsonKey(name: '_destroy')  bool? destroy)?  $default,) {final _that = this;
 switch (_that) {
 case _InvoiceLine() when $default != null:
-return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPrice,_that.vatRate,_that.unitPriceWithoutVat,_that.unitPriceWithVat,_that.totalPriceWithoutVat,_that.totalVat,_that.nativeTotalPriceWithoutVat,_that.nativeTotalVat,_that.inventoryItemId,_that.sku);case _:
+return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPrice,_that.vatRate,_that.unitPriceWithoutVat,_that.unitPriceWithVat,_that.totalPriceWithoutVat,_that.totalPriceWithVat,_that.totalVat,_that.nativeTotalPriceWithoutVat,_that.nativeTotalPriceWithVat,_that.nativeTotalVat,_that.inventoryItemId,_that.sku,_that.inventory,_that.destroy);case _:
   return null;
 
 }
@@ -223,7 +239,7 @@ return $default(_that.id,_that.name,_that.quantity,_that.unitName,_that.unitPric
 @JsonSerializable()
 
 class _InvoiceLine implements InvoiceLine {
-  const _InvoiceLine({this.id, required this.name, this.quantity, @JsonKey(name: 'unit_name') this.unitName, @JsonKey(name: 'unit_price') required this.unitPrice, @JsonKey(name: 'vat_rate') this.vatRate, @JsonKey(name: 'unit_price_without_vat') this.unitPriceWithoutVat, @JsonKey(name: 'unit_price_with_vat') this.unitPriceWithVat, @JsonKey(name: 'total_price_without_vat') this.totalPriceWithoutVat, @JsonKey(name: 'total_vat') this.totalVat, @JsonKey(name: 'native_total_price_without_vat') this.nativeTotalPriceWithoutVat, @JsonKey(name: 'native_total_vat') this.nativeTotalVat, @JsonKey(name: 'inventory_item_id') this.inventoryItemId, this.sku});
+  const _InvoiceLine({this.id, required this.name, this.quantity, @JsonKey(name: 'unit_name') this.unitName, @JsonKey(name: 'unit_price') required this.unitPrice, @JsonKey(name: 'vat_rate') this.vatRate, @JsonKey(name: 'unit_price_without_vat') this.unitPriceWithoutVat, @JsonKey(name: 'unit_price_with_vat') this.unitPriceWithVat, @JsonKey(name: 'total_price_without_vat') this.totalPriceWithoutVat, @JsonKey(name: 'total_price_with_vat') this.totalPriceWithVat, @JsonKey(name: 'total_vat') this.totalVat, @JsonKey(name: 'native_total_price_without_vat') this.nativeTotalPriceWithoutVat, @JsonKey(name: 'native_total_price_with_vat') this.nativeTotalPriceWithVat, @JsonKey(name: 'native_total_vat') this.nativeTotalVat, @JsonKey(name: 'inventory_item_id') this.inventoryItemId, this.sku, @JsonKey(name: 'inventory', includeToJson: false) this.inventory, @JsonKey(name: '_destroy') this.destroy});
   factory _InvoiceLine.fromJson(Map<String, dynamic> json) => _$InvoiceLineFromJson(json);
 
 @override final  int? id;
@@ -236,11 +252,15 @@ class _InvoiceLine implements InvoiceLine {
 @override@JsonKey(name: 'unit_price_without_vat') final  String? unitPriceWithoutVat;
 @override@JsonKey(name: 'unit_price_with_vat') final  String? unitPriceWithVat;
 @override@JsonKey(name: 'total_price_without_vat') final  String? totalPriceWithoutVat;
+@override@JsonKey(name: 'total_price_with_vat') final  String? totalPriceWithVat;
 @override@JsonKey(name: 'total_vat') final  String? totalVat;
 @override@JsonKey(name: 'native_total_price_without_vat') final  String? nativeTotalPriceWithoutVat;
+@override@JsonKey(name: 'native_total_price_with_vat') final  String? nativeTotalPriceWithVat;
 @override@JsonKey(name: 'native_total_vat') final  String? nativeTotalVat;
 @override@JsonKey(name: 'inventory_item_id') final  int? inventoryItemId;
 @override final  String? sku;
+@override@JsonKey(name: 'inventory', includeToJson: false) final  LineInventory? inventory;
+@override@JsonKey(name: '_destroy') final  bool? destroy;
 
 /// Create a copy of InvoiceLine
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +275,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InvoiceLine&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unitName, unitName) || other.unitName == unitName)&&(identical(other.unitPrice, unitPrice) || other.unitPrice == unitPrice)&&(identical(other.vatRate, vatRate) || other.vatRate == vatRate)&&(identical(other.unitPriceWithoutVat, unitPriceWithoutVat) || other.unitPriceWithoutVat == unitPriceWithoutVat)&&(identical(other.unitPriceWithVat, unitPriceWithVat) || other.unitPriceWithVat == unitPriceWithVat)&&(identical(other.totalPriceWithoutVat, totalPriceWithoutVat) || other.totalPriceWithoutVat == totalPriceWithoutVat)&&(identical(other.totalVat, totalVat) || other.totalVat == totalVat)&&(identical(other.nativeTotalPriceWithoutVat, nativeTotalPriceWithoutVat) || other.nativeTotalPriceWithoutVat == nativeTotalPriceWithoutVat)&&(identical(other.nativeTotalVat, nativeTotalVat) || other.nativeTotalVat == nativeTotalVat)&&(identical(other.inventoryItemId, inventoryItemId) || other.inventoryItemId == inventoryItemId)&&(identical(other.sku, sku) || other.sku == sku));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InvoiceLine&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unitName, unitName) || other.unitName == unitName)&&(identical(other.unitPrice, unitPrice) || other.unitPrice == unitPrice)&&(identical(other.vatRate, vatRate) || other.vatRate == vatRate)&&(identical(other.unitPriceWithoutVat, unitPriceWithoutVat) || other.unitPriceWithoutVat == unitPriceWithoutVat)&&(identical(other.unitPriceWithVat, unitPriceWithVat) || other.unitPriceWithVat == unitPriceWithVat)&&(identical(other.totalPriceWithoutVat, totalPriceWithoutVat) || other.totalPriceWithoutVat == totalPriceWithoutVat)&&(identical(other.totalPriceWithVat, totalPriceWithVat) || other.totalPriceWithVat == totalPriceWithVat)&&(identical(other.totalVat, totalVat) || other.totalVat == totalVat)&&(identical(other.nativeTotalPriceWithoutVat, nativeTotalPriceWithoutVat) || other.nativeTotalPriceWithoutVat == nativeTotalPriceWithoutVat)&&(identical(other.nativeTotalPriceWithVat, nativeTotalPriceWithVat) || other.nativeTotalPriceWithVat == nativeTotalPriceWithVat)&&(identical(other.nativeTotalVat, nativeTotalVat) || other.nativeTotalVat == nativeTotalVat)&&(identical(other.inventoryItemId, inventoryItemId) || other.inventoryItemId == inventoryItemId)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.inventory, inventory) || other.inventory == inventory)&&(identical(other.destroy, destroy) || other.destroy == destroy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,quantity,unitName,unitPrice,vatRate,unitPriceWithoutVat,unitPriceWithVat,totalPriceWithoutVat,totalVat,nativeTotalPriceWithoutVat,nativeTotalVat,inventoryItemId,sku);
+int get hashCode => Object.hash(runtimeType,id,name,quantity,unitName,unitPrice,vatRate,unitPriceWithoutVat,unitPriceWithVat,totalPriceWithoutVat,totalPriceWithVat,totalVat,nativeTotalPriceWithoutVat,nativeTotalPriceWithVat,nativeTotalVat,inventoryItemId,sku,inventory,destroy);
 
 @override
 String toString() {
-  return 'InvoiceLine(id: $id, name: $name, quantity: $quantity, unitName: $unitName, unitPrice: $unitPrice, vatRate: $vatRate, unitPriceWithoutVat: $unitPriceWithoutVat, unitPriceWithVat: $unitPriceWithVat, totalPriceWithoutVat: $totalPriceWithoutVat, totalVat: $totalVat, nativeTotalPriceWithoutVat: $nativeTotalPriceWithoutVat, nativeTotalVat: $nativeTotalVat, inventoryItemId: $inventoryItemId, sku: $sku)';
+  return 'InvoiceLine(id: $id, name: $name, quantity: $quantity, unitName: $unitName, unitPrice: $unitPrice, vatRate: $vatRate, unitPriceWithoutVat: $unitPriceWithoutVat, unitPriceWithVat: $unitPriceWithVat, totalPriceWithoutVat: $totalPriceWithoutVat, totalPriceWithVat: $totalPriceWithVat, totalVat: $totalVat, nativeTotalPriceWithoutVat: $nativeTotalPriceWithoutVat, nativeTotalPriceWithVat: $nativeTotalPriceWithVat, nativeTotalVat: $nativeTotalVat, inventoryItemId: $inventoryItemId, sku: $sku, inventory: $inventory, destroy: $destroy)';
 }
 
 
@@ -275,11 +295,11 @@ abstract mixin class _$InvoiceLineCopyWith<$Res> implements $InvoiceLineCopyWith
   factory _$InvoiceLineCopyWith(_InvoiceLine value, $Res Function(_InvoiceLine) _then) = __$InvoiceLineCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String name, String? quantity,@JsonKey(name: 'unit_name') String? unitName,@JsonKey(name: 'unit_price') String unitPrice,@JsonKey(name: 'vat_rate') num? vatRate,@JsonKey(name: 'unit_price_without_vat') String? unitPriceWithoutVat,@JsonKey(name: 'unit_price_with_vat') String? unitPriceWithVat,@JsonKey(name: 'total_price_without_vat') String? totalPriceWithoutVat,@JsonKey(name: 'total_vat') String? totalVat,@JsonKey(name: 'native_total_price_without_vat') String? nativeTotalPriceWithoutVat,@JsonKey(name: 'native_total_vat') String? nativeTotalVat,@JsonKey(name: 'inventory_item_id') int? inventoryItemId, String? sku
+ int? id, String name, String? quantity,@JsonKey(name: 'unit_name') String? unitName,@JsonKey(name: 'unit_price') String unitPrice,@JsonKey(name: 'vat_rate') num? vatRate,@JsonKey(name: 'unit_price_without_vat') String? unitPriceWithoutVat,@JsonKey(name: 'unit_price_with_vat') String? unitPriceWithVat,@JsonKey(name: 'total_price_without_vat') String? totalPriceWithoutVat,@JsonKey(name: 'total_price_with_vat') String? totalPriceWithVat,@JsonKey(name: 'total_vat') String? totalVat,@JsonKey(name: 'native_total_price_without_vat') String? nativeTotalPriceWithoutVat,@JsonKey(name: 'native_total_price_with_vat') String? nativeTotalPriceWithVat,@JsonKey(name: 'native_total_vat') String? nativeTotalVat,@JsonKey(name: 'inventory_item_id') int? inventoryItemId, String? sku,@JsonKey(name: 'inventory', includeToJson: false) LineInventory? inventory,@JsonKey(name: '_destroy') bool? destroy
 });
 
 
-
+@override $LineInventoryCopyWith<$Res>? get inventory;
 
 }
 /// @nodoc
@@ -292,7 +312,7 @@ class __$InvoiceLineCopyWithImpl<$Res>
 
 /// Create a copy of InvoiceLine
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? quantity = freezed,Object? unitName = freezed,Object? unitPrice = null,Object? vatRate = freezed,Object? unitPriceWithoutVat = freezed,Object? unitPriceWithVat = freezed,Object? totalPriceWithoutVat = freezed,Object? totalVat = freezed,Object? nativeTotalPriceWithoutVat = freezed,Object? nativeTotalVat = freezed,Object? inventoryItemId = freezed,Object? sku = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? quantity = freezed,Object? unitName = freezed,Object? unitPrice = null,Object? vatRate = freezed,Object? unitPriceWithoutVat = freezed,Object? unitPriceWithVat = freezed,Object? totalPriceWithoutVat = freezed,Object? totalPriceWithVat = freezed,Object? totalVat = freezed,Object? nativeTotalPriceWithoutVat = freezed,Object? nativeTotalPriceWithVat = freezed,Object? nativeTotalVat = freezed,Object? inventoryItemId = freezed,Object? sku = freezed,Object? inventory = freezed,Object? destroy = freezed,}) {
   return _then(_InvoiceLine(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -303,16 +323,32 @@ as String,vatRate: freezed == vatRate ? _self.vatRate : vatRate // ignore: cast_
 as num?,unitPriceWithoutVat: freezed == unitPriceWithoutVat ? _self.unitPriceWithoutVat : unitPriceWithoutVat // ignore: cast_nullable_to_non_nullable
 as String?,unitPriceWithVat: freezed == unitPriceWithVat ? _self.unitPriceWithVat : unitPriceWithVat // ignore: cast_nullable_to_non_nullable
 as String?,totalPriceWithoutVat: freezed == totalPriceWithoutVat ? _self.totalPriceWithoutVat : totalPriceWithoutVat // ignore: cast_nullable_to_non_nullable
+as String?,totalPriceWithVat: freezed == totalPriceWithVat ? _self.totalPriceWithVat : totalPriceWithVat // ignore: cast_nullable_to_non_nullable
 as String?,totalVat: freezed == totalVat ? _self.totalVat : totalVat // ignore: cast_nullable_to_non_nullable
 as String?,nativeTotalPriceWithoutVat: freezed == nativeTotalPriceWithoutVat ? _self.nativeTotalPriceWithoutVat : nativeTotalPriceWithoutVat // ignore: cast_nullable_to_non_nullable
+as String?,nativeTotalPriceWithVat: freezed == nativeTotalPriceWithVat ? _self.nativeTotalPriceWithVat : nativeTotalPriceWithVat // ignore: cast_nullable_to_non_nullable
 as String?,nativeTotalVat: freezed == nativeTotalVat ? _self.nativeTotalVat : nativeTotalVat // ignore: cast_nullable_to_non_nullable
 as String?,inventoryItemId: freezed == inventoryItemId ? _self.inventoryItemId : inventoryItemId // ignore: cast_nullable_to_non_nullable
 as int?,sku: freezed == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,inventory: freezed == inventory ? _self.inventory : inventory // ignore: cast_nullable_to_non_nullable
+as LineInventory?,destroy: freezed == destroy ? _self.destroy : destroy // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 
+/// Create a copy of InvoiceLine
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$LineInventoryCopyWith<$Res>? get inventory {
+    if (_self.inventory == null) {
+    return null;
+  }
 
+  return $LineInventoryCopyWith<$Res>(_self.inventory!, (value) {
+    return _then(_self.copyWith(inventory: value));
+  });
+}
 }
 
 // dart format on

@@ -31,7 +31,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   id: (json['id'] as num?)?.toInt(),
   fullName: json['full_name'] as String?,
   email: json['email'] as String?,
-  avatarUrl: json['avatar_url'] as String?,
+  avatarUrl: _readAvatarValue(json, 'avatar_url') as String?,
   defaultAccount: json['default_account'] as String?,
   permission: json['permission'] as String?,
   allowedScope: (json['allowed_scope'] as List<dynamic>?)

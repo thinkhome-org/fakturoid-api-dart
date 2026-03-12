@@ -58,6 +58,8 @@ _Expense _$ExpenseFromJson(Map<String, dynamic> json) => _Expense(
   proportionalVatDeduction: (json['proportional_vat_deduction'] as num?)
       ?.toInt(),
   taxDeductible: json['tax_deductible'] as bool?,
+  roundTotal: json['round_total'] as bool?,
+  roundingAdjustment: json['rounding_adjustment'] as String?,
   subtotal: json['subtotal'] as String?,
   total: json['total'] as String?,
   nativeSubtotal: json['native_subtotal'] as String?,
@@ -65,8 +67,14 @@ _Expense _$ExpenseFromJson(Map<String, dynamic> json) => _Expense(
   lines: (json['lines'] as List<dynamic>?)
       ?.map((e) => InvoiceLine.fromJson(e as Map<String, dynamic>))
       .toList(),
+  vatRatesSummary: (json['vat_rates_summary'] as List<dynamic>?)
+      ?.map((e) => VatRateSummary.fromJson(e as Map<String, dynamic>))
+      .toList(),
   payments: (json['payments'] as List<dynamic>?)
       ?.map((e) => InvoicePayment.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  attachments: (json['attachments'] as List<dynamic>?)
+      ?.map((e) => DocumentAttachment.fromJson(e as Map<String, dynamic>))
       .toList(),
   htmlUrl: json['html_url'] as String?,
   url: json['url'] as String?,
@@ -119,12 +127,16 @@ Map<String, dynamic> _$ExpenseToJson(_Expense instance) => <String, dynamic>{
   'supply_code': instance.supplyCode,
   'proportional_vat_deduction': instance.proportionalVatDeduction,
   'tax_deductible': instance.taxDeductible,
+  'round_total': instance.roundTotal,
+  'rounding_adjustment': instance.roundingAdjustment,
   'subtotal': instance.subtotal,
   'total': instance.total,
   'native_subtotal': instance.nativeSubtotal,
   'native_total': instance.nativeTotal,
   'lines': instance.lines,
+  'vat_rates_summary': instance.vatRatesSummary,
   'payments': instance.payments,
+  'attachments': instance.attachments,
   'html_url': instance.htmlUrl,
   'url': instance.url,
   'subject_url': instance.subjectUrl,

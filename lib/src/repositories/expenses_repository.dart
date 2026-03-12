@@ -31,6 +31,7 @@ class ExpensesRepository {
     int? subjectId,
     String? customId,
     String? number,
+    String? variableSymbol,
     ExpenseStatus? status,
     ExpenseDocumentType? documentType,
   }) async {
@@ -45,6 +46,7 @@ class ExpensesRepository {
         'subject_id': subjectId,
         'custom_id': customId,
         'number': number,
+        'variable_symbol': variableSymbol,
         'status': status?.name,
         'document_type': documentType?.name,
       }),

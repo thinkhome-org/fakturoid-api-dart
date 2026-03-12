@@ -37,6 +37,12 @@ _Invoice _$InvoiceFromJson(Map<String, dynamic> json) => _Invoice(
   clientCity: json['client_city'] as String?,
   clientZip: json['client_zip'] as String?,
   clientCountry: json['client_country'] as String?,
+  clientHasDeliveryAddress: json['client_has_delivery_address'] as bool?,
+  clientDeliveryName: json['client_delivery_name'] as String?,
+  clientDeliveryStreet: json['client_delivery_street'] as String?,
+  clientDeliveryCity: json['client_delivery_city'] as String?,
+  clientDeliveryZip: json['client_delivery_zip'] as String?,
+  clientDeliveryCountry: json['client_delivery_country'] as String?,
   clientRegistrationNo: json['client_registration_no'] as String?,
   clientVatNo: json['client_vat_no'] as String?,
   clientLocalVatNo: json['client_local_vat_no'] as String?,
@@ -85,11 +91,13 @@ _Invoice _$InvoiceFromJson(Map<String, dynamic> json) => _Invoice(
     _$IbanVisibilityEnumMap,
     json['iban_visibility'],
   ),
+  showAlreadyPaidNoteInPdf: json['show_already_paid_note_in_pdf'] as bool?,
   paymentMethod: $enumDecodeNullable(
     _$PaymentMethodEnumMap,
     json['payment_method'],
   ),
   customPaymentMethod: json['custom_payment_method'] as String?,
+  hideBankAccount: json['hide_bank_account'] as bool?,
   currency: json['currency'] as String?,
   exchangeRate: json['exchange_rate'] as String?,
   language: $enumDecodeNullable(_$DocumentLanguageEnumMap, json['language']),
@@ -105,13 +113,26 @@ _Invoice _$InvoiceFromJson(Map<String, dynamic> json) => _Invoice(
   total: json['total'] as String?,
   nativeSubtotal: json['native_subtotal'] as String?,
   nativeTotal: json['native_total'] as String?,
+  roundingAdjustment: json['rounding_adjustment'] as String?,
   remainingAmount: json['remaining_amount'] as String?,
   remainingNativeAmount: json['remaining_native_amount'] as String?,
+  eetRecords: (json['eet_records'] as List<dynamic>?)
+      ?.map((e) => InvoiceEetRecord.fromJson(e as Map<String, dynamic>))
+      .toList(),
   lines: (json['lines'] as List<dynamic>?)
       ?.map((e) => InvoiceLine.fromJson(e as Map<String, dynamic>))
       .toList(),
+  vatRatesSummary: (json['vat_rates_summary'] as List<dynamic>?)
+      ?.map((e) => VatRateSummary.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  paidAdvances: (json['paid_advances'] as List<dynamic>?)
+      ?.map((e) => InvoicePaidAdvance.fromJson(e as Map<String, dynamic>))
+      .toList(),
   payments: (json['payments'] as List<dynamic>?)
       ?.map((e) => InvoicePayment.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  attachments: (json['attachments'] as List<dynamic>?)
+      ?.map((e) => DocumentAttachment.fromJson(e as Map<String, dynamic>))
       .toList(),
   htmlUrl: json['html_url'] as String?,
   publicHtmlUrl: json['public_html_url'] as String?,
@@ -150,6 +171,12 @@ Map<String, dynamic> _$InvoiceToJson(_Invoice instance) => <String, dynamic>{
   'client_city': instance.clientCity,
   'client_zip': instance.clientZip,
   'client_country': instance.clientCountry,
+  'client_has_delivery_address': instance.clientHasDeliveryAddress,
+  'client_delivery_name': instance.clientDeliveryName,
+  'client_delivery_street': instance.clientDeliveryStreet,
+  'client_delivery_city': instance.clientDeliveryCity,
+  'client_delivery_zip': instance.clientDeliveryZip,
+  'client_delivery_country': instance.clientDeliveryCountry,
   'client_registration_no': instance.clientRegistrationNo,
   'client_vat_no': instance.clientVatNo,
   'client_local_vat_no': instance.clientLocalVatNo,
@@ -183,8 +210,10 @@ Map<String, dynamic> _$InvoiceToJson(_Invoice instance) => <String, dynamic>{
   'iban': instance.iban,
   'swift_bic': instance.swiftBic,
   'iban_visibility': _$IbanVisibilityEnumMap[instance.ibanVisibility],
+  'show_already_paid_note_in_pdf': instance.showAlreadyPaidNoteInPdf,
   'payment_method': _$PaymentMethodEnumMap[instance.paymentMethod],
   'custom_payment_method': instance.customPaymentMethod,
+  'hide_bank_account': instance.hideBankAccount,
   'currency': instance.currency,
   'exchange_rate': instance.exchangeRate,
   'language': _$DocumentLanguageEnumMap[instance.language],
@@ -197,10 +226,15 @@ Map<String, dynamic> _$InvoiceToJson(_Invoice instance) => <String, dynamic>{
   'total': instance.total,
   'native_subtotal': instance.nativeSubtotal,
   'native_total': instance.nativeTotal,
+  'rounding_adjustment': instance.roundingAdjustment,
   'remaining_amount': instance.remainingAmount,
   'remaining_native_amount': instance.remainingNativeAmount,
+  'eet_records': instance.eetRecords,
   'lines': instance.lines,
+  'vat_rates_summary': instance.vatRatesSummary,
+  'paid_advances': instance.paidAdvances,
   'payments': instance.payments,
+  'attachments': instance.attachments,
   'html_url': instance.htmlUrl,
   'public_html_url': instance.publicHtmlUrl,
   'url': instance.url,

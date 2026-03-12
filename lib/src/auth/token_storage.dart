@@ -2,7 +2,8 @@ abstract class TokenStorage {
   /// Save access and refresh tokens along with their expiration date.
   Future<void> saveTokens({
     required String accessToken,
-    required String refreshToken,
+    String? refreshToken,
+    required String tokenType,
     required DateTime expiresAt,
   });
 
@@ -11,6 +12,9 @@ abstract class TokenStorage {
 
   /// Retrieve the refresh token.
   Future<String?> getRefreshToken();
+
+  /// Retrieve the token type.
+  Future<String?> getTokenType();
 
   /// Retrieve the expiration date of the access token.
   Future<DateTime?> getExpiresAt();

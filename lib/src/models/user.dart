@@ -3,6 +3,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user.freezed.dart';
 part 'user.g.dart';
 
+Object? _readAvatarValue(Map<dynamic, dynamic> json, String key) {
+  return json[key] ?? json['avatar'];
+}
+
 @freezed
 abstract class UserAccount with _$UserAccount {
   const factory UserAccount({
@@ -24,7 +28,7 @@ abstract class User with _$User {
     int? id,
     @JsonKey(name: 'full_name') String? fullName,
     String? email,
-    @JsonKey(name: 'avatar_url') String? avatarUrl,
+    @JsonKey(name: 'avatar_url', readValue: _readAvatarValue) String? avatarUrl,
     @JsonKey(name: 'default_account') String? defaultAccount,
     String? permission,
     @JsonKey(name: 'allowed_scope') List<String>? allowedScope,

@@ -10,6 +10,7 @@ class AuthRepository {
   final String _clientId;
   final String _clientSecret;
   final String _redirectUri;
+  final String _userAgent;
 
   static const String _oauthAuthUrl = 'https://app.fakturoid.cz/api/v3/oauth';
   static const String _oauthTokenUrl =
@@ -21,11 +22,26 @@ class AuthRepository {
     required String clientId,
     required String clientSecret,
     required String redirectUri,
+    required String userAgent,
   }) : _dio = dio,
        _tokenStorage = tokenStorage,
        _clientId = clientId,
        _clientSecret = clientSecret,
-       _redirectUri = redirectUri;
+       _redirectUri = redirectUri,
+       _userAgent = userAgent;
+
+  Map<String, String> _createAuthHeaders() {
+    final credentials = base64UrlEncode(
+      utf8.encode('$_clientId:$_clientSecret'),
+    );
+
+    return {
+      'User-Agent': _userAgent,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic $credentials',
+    };
+  }
 
   /// Generates the OAuth 2.0 authorization URL for Authorization Code Flow with PKCE.
   /// This method saves the generated PKCE verifier and state securely to `TokenStorage`.
@@ -87,9 +103,8 @@ class AuthRepository {
     try {
       final response = await _dio.post(
         _oauthTokenUrl,
+        options: Options(headers: _createAuthHeaders()),
         data: {
-          'client_id': _clientId,
-          'client_secret': _clientSecret,
           'redirect_uri': _redirectUri,
           'grant_type': 'authorization_code',
           'code': code,
@@ -101,6 +116,7 @@ class AuthRepository {
       await _tokenStorage.saveTokens(
         accessToken: tokenModel.accessToken,
         refreshToken: tokenModel.refreshToken,
+        tokenType: tokenModel.tokenType,
         expiresAt: tokenModel.expiresAt,
       );
     } finally {
@@ -115,17 +131,15 @@ class AuthRepository {
   Future<void> loginWithClientCredentials() async {
     final response = await _dio.post(
       _oauthTokenUrl,
-      data: {
-        'client_id': _clientId,
-        'client_secret': _clientSecret,
-        'grant_type': 'client_credentials',
-      },
+      options: Options(headers: _createAuthHeaders()),
+      data: {'grant_type': 'client_credentials'},
     );
 
     final tokenModel = TokenModel.fromJson(response.data);
     await _tokenStorage.saveTokens(
       accessToken: tokenModel.accessToken,
-      refreshToken: tokenModel.refreshToken,
+      refreshToken: null,
+      tokenType: tokenModel.tokenType,
       expiresAt: tokenModel.expiresAt,
     );
   }
@@ -134,14 +148,13 @@ class AuthRepository {
   Future<String?> refreshToken() async {
     final currentRefreshToken = await _tokenStorage.getRefreshToken();
     if (currentRefreshToken == null || currentRefreshToken.isEmpty) {
-      throw Exception('No refresh token available');
+      return null;
     }
 
     final response = await _dio.post(
       _oauthTokenUrl,
+      options: Options(headers: _createAuthHeaders()),
       data: {
-        'client_id': _clientId,
-        'client_secret': _clientSecret,
         'grant_type': 'refresh_token',
         'refresh_token': currentRefreshToken,
       },
@@ -150,15 +163,37 @@ class AuthRepository {
     final tokenModel = TokenModel.fromJson(response.data);
     await _tokenStorage.saveTokens(
       accessToken: tokenModel.accessToken,
-      refreshToken: tokenModel.refreshToken,
+      refreshToken: tokenModel.refreshToken ?? currentRefreshToken,
+      tokenType: tokenModel.tokenType,
       expiresAt: tokenModel.expiresAt,
     );
 
     return tokenModel.accessToken;
   }
 
+  Future<void> revokeToken({String? refreshToken}) async {
+    final tokenToRevoke = refreshToken ?? await _tokenStorage.getRefreshToken();
+    if (tokenToRevoke == null || tokenToRevoke.isEmpty) {
+      await _tokenStorage.clearAll();
+      return;
+    }
+
+    await _dio.post(
+      'https://app.fakturoid.cz/api/v3/oauth/revoke',
+      options: Options(headers: _createAuthHeaders()),
+      data: {'token': tokenToRevoke},
+    );
+
+    await _tokenStorage.clearAll();
+  }
+
   /// Clears all stored tokens and auth state, effectively logging the user out locally.
-  Future<void> logout() async {
+  Future<void> logout({bool revokeRemote = false}) async {
+    if (revokeRemote) {
+      await revokeToken();
+      return;
+    }
+
     await _tokenStorage.clearAll();
   }
 }

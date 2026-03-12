@@ -24,15 +24,21 @@ export 'src/models/enums/inbox_file_enums.dart';
 
 // Models
 export 'src/models/account.dart';
+export 'src/models/document_attachment.dart';
 export 'src/models/user.dart';
 export 'src/models/subject.dart';
+export 'src/models/invoice_eet_record.dart';
+export 'src/models/invoice_paid_advance.dart';
 export 'src/models/invoice.dart';
 export 'src/models/invoice_line.dart';
 export 'src/models/invoice_payment.dart';
+export 'src/models/inventory_retail_price.dart';
 export 'src/models/expense.dart';
 export 'src/models/bank_account.dart';
 export 'src/models/legacy_bank_details.dart';
+export 'src/models/line_inventory.dart';
 export 'src/models/number_format.dart';
+export 'src/models/vat_rate_summary.dart';
 export 'src/models/inventory_item.dart';
 export 'src/models/inventory_move.dart';
 export 'src/models/generator.dart';

@@ -1,6 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'document_attachment.dart';
+import 'invoice_eet_record.dart';
 import 'invoice_line.dart';
+import 'invoice_paid_advance.dart';
 import 'invoice_payment.dart';
+import 'vat_rate_summary.dart';
 import 'enums/invoice_enums.dart';
 
 part 'invoice.freezed.dart';
@@ -32,6 +36,13 @@ abstract class Invoice with _$Invoice {
     @JsonKey(name: 'client_city') String? clientCity,
     @JsonKey(name: 'client_zip') String? clientZip,
     @JsonKey(name: 'client_country') String? clientCountry,
+    @JsonKey(name: 'client_has_delivery_address')
+    bool? clientHasDeliveryAddress,
+    @JsonKey(name: 'client_delivery_name') String? clientDeliveryName,
+    @JsonKey(name: 'client_delivery_street') String? clientDeliveryStreet,
+    @JsonKey(name: 'client_delivery_city') String? clientDeliveryCity,
+    @JsonKey(name: 'client_delivery_zip') String? clientDeliveryZip,
+    @JsonKey(name: 'client_delivery_country') String? clientDeliveryCountry,
     @JsonKey(name: 'client_registration_no') String? clientRegistrationNo,
     @JsonKey(name: 'client_vat_no') String? clientVatNo,
     @JsonKey(name: 'client_local_vat_no') String? clientLocalVatNo,
@@ -65,8 +76,11 @@ abstract class Invoice with _$Invoice {
     String? iban,
     @JsonKey(name: 'swift_bic') String? swiftBic,
     @JsonKey(name: 'iban_visibility') IbanVisibility? ibanVisibility,
+    @JsonKey(name: 'show_already_paid_note_in_pdf')
+    bool? showAlreadyPaidNoteInPdf,
     @JsonKey(name: 'payment_method') PaymentMethod? paymentMethod,
     @JsonKey(name: 'custom_payment_method') String? customPaymentMethod,
+    @JsonKey(name: 'hide_bank_account') bool? hideBankAccount,
     String? currency,
     @JsonKey(name: 'exchange_rate') String? exchangeRate,
     DocumentLanguage? language,
@@ -79,10 +93,15 @@ abstract class Invoice with _$Invoice {
     String? total,
     @JsonKey(name: 'native_subtotal') String? nativeSubtotal,
     @JsonKey(name: 'native_total') String? nativeTotal,
+    @JsonKey(name: 'rounding_adjustment') String? roundingAdjustment,
     @JsonKey(name: 'remaining_amount') String? remainingAmount,
     @JsonKey(name: 'remaining_native_amount') String? remainingNativeAmount,
+    @JsonKey(name: 'eet_records') List<InvoiceEetRecord>? eetRecords,
     List<InvoiceLine>? lines,
+    @JsonKey(name: 'vat_rates_summary') List<VatRateSummary>? vatRatesSummary,
+    @JsonKey(name: 'paid_advances') List<InvoicePaidAdvance>? paidAdvances,
     List<InvoicePayment>? payments,
+    List<DocumentAttachment>? attachments,
     @JsonKey(name: 'html_url') String? htmlUrl,
     @JsonKey(name: 'public_html_url') String? publicHtmlUrl,
     String? url,

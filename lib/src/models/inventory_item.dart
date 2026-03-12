@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'enums/inventory_enums.dart';
+import 'inventory_retail_price.dart';
 
 part 'inventory_item.freezed.dart';
 part 'inventory_item.g.dart';
@@ -28,8 +29,7 @@ abstract class InventoryItem with _$InventoryItem {
     bool? archived,
     @JsonKey(name: 'private_note') String? privateNote,
     @JsonKey(name: 'suggest_for') ItemSuggestFor? suggestFor,
-    // Note: retail_prices are omitted for simplicity unless heavily needed,
-    // but typically they are passed as a List of custom objects.
+    @JsonKey(name: 'retail_prices') List<InventoryRetailPrice>? retailPrices,
     @JsonKey(name: 'created_at') DateTime? createdAt,
     @JsonKey(name: 'updated_at') DateTime? updatedAt,
   }) = _InventoryItem;

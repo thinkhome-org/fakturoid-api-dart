@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'document_attachment.dart';
 import 'invoice_line.dart';
 import 'invoice_payment.dart';
+import 'vat_rate_summary.dart';
 import 'enums/invoice_enums.dart';
 import 'enums/expense_enums.dart';
 
@@ -49,12 +51,16 @@ abstract class Expense with _$Expense {
     @JsonKey(name: 'supply_code') String? supplyCode,
     @JsonKey(name: 'proportional_vat_deduction') int? proportionalVatDeduction,
     @JsonKey(name: 'tax_deductible') bool? taxDeductible,
+    @JsonKey(name: 'round_total') bool? roundTotal,
+    @JsonKey(name: 'rounding_adjustment') String? roundingAdjustment,
     String? subtotal,
     String? total,
     @JsonKey(name: 'native_subtotal') String? nativeSubtotal,
     @JsonKey(name: 'native_total') String? nativeTotal,
     List<InvoiceLine>? lines,
+    @JsonKey(name: 'vat_rates_summary') List<VatRateSummary>? vatRatesSummary,
     List<InvoicePayment>? payments,
+    List<DocumentAttachment>? attachments,
     @JsonKey(name: 'html_url') String? htmlUrl,
     String? url,
     @JsonKey(name: 'subject_url') String? subjectUrl,

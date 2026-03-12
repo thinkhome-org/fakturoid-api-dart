@@ -32,17 +32,22 @@ abstract class Generator with _$Generator {
     @JsonKey(name: 'custom_payment_method') String? customPaymentMethod,
     DocumentLanguage? language,
     @JsonKey(name: 'transferred_tax_liability') bool? transferredTaxLiability,
+    OssMode? oss,
+    @JsonKey(name: 'supply_code') String? supplyCode,
     @JsonKey(name: 'vat_price_mode') VatPriceMode? vatPriceMode,
     @JsonKey(name: 'round_total') bool? roundTotal,
     String? subtotal,
     String? total,
     @JsonKey(name: 'native_subtotal') String? nativeSubtotal,
     @JsonKey(name: 'native_total') String? nativeTotal,
+    @JsonKey(name: 'rounding_adjustment') String? roundingAdjustment,
     @JsonKey(name: 'legacy_bank_details') LegacyBankDetails? legacyBankDetails,
     @JsonKey(name: 'html_url') String? htmlUrl,
     String? url,
     @JsonKey(name: 'subject_url') String? subjectUrl,
     List<InvoiceLine>? lines,
+    @JsonKey(name: 'created_at') DateTime? createdAt,
+    @JsonKey(name: 'updated_at') DateTime? updatedAt,
   }) = _Generator;
 
   factory Generator.fromJson(Map<String, dynamic> json) =>

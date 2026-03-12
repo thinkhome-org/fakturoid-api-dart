@@ -8,7 +8,7 @@ class TokenModel {
   final String accessToken;
 
   @JsonKey(name: 'refresh_token')
-  final String refreshToken;
+  final String? refreshToken;
 
   @JsonKey(name: 'token_type')
   final String tokenType;
@@ -18,7 +18,7 @@ class TokenModel {
 
   TokenModel({
     required this.accessToken,
-    required this.refreshToken,
+    this.refreshToken,
     required this.tokenType,
     required this.expiresIn,
   });

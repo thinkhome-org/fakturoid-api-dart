@@ -76,12 +76,20 @@ class FakturoidClient {
         );
 
     auth = AuthRepository(
-      dio:
-          Dio(), // Samostatná instance pro auth požadavky (zabraňuje zacyklení interceptorů)
+      dio: Dio(
+        BaseOptions(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': userAgent,
+          },
+        ),
+      ),
       tokenStorage: tokenStorage,
       clientId: clientId,
       clientSecret: clientSecret,
       redirectUri: redirectUri,
+      userAgent: userAgent,
     );
 
     _dio.interceptors.addAll([

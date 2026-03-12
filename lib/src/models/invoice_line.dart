@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'line_inventory.dart';
 
 part 'invoice_line.freezed.dart';
 part 'invoice_line.g.dart';
@@ -17,12 +18,17 @@ abstract class InvoiceLine with _$InvoiceLine {
     @JsonKey(name: 'unit_price_without_vat') String? unitPriceWithoutVat,
     @JsonKey(name: 'unit_price_with_vat') String? unitPriceWithVat,
     @JsonKey(name: 'total_price_without_vat') String? totalPriceWithoutVat,
+    @JsonKey(name: 'total_price_with_vat') String? totalPriceWithVat,
     @JsonKey(name: 'total_vat') String? totalVat,
     @JsonKey(name: 'native_total_price_without_vat')
     String? nativeTotalPriceWithoutVat,
+    @JsonKey(name: 'native_total_price_with_vat')
+    String? nativeTotalPriceWithVat,
     @JsonKey(name: 'native_total_vat') String? nativeTotalVat,
     @JsonKey(name: 'inventory_item_id') int? inventoryItemId,
     String? sku,
+    @JsonKey(name: 'inventory', includeToJson: false) LineInventory? inventory,
+    @JsonKey(name: '_destroy') bool? destroy,
   }) = _InvoiceLine;
 
   factory InvoiceLine.fromJson(Map<String, dynamic> json) =>

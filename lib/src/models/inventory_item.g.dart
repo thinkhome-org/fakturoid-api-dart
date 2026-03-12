@@ -32,6 +32,9 @@ _InventoryItem _$InventoryItemFromJson(
   archived: json['archived'] as bool?,
   privateNote: json['private_note'] as String?,
   suggestFor: $enumDecodeNullable(_$ItemSuggestForEnumMap, json['suggest_for']),
+  retailPrices: (json['retail_prices'] as List<dynamic>?)
+      ?.map((e) => InventoryRetailPrice.fromJson(e as Map<String, dynamic>))
+      .toList(),
   createdAt: json['created_at'] == null
       ? null
       : DateTime.parse(json['created_at'] as String),
@@ -63,6 +66,7 @@ Map<String, dynamic> _$InventoryItemToJson(
   'archived': instance.archived,
   'private_note': instance.privateNote,
   'suggest_for': _$ItemSuggestForEnumMap[instance.suggestFor],
+  'retail_prices': instance.retailPrices,
   'created_at': instance.createdAt?.toIso8601String(),
   'updated_at': instance.updatedAt?.toIso8601String(),
 };

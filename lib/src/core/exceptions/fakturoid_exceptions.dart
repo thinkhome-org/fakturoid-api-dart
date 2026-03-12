@@ -19,12 +19,34 @@ class FakturoidAuthException extends FakturoidException {
   FakturoidAuthException(super.message, {super.statusCode});
 }
 
+class FakturoidApiErrorException extends FakturoidException {
+  final String? errorCode;
+
+  FakturoidApiErrorException(super.message, {super.statusCode, this.errorCode});
+}
+
+class FakturoidPaymentRequiredException extends FakturoidApiErrorException {
+  final Object? details;
+
+  FakturoidPaymentRequiredException(super.message, {this.details})
+    : super(statusCode: 402, errorCode: 'payment_required');
+}
+
+class FakturoidTemporarilyUnavailableException
+    extends FakturoidApiErrorException {
+  FakturoidTemporarilyUnavailableException(super.message)
+    : super(statusCode: 503, errorCode: 'temporarily_unavailable');
+}
+
 /// Thrown when API validation fails (422 Unprocessable Entity)
 class FakturoidValidationException extends FakturoidException {
   final Map<String, dynamic> errors;
 
-  FakturoidValidationException(String message, this.errors)
-    : super(message, statusCode: 422);
+  FakturoidValidationException(
+    super.message,
+    this.errors, {
+    super.statusCode = 422,
+  });
 
   @override
   String toString() {

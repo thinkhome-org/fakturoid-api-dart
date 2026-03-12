@@ -49,10 +49,26 @@ class InventoryItemsRepository {
   }
 
   /// Získá archivované položky.
-  Future<PaginatedResponse<InventoryItem>> getArchivedItems({int? page}) async {
+  Future<PaginatedResponse<InventoryItem>> getArchivedItems({
+    String? articleNumber,
+    String? sku,
+    DateTime? since,
+    DateTime? until,
+    DateTime? updatedSince,
+    DateTime? updatedUntil,
+    int? page,
+  }) async {
     final response = await _dio.get(
       '/inventory_items/archived.json',
-      queryParameters: ApiUtils.removeNulls({'page': page}),
+      queryParameters: ApiUtils.removeNulls({
+        'article_number': articleNumber,
+        'sku': sku,
+        'since': since?.toIso8601String(),
+        'until': until?.toIso8601String(),
+        'updated_since': updatedSince?.toIso8601String(),
+        'updated_until': updatedUntil?.toIso8601String(),
+        'page': page,
+      }),
     );
     final List<dynamic> data = response.data;
     final items = data.map((json) => InventoryItem.fromJson(json)).toList();

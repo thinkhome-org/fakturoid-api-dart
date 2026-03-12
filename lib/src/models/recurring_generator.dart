@@ -41,7 +41,7 @@ abstract class RecurringGenerator with _$RecurringGenerator {
     @JsonKey(name: 'transferred_tax_liability') bool? transferredTaxLiability,
     @JsonKey(name: 'vat_price_mode') VatPriceMode? vatPriceMode,
     OssMode? oss,
-    @JsonKey(name: 'supply_code') int? supplyCode,
+    @JsonKey(name: 'supply_code') String? supplyCode,
     @JsonKey(name: 'round_total') bool? roundTotal,
     String? subtotal,
     String? total,

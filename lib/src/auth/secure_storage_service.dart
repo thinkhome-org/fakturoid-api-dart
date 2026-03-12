@@ -15,7 +15,7 @@ class SecureStorageService implements TokenStorage {
   }) : _storage =
            storage ??
            const FlutterSecureStorage(
-             aOptions: AndroidOptions(encryptedSharedPreferences: true),
+             aOptions: AndroidOptions(),
              iOptions: IOSOptions(
                accessibility: KeychainAccessibility.first_unlock,
              ),
@@ -23,6 +23,7 @@ class SecureStorageService implements TokenStorage {
 
   String get _accessTokenKey => 'fakturoid_${namespace}_access_token';
   String get _refreshTokenKey => 'fakturoid_${namespace}_refresh_token';
+  String get _tokenTypeKey => 'fakturoid_${namespace}_token_type';
   String get _expiresAtKey => 'fakturoid_${namespace}_expires_at';
 
   String get _pkceVerifierKey => 'fakturoid_${namespace}_pkce_verifier';
@@ -31,11 +32,17 @@ class SecureStorageService implements TokenStorage {
   @override
   Future<void> saveTokens({
     required String accessToken,
-    required String refreshToken,
+    String? refreshToken,
+    required String tokenType,
     required DateTime expiresAt,
   }) async {
     await _storage.write(key: _accessTokenKey, value: accessToken);
-    await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    if (refreshToken == null) {
+      await _storage.delete(key: _refreshTokenKey);
+    } else {
+      await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    }
+    await _storage.write(key: _tokenTypeKey, value: tokenType);
     await _storage.write(
       key: _expiresAtKey,
       value: expiresAt.toIso8601String(),
@@ -50,6 +57,11 @@ class SecureStorageService implements TokenStorage {
   @override
   Future<String?> getRefreshToken() async {
     return await _storage.read(key: _refreshTokenKey);
+  }
+
+  @override
+  Future<String?> getTokenType() async {
+    return await _storage.read(key: _tokenTypeKey);
   }
 
   @override
@@ -102,6 +114,7 @@ class SecureStorageService implements TokenStorage {
   Future<void> clearAll() async {
     await _storage.delete(key: _accessTokenKey);
     await _storage.delete(key: _refreshTokenKey);
+    await _storage.delete(key: _tokenTypeKey);
     await _storage.delete(key: _expiresAtKey);
     await clearPkceVerifier();
     await clearAuthState();

@@ -51,7 +51,7 @@ _RecurringGenerator _$RecurringGeneratorFromJson(Map<String, dynamic> json) =>
         json['vat_price_mode'],
       ),
       oss: $enumDecodeNullable(_$OssModeEnumMap, json['oss']),
-      supplyCode: (json['supply_code'] as num?)?.toInt(),
+      supplyCode: json['supply_code'] as String?,
       roundTotal: json['round_total'] as bool?,
       subtotal: json['subtotal'] as String?,
       total: json['total'] as String?,

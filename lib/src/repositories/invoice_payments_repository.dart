@@ -23,10 +23,12 @@ class InvoicePaymentsRepository {
 
   /// Vytvoří daňový doklad k platbě.
   /// Použitelné typicky pro platby z proforma faktur.
-  Future<void> createTaxDocument(int invoiceId, int paymentId) async {
-    await _dio.post(
+  Future<InvoicePayment> createTaxDocument(int invoiceId, int paymentId) async {
+    final response = await _dio.post(
       '/invoices/$invoiceId/payments/$paymentId/create_tax_document.json',
     );
+
+    return InvoicePayment.fromJson(response.data);
   }
 
   /// Smaže existující platbu k faktuře.

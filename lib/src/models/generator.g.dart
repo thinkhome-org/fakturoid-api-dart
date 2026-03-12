@@ -35,6 +35,8 @@ _Generator _$GeneratorFromJson(Map<String, dynamic> json) => _Generator(
   customPaymentMethod: json['custom_payment_method'] as String?,
   language: $enumDecodeNullable(_$DocumentLanguageEnumMap, json['language']),
   transferredTaxLiability: json['transferred_tax_liability'] as bool?,
+  oss: $enumDecodeNullable(_$OssModeEnumMap, json['oss']),
+  supplyCode: json['supply_code'] as String?,
   vatPriceMode: $enumDecodeNullable(
     _$VatPriceModeEnumMap,
     json['vat_price_mode'],
@@ -44,6 +46,7 @@ _Generator _$GeneratorFromJson(Map<String, dynamic> json) => _Generator(
   total: json['total'] as String?,
   nativeSubtotal: json['native_subtotal'] as String?,
   nativeTotal: json['native_total'] as String?,
+  roundingAdjustment: json['rounding_adjustment'] as String?,
   legacyBankDetails: json['legacy_bank_details'] == null
       ? null
       : LegacyBankDetails.fromJson(
@@ -55,6 +58,12 @@ _Generator _$GeneratorFromJson(Map<String, dynamic> json) => _Generator(
   lines: (json['lines'] as List<dynamic>?)
       ?.map((e) => InvoiceLine.fromJson(e as Map<String, dynamic>))
       .toList(),
+  createdAt: json['created_at'] == null
+      ? null
+      : DateTime.parse(json['created_at'] as String),
+  updatedAt: json['updated_at'] == null
+      ? null
+      : DateTime.parse(json['updated_at'] as String),
 );
 
 Map<String, dynamic> _$GeneratorToJson(_Generator instance) =>
@@ -81,17 +90,22 @@ Map<String, dynamic> _$GeneratorToJson(_Generator instance) =>
       'custom_payment_method': instance.customPaymentMethod,
       'language': _$DocumentLanguageEnumMap[instance.language],
       'transferred_tax_liability': instance.transferredTaxLiability,
+      'oss': _$OssModeEnumMap[instance.oss],
+      'supply_code': instance.supplyCode,
       'vat_price_mode': _$VatPriceModeEnumMap[instance.vatPriceMode],
       'round_total': instance.roundTotal,
       'subtotal': instance.subtotal,
       'total': instance.total,
       'native_subtotal': instance.nativeSubtotal,
       'native_total': instance.nativeTotal,
+      'rounding_adjustment': instance.roundingAdjustment,
       'legacy_bank_details': instance.legacyBankDetails,
       'html_url': instance.htmlUrl,
       'url': instance.url,
       'subject_url': instance.subjectUrl,
       'lines': instance.lines,
+      'created_at': instance.createdAt?.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
     };
 
 const _$IbanVisibilityEnumMap = {
@@ -120,6 +134,12 @@ const _$DocumentLanguageEnumMap = {
   DocumentLanguage.pl: 'pl',
   DocumentLanguage.hu: 'hu',
   DocumentLanguage.ro: 'ro',
+};
+
+const _$OssModeEnumMap = {
+  OssMode.disabled: 'disabled',
+  OssMode.service: 'service',
+  OssMode.goods: 'goods',
 };
 
 const _$VatPriceModeEnumMap = {

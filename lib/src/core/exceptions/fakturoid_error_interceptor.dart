@@ -2,6 +2,31 @@ import 'package:dio/dio.dart';
 import 'fakturoid_exceptions.dart';
 
 class FakturoidErrorInterceptor extends Interceptor {
+  String _extractMessage(Object? data) {
+    if (data is Map<String, dynamic>) {
+      final errorDescription = data['error_description'];
+      if (errorDescription is String && errorDescription.isNotEmpty) {
+        return errorDescription;
+      }
+
+      final message = data['message'];
+      if (message is String && message.isNotEmpty) {
+        return message;
+      }
+
+      final error = data['error'];
+      if (error is String && error.isNotEmpty) {
+        return error;
+      }
+    }
+
+    if (data is String && data.isNotEmpty) {
+      return data;
+    }
+
+    return 'Unknown API Error';
+  }
+
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final response = err.response;
@@ -12,12 +37,10 @@ class FakturoidErrorInterceptor extends Interceptor {
     final statusCode = response.statusCode;
     final data = response.data;
 
-    String message = 'Unknown API Error';
-    if (data is Map<String, dynamic> && data.containsKey('message')) {
-      message = data['message'];
-    } else if (data is String) {
-      message = data;
-    }
+    final message = _extractMessage(data);
+    final errorCode = data is Map<String, dynamic>
+        ? data['error'] as String?
+        : null;
 
     FakturoidException? fakturoidException;
 
@@ -27,6 +50,12 @@ class FakturoidErrorInterceptor extends Interceptor {
         fakturoidException = FakturoidAuthException(
           message,
           statusCode: statusCode,
+        );
+        break;
+      case 402:
+        fakturoidException = FakturoidPaymentRequiredException(
+          message,
+          details: data,
         );
         break;
       case 404:
@@ -42,11 +71,20 @@ class FakturoidErrorInterceptor extends Interceptor {
       case 429:
         fakturoidException = FakturoidRateLimitException(message);
         break;
+      case 503:
+        fakturoidException = FakturoidTemporarilyUnavailableException(message);
+        break;
       default:
         if (statusCode != null && statusCode >= 500) {
           fakturoidException = FakturoidServerException(
             message,
             statusCode: statusCode,
+          );
+        } else if (statusCode != null && statusCode >= 400) {
+          fakturoidException = FakturoidApiErrorException(
+            message,
+            statusCode: statusCode,
+            errorCode: errorCode,
           );
         }
     }

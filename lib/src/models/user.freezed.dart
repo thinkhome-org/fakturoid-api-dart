@@ -301,7 +301,7 @@ as List<String>?,
 /// @nodoc
 mixin _$User {
 
- int? get id;@JsonKey(name: 'full_name') String? get fullName; String? get email;@JsonKey(name: 'avatar_url') String? get avatarUrl;@JsonKey(name: 'default_account') String? get defaultAccount; String? get permission;@JsonKey(name: 'allowed_scope') List<String>? get allowedScope; List<UserAccount>? get accounts;
+ int? get id;@JsonKey(name: 'full_name') String? get fullName; String? get email;@JsonKey(name: 'avatar_url', readValue: _readAvatarValue) String? get avatarUrl;@JsonKey(name: 'default_account') String? get defaultAccount; String? get permission;@JsonKey(name: 'allowed_scope') List<String>? get allowedScope; List<UserAccount>? get accounts;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -334,7 +334,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- int? id,@JsonKey(name: 'full_name') String? fullName, String? email,@JsonKey(name: 'avatar_url') String? avatarUrl,@JsonKey(name: 'default_account') String? defaultAccount, String? permission,@JsonKey(name: 'allowed_scope') List<String>? allowedScope, List<UserAccount>? accounts
+ int? id,@JsonKey(name: 'full_name') String? fullName, String? email,@JsonKey(name: 'avatar_url', readValue: _readAvatarValue) String? avatarUrl,@JsonKey(name: 'default_account') String? defaultAccount, String? permission,@JsonKey(name: 'allowed_scope') List<String>? allowedScope, List<UserAccount>? accounts
 });
 
 
@@ -446,7 +446,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'avatar_url')  String? avatarUrl, @JsonKey(name: 'default_account')  String? defaultAccount,  String? permission, @JsonKey(name: 'allowed_scope')  List<String>? allowedScope,  List<UserAccount>? accounts)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'avatar_url', readValue: _readAvatarValue)  String? avatarUrl, @JsonKey(name: 'default_account')  String? defaultAccount,  String? permission, @JsonKey(name: 'allowed_scope')  List<String>? allowedScope,  List<UserAccount>? accounts)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
 return $default(_that.id,_that.fullName,_that.email,_that.avatarUrl,_that.defaultAccount,_that.permission,_that.allowedScope,_that.accounts);case _:
@@ -467,7 +467,7 @@ return $default(_that.id,_that.fullName,_that.email,_that.avatarUrl,_that.defaul
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'avatar_url')  String? avatarUrl, @JsonKey(name: 'default_account')  String? defaultAccount,  String? permission, @JsonKey(name: 'allowed_scope')  List<String>? allowedScope,  List<UserAccount>? accounts)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'avatar_url', readValue: _readAvatarValue)  String? avatarUrl, @JsonKey(name: 'default_account')  String? defaultAccount,  String? permission, @JsonKey(name: 'allowed_scope')  List<String>? allowedScope,  List<UserAccount>? accounts)  $default,) {final _that = this;
 switch (_that) {
 case _User():
 return $default(_that.id,_that.fullName,_that.email,_that.avatarUrl,_that.defaultAccount,_that.permission,_that.allowedScope,_that.accounts);case _:
@@ -487,7 +487,7 @@ return $default(_that.id,_that.fullName,_that.email,_that.avatarUrl,_that.defaul
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'avatar_url')  String? avatarUrl, @JsonKey(name: 'default_account')  String? defaultAccount,  String? permission, @JsonKey(name: 'allowed_scope')  List<String>? allowedScope,  List<UserAccount>? accounts)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'avatar_url', readValue: _readAvatarValue)  String? avatarUrl, @JsonKey(name: 'default_account')  String? defaultAccount,  String? permission, @JsonKey(name: 'allowed_scope')  List<String>? allowedScope,  List<UserAccount>? accounts)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
 return $default(_that.id,_that.fullName,_that.email,_that.avatarUrl,_that.defaultAccount,_that.permission,_that.allowedScope,_that.accounts);case _:
@@ -502,13 +502,13 @@ return $default(_that.id,_that.fullName,_that.email,_that.avatarUrl,_that.defaul
 @JsonSerializable()
 
 class _User implements User {
-  const _User({this.id, @JsonKey(name: 'full_name') this.fullName, this.email, @JsonKey(name: 'avatar_url') this.avatarUrl, @JsonKey(name: 'default_account') this.defaultAccount, this.permission, @JsonKey(name: 'allowed_scope') final  List<String>? allowedScope, final  List<UserAccount>? accounts}): _allowedScope = allowedScope,_accounts = accounts;
+  const _User({this.id, @JsonKey(name: 'full_name') this.fullName, this.email, @JsonKey(name: 'avatar_url', readValue: _readAvatarValue) this.avatarUrl, @JsonKey(name: 'default_account') this.defaultAccount, this.permission, @JsonKey(name: 'allowed_scope') final  List<String>? allowedScope, final  List<UserAccount>? accounts}): _allowedScope = allowedScope,_accounts = accounts;
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override final  int? id;
 @override@JsonKey(name: 'full_name') final  String? fullName;
 @override final  String? email;
-@override@JsonKey(name: 'avatar_url') final  String? avatarUrl;
+@override@JsonKey(name: 'avatar_url', readValue: _readAvatarValue) final  String? avatarUrl;
 @override@JsonKey(name: 'default_account') final  String? defaultAccount;
 @override final  String? permission;
  final  List<String>? _allowedScope;
@@ -563,7 +563,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- int? id,@JsonKey(name: 'full_name') String? fullName, String? email,@JsonKey(name: 'avatar_url') String? avatarUrl,@JsonKey(name: 'default_account') String? defaultAccount, String? permission,@JsonKey(name: 'allowed_scope') List<String>? allowedScope, List<UserAccount>? accounts
+ int? id,@JsonKey(name: 'full_name') String? fullName, String? email,@JsonKey(name: 'avatar_url', readValue: _readAvatarValue) String? avatarUrl,@JsonKey(name: 'default_account') String? defaultAccount, String? permission,@JsonKey(name: 'allowed_scope') List<String>? allowedScope, List<UserAccount>? accounts
 });
 
 
