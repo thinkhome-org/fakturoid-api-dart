@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fakturoid_api/fakturoid_api.dart';
 
@@ -20,6 +20,23 @@ bool get _hasLiveEnvironment {
     final value = Platform.environment[key];
     return value != null && value.isNotEmpty;
   });
+}
+
+bool get _shouldPreserveFixtures {
+  final value = Platform.environment['FAKTUROID_PRESERVE_LIVE_FIXTURES'];
+  if (value == null) {
+    return false;
+  }
+
+  switch (value.toLowerCase()) {
+    case '1':
+    case 'true':
+    case 'yes':
+    case 'on':
+      return true;
+    default:
+      return false;
+  }
 }
 
 String _env(String key) {
@@ -43,6 +60,11 @@ String _variableSymbol(String prefix, String value) {
 }
 
 String _testEmail(String suffix) => 'fakturoid-live+$suffix@example.com';
+
+String _testAttachmentPdfDataUri() {
+  return 'data:application/pdf;base64,'
+      'JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9Db3VudCAxIC9LaWRzIFszIDAgUl0gPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAzMDAgMTQ0XSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAwIFIgPj4gPj4gPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA1NSA+PgpzdHJlYW0KQlQKL0YxIDEyIFRmCjcyIDcyIFRkCihPcGVuQ29kZSBhdHRhY2htZW50IHRlc3QpIFRqCkVUCmVuZHN0cmVhbQplbmRvYmoKNSAwIG9iago8PCAvVHlwZSAvRm9udCAvU3VidHlwZSAvVHlwZTEgL0Jhc2VGb250IC9IZWx2ZXRpY2EgPj4KZW5kb2JqCnhyZWYKMCA2CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxNSAwMDAwMCBuIAowMDAwMDAwMDY0IDAwMDAwIG4gCjAwMDAwMDAxMjEgMDAwMDAgbiAKMDAwMDAwMDI0NyAwMDAwMCBuIAowMDAwMDAwMzUxIDAwMDAwIG4gCnRyYWlsZXIKPDwgL1NpemUgNiAvUm9vdCAxIDAgUiA+PgpzdGFydHhyZWYKNDIxCiUlRU9GCg==';
+}
 
 String _testPdfDataUri(String suffix) {
   final bytes = utf8.encode(
@@ -131,6 +153,21 @@ InvoiceLine _line(String name, String suffix) {
   );
 }
 
+DocumentAttachment _attachment(String suffix) {
+  return DocumentAttachment(
+    filename: 'opencode-$suffix.pdf',
+    dataUrl: _testAttachmentPdfDataUri(),
+  );
+}
+
+void _reportPreservedFixture(String type, int? id) {
+  if (!_shouldPreserveFixtures || id == null) {
+    return;
+  }
+
+  debugPrint('Preserved $type: $id');
+}
+
 Invoice _buildInvoice(_LiveContext context, String suffix) {
   return Invoice(
     subjectId: context.baseSubject.id!,
@@ -141,6 +178,7 @@ Invoice _buildInvoice(_LiveContext context, String suffix) {
     privateNote: 'OpenCode invoice $suffix',
     tags: ['opencode-live', suffix],
     lines: [_line('Invoice line', suffix)],
+    attachments: [_attachment('invoice-$suffix')],
   );
 }
 
@@ -151,6 +189,7 @@ Expense _buildExpense(_LiveContext context, String suffix) {
     privateNote: 'OpenCode expense $suffix',
     tags: ['opencode-live', suffix],
     lines: [_line('Expense line', suffix)],
+    attachments: [_attachment('expense-$suffix')],
   );
 }
 
@@ -271,6 +310,7 @@ final class _LiveContext {
         customId: 'opencode-live-base-$runId',
       ),
     );
+    _reportPreservedFixture('base-subject', baseSubject.id);
 
     return _LiveContext(
       client: client,
@@ -286,7 +326,7 @@ final class _LiveContext {
 
   Future<void> dispose() async {
     final subjectId = baseSubject.id;
-    if (subjectId != null) {
+    if (!_shouldPreserveFixtures && subjectId != null) {
       await _ignoreErrors(() => client.subjects.deleteSubject(subjectId));
     }
 
@@ -352,6 +392,7 @@ void main() {
     try {
       subject = await context.createSubject(suffix);
       final subjectId = subject.id!;
+      _reportPreservedFixture('subject', subjectId);
 
       final fetched = await context.client.subjects.getSubject(subjectId);
       final listed = await context.client.subjects.getSubjects(
@@ -373,7 +414,7 @@ void main() {
       expect(updated.privateNote, 'updated-$suffix');
     } finally {
       final subjectId = subject?.id;
-      if (subjectId != null) {
+      if (!_shouldPreserveFixtures && subjectId != null) {
         await _ignoreErrors(
           () => context.client.subjects.deleteSubject(subjectId),
         );
@@ -393,6 +434,7 @@ void main() {
           _buildInvoice(context, suffix),
         );
         final invoiceId = invoice.id!;
+        _reportPreservedFixture('invoice', invoiceId);
 
         final listed = await context.client.invoices.getInvoices(
           subjectId: context.baseSubject.id,
@@ -406,7 +448,10 @@ void main() {
         final fetched = await context.client.invoices.getInvoice(invoiceId);
         final updated = await context.client.invoices.updateInvoice(
           invoiceId,
-          invoice.copyWith(privateNote: 'updated-$suffix'),
+          _buildInvoice(
+            context,
+            suffix,
+          ).copyWith(privateNote: 'updated-$suffix', numberFormatId: null),
         );
 
         await context.client.invoices.fireAction(
@@ -422,6 +467,16 @@ void main() {
           context.client.invoices,
           invoiceId,
         );
+        final invoiceAttachment =
+            fetched.attachments != null && fetched.attachments!.isNotEmpty
+            ? fetched.attachments!.first
+            : null;
+        final invoiceAttachmentBytes = invoiceAttachment?.id == null
+            ? null
+            : await context.client.invoices.downloadAttachment(
+                invoiceId,
+                invoiceAttachment!.id!,
+              );
 
         payment = await context.client.invoicePayments.createPayment(
           invoiceId,
@@ -431,6 +486,7 @@ void main() {
             bankAccountId: context.bankAccountId,
           ),
         );
+        _reportPreservedFixture('invoice-payment', payment.id);
 
         await context.client.invoiceMessages.createMessage(
           invoiceId,
@@ -460,9 +516,13 @@ void main() {
         expect(fetched.id, invoiceId);
         expect(updated.privateNote, 'updated-$suffix');
         expect(pdf, isNotEmpty);
+        expect(invoiceAttachment, isNotNull);
+        expect(invoiceAttachmentBytes, isNotNull);
+        expect(invoiceAttachmentBytes, isNotEmpty);
         expect(payment.id, isNotNull);
         if (taxDocument != null) {
           expect(taxDocument.id, isNotNull);
+          _reportPreservedFixture('tax-document', taxDocument.id);
         }
         if (taxDocumentError != null) {
           expect(
@@ -472,18 +532,22 @@ void main() {
         }
 
         final paymentId = payment.id!;
-        await _ignoreErrors(
-          () => context.client.invoicePayments.deletePayment(
-            invoiceId,
-            paymentId,
-          ),
-        );
+        if (!_shouldPreserveFixtures) {
+          await _ignoreErrors(
+            () => context.client.invoicePayments.deletePayment(
+              invoiceId,
+              paymentId,
+            ),
+          );
+        }
         payment = null;
       } finally {
         final paymentId = payment?.id;
         final invoiceId = invoice?.id;
 
-        if (paymentId != null && invoiceId != null) {
+        if (!_shouldPreserveFixtures &&
+            paymentId != null &&
+            invoiceId != null) {
           await _ignoreErrors(
             () => context.client.invoicePayments.deletePayment(
               invoiceId,
@@ -492,7 +556,7 @@ void main() {
           );
         }
 
-        if (invoiceId != null) {
+        if (!_shouldPreserveFixtures && invoiceId != null) {
           await _ignoreErrors(
             () => context.client.invoices.deleteInvoice(invoiceId),
           );
@@ -512,6 +576,7 @@ void main() {
         _buildExpense(context, suffix),
       );
       final expenseId = expense.id!;
+      _reportPreservedFixture('expense', expenseId);
 
       final listed = await context.client.expenses.getExpenses(
         subjectId: context.baseSubject.id,
@@ -525,7 +590,7 @@ void main() {
       final fetched = await context.client.expenses.getExpense(expenseId);
       final updated = await context.client.expenses.updateExpense(
         expenseId,
-        expense.copyWith(privateNote: 'updated-$suffix'),
+        _buildExpense(context, suffix).copyWith(privateNote: 'updated-$suffix'),
       );
 
       await context.client.expenses.fireAction(
@@ -536,6 +601,16 @@ void main() {
         expenseId,
         ExpenseFireAction.unlock,
       );
+      final expenseAttachment =
+          fetched.attachments != null && fetched.attachments!.isNotEmpty
+          ? fetched.attachments!.first
+          : null;
+      final expenseAttachmentBytes = expenseAttachment?.id == null
+          ? null
+          : await context.client.expenses.downloadAttachment(
+              expenseId,
+              expenseAttachment!.id!,
+            );
 
       payment = await context.client.expensePayments.createPayment(
         expenseId,
@@ -545,23 +620,29 @@ void main() {
           bankAccountId: context.bankAccountId,
         ),
       );
+      _reportPreservedFixture('expense-payment', payment.id);
 
       expect(listed.items.any((item) => item.id == expenseId), isTrue);
       expect(searched.items, isA<List<Expense>>());
       expect(fetched.id, expenseId);
       expect(updated.privateNote, 'updated-$suffix');
+      expect(expenseAttachment, isNotNull);
+      expect(expenseAttachmentBytes, isNotNull);
+      expect(expenseAttachmentBytes, isNotEmpty);
       expect(payment.id, isNotNull);
 
-      await context.client.expensePayments.deletePayment(
-        expenseId,
-        payment.id!,
-      );
+      if (!_shouldPreserveFixtures) {
+        await context.client.expensePayments.deletePayment(
+          expenseId,
+          payment.id!,
+        );
+      }
       payment = null;
     } finally {
       final paymentId = payment?.id;
       final expenseId = expense?.id;
 
-      if (paymentId != null && expenseId != null) {
+      if (!_shouldPreserveFixtures && paymentId != null && expenseId != null) {
         await _ignoreErrors(
           () => context.client.expensePayments.deletePayment(
             expenseId,
@@ -570,7 +651,7 @@ void main() {
         );
       }
 
-      if (expenseId != null) {
+      if (!_shouldPreserveFixtures && expenseId != null) {
         await _ignoreErrors(
           () => context.client.expenses.deleteExpense(expenseId),
         );
@@ -599,6 +680,7 @@ void main() {
         ),
       );
       final itemId = item.id!;
+      _reportPreservedFixture('inventory-item', itemId);
 
       final listed = await context.client.inventoryItems.getInventoryItems(
         sku: item.sku,
@@ -633,6 +715,7 @@ void main() {
           privateNote: 'Move $suffix',
         ),
       );
+      _reportPreservedFixture('inventory-move', move.id);
 
       final globalMoves = await context.client.inventoryMoves
           .getAllInventoryMoves(inventoryItemId: itemId, page: 1);
@@ -662,20 +745,22 @@ void main() {
       expect(fetchedMove.id, moveId);
       expect(updatedMove.quantityChange, '3.0');
 
-      await context.client.inventoryMoves.deleteInventoryMove(itemId, moveId);
+      if (!_shouldPreserveFixtures) {
+        await context.client.inventoryMoves.deleteInventoryMove(itemId, moveId);
+      }
       move = null;
     } finally {
       final moveId = move?.id;
       final itemId = item?.id;
 
-      if (moveId != null && itemId != null) {
+      if (!_shouldPreserveFixtures && moveId != null && itemId != null) {
         await _ignoreErrors(
           () =>
               context.client.inventoryMoves.deleteInventoryMove(itemId, moveId),
         );
       }
 
-      if (itemId != null) {
+      if (!_shouldPreserveFixtures && itemId != null) {
         await _ignoreErrors(
           () => context.client.inventoryItems.deleteItem(itemId),
         );
@@ -695,6 +780,7 @@ void main() {
           _buildGenerator(context, suffix),
         );
         final generatorId = generator.id!;
+        _reportPreservedFixture('generator', generatorId);
         final listed = await context.client.generators.getGenerators(page: 1);
         final fetched = await context.client.generators.getGenerator(
           generatorId,
@@ -709,6 +795,7 @@ void main() {
               _buildRecurringGenerator(context, suffix),
             );
         final recurringId = recurringGenerator.id!;
+        _reportPreservedFixture('recurring-generator', recurringId);
         final recurringList = await context.client.recurringGenerators
             .getRecurringGenerators(page: 1);
         final recurringFetched = await context.client.recurringGenerators
@@ -744,7 +831,7 @@ void main() {
         final recurringId = recurringGenerator?.id;
         final generatorId = generator?.id;
 
-        if (recurringId != null) {
+        if (!_shouldPreserveFixtures && recurringId != null) {
           await _ignoreErrors(
             () => context.client.recurringGenerators.deleteRecurringGenerator(
               recurringId,
@@ -752,7 +839,7 @@ void main() {
           );
         }
 
-        if (generatorId != null) {
+        if (!_shouldPreserveFixtures && generatorId != null) {
           await _ignoreErrors(
             () => context.client.generators.deleteGenerator(generatorId),
           );
@@ -775,6 +862,7 @@ void main() {
         ),
       );
       final webhookId = webhook.id!;
+      _reportPreservedFixture('webhook', webhookId);
 
       final listed = await context.client.webhooks.getWebhooks(page: 1);
       final fetched = await context.client.webhooks.getWebhook(webhookId);
@@ -801,7 +889,7 @@ void main() {
       );
     } finally {
       final webhookId = webhook?.id;
-      if (webhookId != null) {
+      if (!_shouldPreserveFixtures && webhookId != null) {
         await _ignoreErrors(
           () => context.client.webhooks.deleteWebhook(webhookId),
         );
@@ -821,6 +909,7 @@ void main() {
         sendToOcr: false,
       );
       final inboxFileId = inboxFile.id!;
+      _reportPreservedFixture('inbox-file', inboxFileId);
 
       final listed = await context.client.inboxFiles.getInboxFiles(page: 1);
       final downloaded = await context.client.inboxFiles.downloadInboxFile(
@@ -844,7 +933,7 @@ void main() {
       }
     } finally {
       final inboxFileId = inboxFile?.id;
-      if (inboxFileId != null) {
+      if (!_shouldPreserveFixtures && inboxFileId != null) {
         await _ignoreErrors(
           () => context.client.inboxFiles.deleteInboxFile(inboxFileId),
         );
