@@ -65,7 +65,7 @@ void main() async {
   } catch (e) {
     print('Něco se pokazilo: $e');
   }
-}jes
+}
 ```
 
 ## 🛠 Plánovaný vývoj (Roadmap)

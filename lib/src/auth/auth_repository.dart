@@ -172,7 +172,11 @@ class AuthRepository {
   }
 
   Future<void> revokeToken({String? refreshToken}) async {
-    final tokenToRevoke = refreshToken ?? await _tokenStorage.getRefreshToken();
+    final tokenToRevoke =
+        refreshToken ??
+        await _tokenStorage.getRefreshToken() ??
+        await _tokenStorage.getAccessToken();
+
     if (tokenToRevoke == null || tokenToRevoke.isEmpty) {
       await _tokenStorage.clearAll();
       return;

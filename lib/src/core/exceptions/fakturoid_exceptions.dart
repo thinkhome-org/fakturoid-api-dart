@@ -25,6 +25,11 @@ class FakturoidApiErrorException extends FakturoidException {
   FakturoidApiErrorException(super.message, {super.statusCode, this.errorCode});
 }
 
+class FakturoidDocumentNotReadyException extends FakturoidApiErrorException {
+  FakturoidDocumentNotReadyException(super.message)
+    : super(statusCode: 204, errorCode: 'document_not_ready');
+}
+
 class FakturoidPaymentRequiredException extends FakturoidApiErrorException {
   final Object? details;
 

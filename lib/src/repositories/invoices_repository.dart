@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import '../core/exceptions/fakturoid_exceptions.dart';
 import '../core/responses/paginated_response.dart';
 import '../core/utils/api_utils.dart';
 import '../models/invoice.dart';
@@ -121,7 +122,14 @@ class InvoicesRepository {
       '/invoices/$id/download.pdf',
       options: Options(responseType: ResponseType.bytes),
     );
-    return Uint8List.fromList(response.data);
+
+    if (response.statusCode == 204 || response.data == null) {
+      throw FakturoidDocumentNotReadyException(
+        'Invoice PDF is not ready yet. Retry the request later.',
+      );
+    }
+
+    return _responseBytes(response.data);
   }
 
   /// Stáhne konkrétní přílohu z faktury jako pole bajtů.
@@ -130,6 +138,18 @@ class InvoicesRepository {
       '/invoices/$invoiceId/attachments/$attachmentId/download',
       options: Options(responseType: ResponseType.bytes),
     );
-    return Uint8List.fromList(response.data);
+    return _responseBytes(response.data);
   }
+}
+
+Uint8List _responseBytes(Object? data) {
+  if (data is Uint8List) {
+    return data;
+  }
+
+  if (data is List<int>) {
+    return Uint8List.fromList(data);
+  }
+
+  throw StateError('Expected binary response data.');
 }

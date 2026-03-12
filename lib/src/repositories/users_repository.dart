@@ -16,6 +16,7 @@ class UsersRepository {
     final rootDio = Dio(
       _dio.options.copyWith(baseUrl: 'https://app.fakturoid.cz/api/v3'),
     );
+    rootDio.httpClientAdapter = _dio.httpClientAdapter;
     rootDio.interceptors.addAll(_dio.interceptors);
 
     final response = await rootDio.get('/user.json');
