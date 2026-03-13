@@ -6,7 +6,7 @@ import 'package:fakturoid_api/fakturoid_api.dart';
 
 Dio createTestDio(HttpClientAdapter adapter) {
   final dio = Dio(
-    BaseOptions(baseUrl: 'https://app.fakturoid.cz/api/v3/accounts/demo'),
+    BaseOptions(baseUrl: 'https://app.fakturoid.cz/api/v3/accounts/demo/'),
   );
   dio.httpClientAdapter = adapter;
   return dio;

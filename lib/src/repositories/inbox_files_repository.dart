@@ -12,7 +12,7 @@ class InboxFilesRepository {
   /// Vrací seznam Inbox souborů.
   Future<PaginatedResponse<InboxFile>> getInboxFiles({int? page}) async {
     final response = await _dio.get(
-      '/inbox_files.json',
+      'inbox_files.json',
       queryParameters: ApiUtils.removeNulls({'page': page}),
     );
 
@@ -29,7 +29,7 @@ class InboxFilesRepository {
     bool? sendToOcr,
   }) async {
     final response = await _dio.post(
-      '/inbox_files.json',
+      'inbox_files.json',
       data: ApiUtils.removeNulls({
         'attachment': attachmentBase64,
         'filename': filename,
@@ -41,13 +41,13 @@ class InboxFilesRepository {
 
   /// Pošle existující soubor do OCR pro zpracování.
   Future<void> sendToOcr(int id) async {
-    await _dio.post('/inbox_files/$id/send_to_ocr.json');
+    await _dio.post('inbox_files/$id/send_to_ocr.json');
   }
 
   /// Stáhne obsah souboru jako pole bajtů.
   Future<Uint8List> downloadInboxFile(int id) async {
     final response = await _dio.get(
-      '/inbox_files/$id/download',
+      'inbox_files/$id/download',
       options: Options(responseType: ResponseType.bytes),
     );
     return Uint8List.fromList(response.data);
@@ -55,6 +55,6 @@ class InboxFilesRepository {
 
   /// Smaže Inbox soubor.
   Future<void> deleteInboxFile(int id) async {
-    await _dio.delete('/inbox_files/$id.json');
+    await _dio.delete('inbox_files/$id.json');
   }
 }

@@ -8,7 +8,7 @@ class AccountRepository {
 
   /// Získá detail aktuálního účtu (Account).
   Future<Account> getAccount() async {
-    final response = await _dio.get('/account.json');
+    final response = await _dio.get('account.json');
     return Account.fromJson(response.data);
   }
 }

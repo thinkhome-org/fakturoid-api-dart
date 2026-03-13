@@ -23,7 +23,7 @@ class InvoiceMessagesRepository {
     });
 
     await _dio.post(
-      '/invoices/$invoiceId/message.json',
+      'invoices/$invoiceId/message.json',
       data: data.isEmpty ? null : data,
     );
   }

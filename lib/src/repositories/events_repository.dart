@@ -19,7 +19,7 @@ class EventsRepository {
     int? subjectId,
   }) async {
     final response = await _dio.get(
-      '/events.json',
+      'events.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'page': page,
@@ -45,7 +45,7 @@ class EventsRepository {
     int? subjectId,
   }) async {
     final response = await _dio.get(
-      '/events/paid.json',
+      'events/paid.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'page': page,

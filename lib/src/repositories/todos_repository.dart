@@ -14,7 +14,7 @@ class TodosRepository {
   /// * [page] - Číslo stránky (Fakturoid vrací 40 záznamů na stránku).
   Future<PaginatedResponse<Todo>> getTodos({DateTime? since, int? page}) async {
     final response = await _dio.get(
-      '/todos.json',
+      'todos.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'page': page,
@@ -30,7 +30,7 @@ class TodosRepository {
 
   /// Označí úkol jako splněný nebo jej vrátí do stavu ke splnění.
   Future<Todo> toggleCompletion(int id) async {
-    final response = await _dio.post('/todos/$id/toggle_completion.json');
+    final response = await _dio.post('todos/$id/toggle_completion.json');
     return Todo.fromJson(response.data);
   }
 }

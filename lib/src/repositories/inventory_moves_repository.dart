@@ -17,7 +17,7 @@ class InventoryMovesRepository {
     int? page,
   }) async {
     final response = await _dio.get(
-      '/inventory_moves.json',
+      'inventory_moves.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'until': until?.toIso8601String(),
@@ -44,11 +44,11 @@ class InventoryMovesRepository {
     int? page,
   }) async {
     return getAllInventoryMoves(
+      inventoryItemId: inventoryItemId,
       since: since,
       until: until,
       updatedSince: updatedSince,
       updatedUntil: updatedUntil,
-      inventoryItemId: inventoryItemId,
       page: page,
     );
   }
@@ -56,7 +56,7 @@ class InventoryMovesRepository {
   /// Detail jednoho pohybu.
   Future<InventoryMove> getInventoryMove(int inventoryItemId, int id) async {
     final response = await _dio.get(
-      '/inventory_items/$inventoryItemId/inventory_moves/$id.json',
+      'inventory_items/$inventoryItemId/inventory_moves/$id.json',
     );
     return InventoryMove.fromJson(response.data);
   }
@@ -67,7 +67,7 @@ class InventoryMovesRepository {
     InventoryMove move,
   ) async {
     final response = await _dio.post(
-      '/inventory_items/$inventoryItemId/inventory_moves.json',
+      'inventory_items/$inventoryItemId/inventory_moves.json',
       data: ApiUtils.removeNulls(move.toJson()),
     );
     return InventoryMove.fromJson(response.data);
@@ -80,7 +80,7 @@ class InventoryMovesRepository {
     InventoryMove move,
   ) async {
     final response = await _dio.patch(
-      '/inventory_items/$inventoryItemId/inventory_moves/$id.json',
+      'inventory_items/$inventoryItemId/inventory_moves/$id.json',
       data: ApiUtils.removeNulls(move.toJson()),
     );
     return InventoryMove.fromJson(response.data);
@@ -89,7 +89,7 @@ class InventoryMovesRepository {
   /// Smaže skladový pohyb.
   Future<void> deleteInventoryMove(int inventoryItemId, int id) async {
     await _dio.delete(
-      '/inventory_items/$inventoryItemId/inventory_moves/$id.json',
+      'inventory_items/$inventoryItemId/inventory_moves/$id.json',
     );
   }
 }

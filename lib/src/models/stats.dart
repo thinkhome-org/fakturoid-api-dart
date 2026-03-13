@@ -5,11 +5,8 @@ part 'stats.g.dart';
 
 @freezed
 abstract class StatsPeriod with _$StatsPeriod {
-  const factory StatsPeriod({
-    String? paid,
-    String? unpaid,
-    String? overdue,
-  }) = _StatsPeriod;
+  const factory StatsPeriod({String? paid, String? unpaid, String? overdue}) =
+      _StatsPeriod;
 
   factory StatsPeriod.fromJson(Map<String, dynamic> json) =>
       _$StatsPeriodFromJson(json);
@@ -29,10 +26,8 @@ abstract class StatsTotals with _$StatsTotals {
 
 @freezed
 abstract class StatsGraphPoint with _$StatsGraphPoint {
-  const factory StatsGraphPoint({
-    String? date,
-    String? amount,
-  }) = _StatsGraphPoint;
+  const factory StatsGraphPoint({String? date, String? amount}) =
+      _StatsGraphPoint;
 
   factory StatsGraphPoint.fromJson(Map<String, dynamic> json) =>
       _$StatsGraphPointFromJson(json);
@@ -40,9 +35,7 @@ abstract class StatsGraphPoint with _$StatsGraphPoint {
 
 @freezed
 abstract class StatsGraphs with _$StatsGraphs {
-  const factory StatsGraphs({
-    List<StatsGraphPoint>? revenue,
-  }) = _StatsGraphs;
+  const factory StatsGraphs({List<StatsGraphPoint>? revenue}) = _StatsGraphs;
 
   factory StatsGraphs.fromJson(Map<String, dynamic> json) =>
       _$StatsGraphsFromJson(json);
@@ -50,10 +43,7 @@ abstract class StatsGraphs with _$StatsGraphs {
 
 @freezed
 abstract class Stats with _$Stats {
-  const factory Stats({
-    StatsTotals? totals,
-    StatsGraphs? graphs,
-  }) = _Stats;
+  const factory Stats({StatsTotals? totals, StatsGraphs? graphs}) = _Stats;
 
   factory Stats.fromJson(Map<String, dynamic> json) => _$StatsFromJson(json);
 }

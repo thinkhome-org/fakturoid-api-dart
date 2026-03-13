@@ -95,7 +95,7 @@ void main() {
 
         expect(
           adapter.lastRequestOptions?.uri.toString(),
-          contains('/oauth/token'),
+          contains('oauth/token'),
         );
         expect(adapter.lastRequestOptions?.data, {
           'redirect_uri': 'https://example.com/callback',
@@ -138,7 +138,7 @@ void main() {
 
       expect(
         adapter.lastRequestOptions?.uri.toString(),
-        contains('/oauth/token'),
+        contains('oauth/token'),
       );
       expect(adapter.lastRequestOptions?.data, {
         'grant_type': 'refresh_token',
@@ -149,7 +149,9 @@ void main() {
     });
 
     test('revoke token coverage', () async {
-      final adapter = RecordingAdapter(onFetch: (options) => emptyResponseBody(200));
+      final adapter = RecordingAdapter(
+        onFetch: (options) => emptyResponseBody(200),
+      );
       final tokenStorage = InMemoryTokenStorage();
       await tokenStorage.saveTokens(
         accessToken: 'access',
@@ -167,7 +169,10 @@ void main() {
       );
 
       await repository.logout(revokeRemote: true);
-      expect(adapter.lastRequestOptions?.uri.toString(), contains('/oauth/revoke'));
+      expect(
+        adapter.lastRequestOptions?.uri.toString(),
+        contains('oauth/revoke'),
+      );
       expect(adapter.lastRequestOptions?.data, {'token': 'refresh'});
       expect(await tokenStorage.getAccessToken(), isNull);
     });
@@ -193,7 +198,7 @@ void main() {
 
       expect(
         adapter.lastRequestOptions?.uri.toString(),
-        contains('/oauth/revoke'),
+        contains('oauth/revoke'),
       );
       expect(adapter.lastRequestOptions?.data, {'token': 'access-token'});
       expect(await tokenStorage.getAccessToken(), isNull);
@@ -207,7 +212,7 @@ void main() {
 
       await repository.getAccount();
 
-      expect(adapter.lastRequestOptions?.path, '/account.json');
+      expect(adapter.lastRequestOptions?.path, 'account.json');
     });
 
     test('switchAccount updates accountDio baseUrl', () async {
@@ -226,7 +231,7 @@ void main() {
     test('users repository handles root and account endpoints', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.uri.path.endsWith('/user.json')) {
+          if (options.uri.path.endsWith('user.json')) {
             return jsonResponseBody({
               'email': 'billing@example.com',
               'accounts': [
@@ -240,15 +245,20 @@ void main() {
         },
       );
       final accountDio = createTestDio(adapter);
-      final rootDio = Dio(accountDio.options.copyWith(baseUrl: 'https://app.fakturoid.cz/api/v3'));
+      final rootDio = Dio(
+        accountDio.options.copyWith(baseUrl: 'https://app.fakturoid.cz/api/v3/'),
+      );
       rootDio.httpClientAdapter = adapter;
 
-      final repository = UsersRepository(accountDio: accountDio, rootDio: rootDio);
+      final repository = UsersRepository(
+        accountDio: accountDio,
+        rootDio: rootDio,
+      );
 
       await repository.getCurrentUser();
       expect(
         adapter.lastRequestOptions?.uri.toString(),
-        endsWith('/user.json'),
+        endsWith('user.json'),
       );
       expect(
         adapter.lastRequestOptions?.uri.toString(),
@@ -256,7 +266,7 @@ void main() {
       );
 
       await repository.getUsers(page: 2);
-      expect(adapter.lastRequestOptions?.path, '/users.json');
+      expect(adapter.lastRequestOptions?.path, 'users.json');
       expect(adapter.lastRequestOptions?.queryParameters, {'page': 2});
     });
 
@@ -270,7 +280,7 @@ void main() {
 
       await repository.getBankAccounts();
 
-      expect(adapter.lastRequestOptions?.path, '/bank_accounts.json');
+      expect(adapter.lastRequestOptions?.path, 'bank_accounts.json');
     });
 
     test('number formats use invoices endpoint', () async {
@@ -283,14 +293,14 @@ void main() {
 
       await repository.getNumberFormats();
 
-      expect(adapter.lastRequestOptions?.path, '/number_formats/invoices.json');
+      expect(adapter.lastRequestOptions?.path, 'number_formats/invoices.json');
     });
 
     test('subjects cover list, search and CRUD endpoints', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path.contains('/search') ||
-              (options.method == 'GET' && options.path == '/subjects.json')) {
+          if (options.path.contains('subjects/search.json') ||
+              (options.method == 'GET' && options.path == 'subjects.json')) {
             return jsonResponseBody([]);
           }
 
@@ -309,7 +319,7 @@ void main() {
         customId: 'customer-1',
         page: 2,
       );
-      expect(adapter.lastRequestOptions?.path, '/subjects.json');
+      expect(adapter.lastRequestOptions?.path, 'subjects.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'since': since.toIso8601String(),
         'page': 2,
@@ -317,25 +327,25 @@ void main() {
       });
 
       await repository.searchSubjects(query: 'acme', page: 3);
-      expect(adapter.lastRequestOptions?.path, '/subjects/search.json');
+      expect(adapter.lastRequestOptions?.path, 'subjects/search.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'query': 'acme',
         'page': 3,
       });
 
       await repository.getSubject(42);
-      expect(adapter.lastRequestOptions?.path, '/subjects/42.json');
+      expect(adapter.lastRequestOptions?.path, 'subjects/42.json');
 
       await repository.createSubject(const Subject(name: 'Acme'));
-      expect(adapter.lastRequestOptions?.path, '/subjects.json');
+      expect(adapter.lastRequestOptions?.path, 'subjects.json');
       expect(adapter.lastRequestOptions?.data, {'name': 'Acme'});
 
       await repository.updateSubject(42, const Subject(name: 'Acme 2'));
-      expect(adapter.lastRequestOptions?.path, '/subjects/42.json');
+      expect(adapter.lastRequestOptions?.path, 'subjects/42.json');
       expect(adapter.lastRequestOptions?.data, {'name': 'Acme 2'});
 
       await repository.deleteSubject(42);
-      expect(adapter.lastRequestOptions?.path, '/subjects/42.json');
+      expect(adapter.lastRequestOptions?.path, 'subjects/42.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
     });
 
@@ -343,19 +353,19 @@ void main() {
       final adapter = RecordingAdapter(
         onFetch: (options) {
           if (options.path.endsWith('.pdf') ||
-              options.path.endsWith('/download')) {
+              options.path.endsWith('download')) {
             return bytesResponseBody([1, 2, 3]);
           }
-          if (options.method == 'POST' && options.path.endsWith('/fire.json')) {
+          if (options.method == 'POST' && options.path.endsWith('fire.json')) {
             return emptyResponseBody();
           }
           if (options.method == 'DELETE') {
             return emptyResponseBody();
           }
-          if (options.path.contains('/search')) {
+          if (options.path.contains('search')) {
             return jsonResponseBody([]);
           }
-          if (options.path == '/invoices.json' && options.method == 'GET') {
+          if (options.path == 'invoices.json' && options.method == 'GET') {
             return jsonResponseBody([]);
           }
           return jsonResponseBody({'subject_id': 1});
@@ -370,7 +380,7 @@ void main() {
         documentType: InvoiceListDocumentType.regular,
         page: 2,
       );
-      expect(adapter.lastRequestOptions?.path, '/invoices.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'updated_until': updatedUntil.toIso8601String(),
         'page': 2,
@@ -383,7 +393,7 @@ void main() {
         page: 2,
         tags: ['vip', '2026'],
       );
-      expect(adapter.lastRequestOptions?.path, '/invoices/search.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/search.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'query': 'acme',
         'page': 2,
@@ -391,40 +401,38 @@ void main() {
       });
 
       await repository.getInvoice(10);
-      expect(adapter.lastRequestOptions?.path, '/invoices/10.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/10.json');
 
       await repository.createInvoice(
         const Invoice(subjectId: 1),
         relatedId: 99,
       );
-      expect(adapter.lastRequestOptions?.path, '/invoices.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices.json');
       expect(adapter.lastRequestOptions?.queryParameters, {'related_id': 99});
       expect(adapter.lastRequestOptions?.data, {'subject_id': 1});
 
       await repository.updateInvoice(10, const Invoice(subjectId: 2));
-      expect(adapter.lastRequestOptions?.path, '/invoices/10.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/10.json');
       expect(adapter.lastRequestOptions?.data, {'subject_id': 2});
 
       await repository.deleteInvoice(10);
-      expect(adapter.lastRequestOptions?.path, '/invoices/10.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/10.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
 
       await repository.fireAction(10, InvoiceFireAction.markAsSent);
-      expect(adapter.lastRequestOptions?.path, '/invoices/10/fire.json');
-      expect(adapter.lastRequestOptions?.data, {
-        'event': 'mark_as_sent',
-      });
+      expect(adapter.lastRequestOptions?.path, 'invoices/10/fire.json');
+      expect(adapter.lastRequestOptions?.data, {'event': 'mark_as_sent'});
 
       final pdf = await repository.downloadInvoicePdf(10);
       expect(pdf, Uint8List.fromList([1, 2, 3]));
-      expect(adapter.lastRequestOptions?.path, '/invoices/10/download.pdf');
+      expect(adapter.lastRequestOptions?.path, 'invoices/10/download.pdf');
       expect(adapter.lastRequestOptions?.responseType, ResponseType.bytes);
 
       final attachment = await repository.downloadAttachment(10, 99);
       expect(attachment, Uint8List.fromList([1, 2, 3]));
       expect(
         adapter.lastRequestOptions?.path,
-        '/invoices/10/attachments/99/download',
+        'invoices/10/attachments/99/download',
       );
       expect(adapter.lastRequestOptions?.responseType, ResponseType.bytes);
     });
@@ -441,17 +449,17 @@ void main() {
       final repository = InvoicePaymentsRepository(createTestDio(adapter));
 
       await repository.createPayment(10, const InvoicePayment(amount: '1000'));
-      expect(adapter.lastRequestOptions?.path, '/invoices/10/payments.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/10/payments.json');
       expect(adapter.lastRequestOptions?.data, {'amount': '1000'});
 
       await repository.createTaxDocument(10, 12);
       expect(
         adapter.lastRequestOptions?.path,
-        '/invoices/10/payments/12/create_tax_document.json',
+        'invoices/10/payments/12/create_tax_document.json',
       );
 
       await repository.deletePayment(10, 12);
-      expect(adapter.lastRequestOptions?.path, '/invoices/10/payments/12.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/10/payments/12.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
     });
 
@@ -468,7 +476,7 @@ void main() {
         deliverNow: true,
       );
 
-      expect(adapter.lastRequestOptions?.path, '/invoices/42/message.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/42/message.json');
       expect(adapter.lastRequestOptions?.data, {
         'email': 'billing@example.com',
         'email_copy': 'copy@example.com',
@@ -481,19 +489,19 @@ void main() {
     test('expenses cover index, search, CRUD, actions and downloads', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path.endsWith('/download')) {
+          if (options.path.endsWith('download')) {
             return bytesResponseBody([9, 8, 7]);
           }
-          if (options.method == 'POST' && options.path.endsWith('/fire.json')) {
+          if (options.method == 'POST' && options.path.endsWith('fire.json')) {
             return emptyResponseBody();
           }
           if (options.method == 'DELETE') {
             return emptyResponseBody();
           }
-          if (options.path.contains('/search')) {
+          if (options.path.contains('search')) {
             return jsonResponseBody([]);
           }
-          if (options.path == '/expenses.json' && options.method == 'GET') {
+          if (options.path == 'expenses.json' && options.method == 'GET') {
             return jsonResponseBody([]);
           }
           return jsonResponseBody({'subject_id': 1});
@@ -508,7 +516,7 @@ void main() {
         documentType: ExpenseDocumentType.bill,
         page: 2,
       );
-      expect(adapter.lastRequestOptions?.path, '/expenses.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'since': since.toIso8601String(),
         'page': 2,
@@ -517,36 +525,36 @@ void main() {
       });
 
       await repository.searchExpenses(query: 'supplier', tags: ['hardware']);
-      expect(adapter.lastRequestOptions?.path, '/expenses/search.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses/search.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'query': 'supplier',
         'tags[]': ['hardware'],
       });
 
       await repository.getExpense(11);
-      expect(adapter.lastRequestOptions?.path, '/expenses/11.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses/11.json');
 
       await repository.createExpense(const Expense(subjectId: 1));
-      expect(adapter.lastRequestOptions?.path, '/expenses.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses.json');
       expect(adapter.lastRequestOptions?.data, {'subject_id': 1});
 
       await repository.updateExpense(11, const Expense(subjectId: 2));
-      expect(adapter.lastRequestOptions?.path, '/expenses/11.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses/11.json');
       expect(adapter.lastRequestOptions?.data, {'subject_id': 2});
 
       await repository.deleteExpense(11);
-      expect(adapter.lastRequestOptions?.path, '/expenses/11.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses/11.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
 
       await repository.fireAction(11, ExpenseFireAction.lock);
-      expect(adapter.lastRequestOptions?.path, '/expenses/11/fire.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses/11/fire.json');
       expect(adapter.lastRequestOptions?.data, {'event': 'lock'});
 
       final attachment = await repository.downloadAttachment(11, 5);
       expect(attachment, Uint8List.fromList([9, 8, 7]));
       expect(
         adapter.lastRequestOptions?.path,
-        '/expenses/11/attachments/5/download',
+        'expenses/11/attachments/5/download',
       );
       expect(adapter.lastRequestOptions?.responseType, ResponseType.bytes);
     });
@@ -563,25 +571,25 @@ void main() {
       final repository = ExpensePaymentsRepository(createTestDio(adapter));
 
       await repository.createPayment(5, const InvoicePayment(amount: '250'));
-      expect(adapter.lastRequestOptions?.path, '/expenses/5/payments.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses/5/payments.json');
       expect(adapter.lastRequestOptions?.data, {'amount': '250'});
 
       await repository.deletePayment(5, 1);
-      expect(adapter.lastRequestOptions?.path, '/expenses/5/payments/1.json');
+      expect(adapter.lastRequestOptions?.path, 'expenses/5/payments/1.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
     });
 
     test('inbox files cover list, create, OCR, download and delete', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path.endsWith('/download')) {
+          if (options.path.endsWith('download')) {
             return bytesResponseBody([4, 5, 6]);
           }
           if (options.method == 'DELETE' ||
-              options.path.endsWith('/send_to_ocr.json')) {
+              options.path.endsWith('send_to_ocr.json')) {
             return emptyResponseBody();
           }
-          if (options.path == '/inbox_files.json' && options.method == 'GET') {
+          if (options.path == 'inbox_files.json' && options.method == 'GET') {
             return jsonResponseBody([]);
           }
           return jsonResponseBody({'id': 1, 'filename': 'receipt.pdf'}, 201);
@@ -590,7 +598,7 @@ void main() {
       final repository = InboxFilesRepository(createTestDio(adapter));
 
       await repository.getInboxFiles(page: 3);
-      expect(adapter.lastRequestOptions?.path, '/inbox_files.json');
+      expect(adapter.lastRequestOptions?.path, 'inbox_files.json');
       expect(adapter.lastRequestOptions?.queryParameters, {'page': 3});
 
       await repository.createInboxFile(
@@ -598,7 +606,7 @@ void main() {
         filename: 'receipt.pdf',
         sendToOcr: true,
       );
-      expect(adapter.lastRequestOptions?.path, '/inbox_files.json');
+      expect(adapter.lastRequestOptions?.path, 'inbox_files.json');
       expect(adapter.lastRequestOptions?.data, {
         'attachment': 'data:application/pdf;base64,ZmFrZQ==',
         'filename': 'receipt.pdf',
@@ -608,16 +616,16 @@ void main() {
       await repository.sendToOcr(1);
       expect(
         adapter.lastRequestOptions?.path,
-        '/inbox_files/1/send_to_ocr.json',
+        'inbox_files/1/send_to_ocr.json',
       );
 
       final bytes = await repository.downloadInboxFile(1);
       expect(bytes, Uint8List.fromList([4, 5, 6]));
-      expect(adapter.lastRequestOptions?.path, '/inbox_files/1/download');
+      expect(adapter.lastRequestOptions?.path, 'inbox_files/1/download');
       expect(adapter.lastRequestOptions?.responseType, ResponseType.bytes);
 
       await repository.deleteInboxFile(1);
-      expect(adapter.lastRequestOptions?.path, '/inbox_files/1.json');
+      expect(adapter.lastRequestOptions?.path, 'inbox_files/1.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
     });
 
@@ -627,11 +635,11 @@ void main() {
         final adapter = RecordingAdapter(
           onFetch: (options) {
             if (options.method == 'POST' &&
-                options.path.endsWith('/archive.json')) {
+                options.path.endsWith('archive.json')) {
               return jsonResponseBody({'name': 'Disk'});
             }
             if (options.method == 'POST' &&
-                options.path.endsWith('/unarchive.json')) {
+                options.path.endsWith('unarchive.json')) {
               return jsonResponseBody({'name': 'Disk'});
             }
             if (options.method == 'DELETE') {
@@ -639,7 +647,7 @@ void main() {
             }
             if (options.method == 'GET' &&
                 options.path.endsWith('.json') &&
-                options.path != '/inventory_items/1.json') {
+                options.path != 'inventory_items/1.json') {
               return jsonResponseBody([]);
             }
             return jsonResponseBody({'name': 'Disk'});
@@ -649,7 +657,7 @@ void main() {
         final updatedUntil = DateTime.utc(2026, 2, 10);
 
         await repository.getInventoryItems(articleNumber: 'EAN-1', page: 2);
-        expect(adapter.lastRequestOptions?.path, '/inventory_items.json');
+        expect(adapter.lastRequestOptions?.path, 'inventory_items.json');
         expect(adapter.lastRequestOptions?.queryParameters, {
           'article_number': 'EAN-1',
           'page': 2,
@@ -661,7 +669,7 @@ void main() {
         );
         expect(
           adapter.lastRequestOptions?.path,
-          '/inventory_items/archived.json',
+          'inventory_items/archived.json',
         );
         expect(adapter.lastRequestOptions?.queryParameters, {
           'article_number': 'EAN-1',
@@ -671,14 +679,14 @@ void main() {
         await repository.getLowQuantityItems(page: 3);
         expect(
           adapter.lastRequestOptions?.path,
-          '/inventory_items/low_quantity.json',
+          'inventory_items/low_quantity.json',
         );
         expect(adapter.lastRequestOptions?.queryParameters, {'page': 3});
 
         await repository.searchItems(query: 'disk', page: 4);
         expect(
           adapter.lastRequestOptions?.path,
-          '/inventory_items/search.json',
+          'inventory_items/search.json',
         );
         expect(adapter.lastRequestOptions?.queryParameters, {
           'query': 'disk',
@@ -686,30 +694,30 @@ void main() {
         });
 
         await repository.getItem(1);
-        expect(adapter.lastRequestOptions?.path, '/inventory_items/1.json');
+        expect(adapter.lastRequestOptions?.path, 'inventory_items/1.json');
 
         await repository.createItem(const InventoryItem(name: 'Disk'));
-        expect(adapter.lastRequestOptions?.path, '/inventory_items.json');
+        expect(adapter.lastRequestOptions?.path, 'inventory_items.json');
         expect(adapter.lastRequestOptions?.data, {'name': 'Disk'});
 
         await repository.updateItem(1, const InventoryItem(name: 'Disk Pro'));
-        expect(adapter.lastRequestOptions?.path, '/inventory_items/1.json');
+        expect(adapter.lastRequestOptions?.path, 'inventory_items/1.json');
         expect(adapter.lastRequestOptions?.data, {'name': 'Disk Pro'});
 
         await repository.deleteItem(1);
-        expect(adapter.lastRequestOptions?.path, '/inventory_items/1.json');
+        expect(adapter.lastRequestOptions?.path, 'inventory_items/1.json');
         expect(adapter.lastRequestOptions?.method, 'DELETE');
 
         await repository.archiveItem(1);
         expect(
           adapter.lastRequestOptions?.path,
-          '/inventory_items/1/archive.json',
+          'inventory_items/1/archive.json',
         );
 
         await repository.unarchiveItem(1);
         expect(
           adapter.lastRequestOptions?.path,
-          '/inventory_items/1/unarchive.json',
+          'inventory_items/1/unarchive.json',
         );
       },
     );
@@ -721,8 +729,8 @@ void main() {
             return emptyResponseBody();
           }
           if (options.method == 'GET' &&
-              (options.path == '/inventory_moves.json' ||
-                  options.path.endsWith('/inventory_moves.json'))) {
+              (options.path == 'inventory_moves.json' ||
+                  options.path.endsWith('inventory_moves.json'))) {
             return jsonResponseBody([]);
           }
           return jsonResponseBody({
@@ -747,7 +755,7 @@ void main() {
         updatedSince: updatedSince,
         page: 2,
       );
-      expect(adapter.lastRequestOptions?.path, '/inventory_moves.json');
+      expect(adapter.lastRequestOptions?.path, 'inventory_moves.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'updated_since': updatedSince.toIso8601String(),
         'inventory_item_id': 15,
@@ -755,21 +763,25 @@ void main() {
       });
 
       await repository.getInventoryMoves(15, updatedSince: updatedSince);
-      expect(adapter.lastRequestOptions?.path, '/inventory_items/15/inventory_moves.json');
+      expect(
+        adapter.lastRequestOptions?.path,
+        'inventory_moves.json',
+      );
       expect(adapter.lastRequestOptions?.queryParameters, {
         'updated_since': updatedSince.toIso8601String(),
+        'inventory_item_id': 15,
       });
 
       await repository.getInventoryMove(15, 1);
       expect(
         adapter.lastRequestOptions?.path,
-        '/inventory_items/15/inventory_moves/1.json',
+        'inventory_items/15/inventory_moves/1.json',
       );
 
       await repository.createInventoryMove(15, move);
       expect(
         adapter.lastRequestOptions?.path,
-        '/inventory_items/15/inventory_moves.json',
+        'inventory_items/15/inventory_moves.json',
       );
       expect(adapter.lastRequestOptions?.data, {
         'inventory_item_id': 15,
@@ -781,7 +793,7 @@ void main() {
       await repository.updateInventoryMove(15, 1, move);
       expect(
         adapter.lastRequestOptions?.path,
-        '/inventory_items/15/inventory_moves/1.json',
+        'inventory_items/15/inventory_moves/1.json',
       );
       expect(adapter.lastRequestOptions?.data, {
         'inventory_item_id': 15,
@@ -793,7 +805,7 @@ void main() {
       await repository.deleteInventoryMove(15, 1);
       expect(
         adapter.lastRequestOptions?.path,
-        '/inventory_items/15/inventory_moves/1.json',
+        'inventory_items/15/inventory_moves/1.json',
       );
       expect(adapter.lastRequestOptions?.method, 'DELETE');
     });
@@ -801,7 +813,7 @@ void main() {
     test('generators cover list and CRUD endpoints', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.method == 'GET' && options.path == '/generators.json') {
+          if (options.method == 'GET' && options.path == 'generators.json') {
             return jsonResponseBody([]);
           }
           if (options.method == 'DELETE') {
@@ -815,7 +827,7 @@ void main() {
       final generator = const Generator(name: 'Template', subjectId: 1);
 
       await repository.getGenerators(since: since, subjectId: 7, page: 2);
-      expect(adapter.lastRequestOptions?.path, '/generators.json');
+      expect(adapter.lastRequestOptions?.path, 'generators.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'since': since.toIso8601String(),
         'page': 2,
@@ -823,10 +835,10 @@ void main() {
       });
 
       await repository.getGenerator(1);
-      expect(adapter.lastRequestOptions?.path, '/generators/1.json');
+      expect(adapter.lastRequestOptions?.path, 'generators/1.json');
 
       await repository.createGenerator(generator);
-      expect(adapter.lastRequestOptions?.path, '/generators.json');
+      expect(adapter.lastRequestOptions?.path, 'generators.json');
       expect(adapter.lastRequestOptions?.data, {
         'name': 'Template',
         'subject_id': 1,
@@ -836,14 +848,14 @@ void main() {
         1,
         generator.copyWith(name: 'Template 2'),
       );
-      expect(adapter.lastRequestOptions?.path, '/generators/1.json');
+      expect(adapter.lastRequestOptions?.path, 'generators/1.json');
       expect(adapter.lastRequestOptions?.data, {
         'name': 'Template 2',
         'subject_id': 1,
       });
 
       await repository.deleteGenerator(1);
-      expect(adapter.lastRequestOptions?.path, '/generators/1.json');
+      expect(adapter.lastRequestOptions?.path, 'generators/1.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
     });
 
@@ -851,7 +863,7 @@ void main() {
       final adapter = RecordingAdapter(
         onFetch: (options) {
           if (options.method == 'GET' &&
-              options.path == '/recurring_generators.json') {
+              options.path == 'recurring_generators.json') {
             return jsonResponseBody([]);
           }
           if (options.method == 'DELETE') {
@@ -867,17 +879,17 @@ void main() {
       );
 
       await repository.getRecurringGenerators(subjectId: 3, page: 2);
-      expect(adapter.lastRequestOptions?.path, '/recurring_generators.json');
+      expect(adapter.lastRequestOptions?.path, 'recurring_generators.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'page': 2,
         'subject_id': 3,
       });
 
       await repository.getRecurringGenerator(1);
-      expect(adapter.lastRequestOptions?.path, '/recurring_generators/1.json');
+      expect(adapter.lastRequestOptions?.path, 'recurring_generators/1.json');
 
       await repository.createRecurringGenerator(generator);
-      expect(adapter.lastRequestOptions?.path, '/recurring_generators.json');
+      expect(adapter.lastRequestOptions?.path, 'recurring_generators.json');
       expect(adapter.lastRequestOptions?.data, {
         'name': 'Recurring',
         'subject_id': 1,
@@ -887,26 +899,26 @@ void main() {
         1,
         generator.copyWith(name: 'Recurring 2'),
       );
-      expect(adapter.lastRequestOptions?.path, '/recurring_generators/1.json');
+      expect(adapter.lastRequestOptions?.path, 'recurring_generators/1.json');
       expect(adapter.lastRequestOptions?.data, {
         'name': 'Recurring 2',
         'subject_id': 1,
       });
 
       await repository.deleteRecurringGenerator(1);
-      expect(adapter.lastRequestOptions?.path, '/recurring_generators/1.json');
+      expect(adapter.lastRequestOptions?.path, 'recurring_generators/1.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
 
       await repository.pause(1);
       expect(
         adapter.lastRequestOptions?.path,
-        '/recurring_generators/1/pause.json',
+        'recurring_generators/1/pause.json',
       );
 
       await repository.activate(1, nextOccurrenceOn: '2026-04-01');
       expect(
         adapter.lastRequestOptions?.path,
-        '/recurring_generators/1/activate.json',
+        'recurring_generators/1/activate.json',
       );
       expect(adapter.lastRequestOptions?.data, {
         'next_occurrence_on': '2026-04-01',
@@ -916,7 +928,7 @@ void main() {
     test('todos cover list and toggle completion', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path == '/todos.json') {
+          if (options.path == 'todos.json') {
             return jsonResponseBody([]);
           }
           return jsonResponseBody({'id': 1, 'name': 'Follow up'});
@@ -926,7 +938,7 @@ void main() {
       final since = DateTime.utc(2026, 1, 1);
 
       await repository.getTodos(since: since, page: 2);
-      expect(adapter.lastRequestOptions?.path, '/todos.json');
+      expect(adapter.lastRequestOptions?.path, 'todos.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'since': since.toIso8601String(),
         'page': 2,
@@ -935,7 +947,7 @@ void main() {
       await repository.toggleCompletion(1);
       expect(
         adapter.lastRequestOptions?.path,
-        '/todos/1/toggle_completion.json',
+        'todos/1/toggle_completion.json',
       );
     });
 
@@ -945,7 +957,7 @@ void main() {
       final since = DateTime.utc(2026, 1, 1);
 
       await repository.getEvents(since: since, subjectId: 3, page: 2);
-      expect(adapter.lastRequestOptions?.path, '/events.json');
+      expect(adapter.lastRequestOptions?.path, 'events.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'since': since.toIso8601String(),
         'page': 2,
@@ -953,7 +965,7 @@ void main() {
       });
 
       await repository.getEventsPaid(since: since, subjectId: 3, page: 2);
-      expect(adapter.lastRequestOptions?.path, '/events/paid.json');
+      expect(adapter.lastRequestOptions?.path, 'events/paid.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'since': since.toIso8601String(),
         'page': 2,
@@ -964,10 +976,10 @@ void main() {
     test('webhooks cover list, CRUD and failed deliveries', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.method == 'GET' && options.path == '/webhooks.json') {
+          if (options.method == 'GET' && options.path == 'webhooks.json') {
             return jsonResponseBody([]);
           }
-          if (options.path.endsWith('/failed_deliveries.json')) {
+          if (options.path.endsWith('failed_deliveries.json')) {
             return jsonResponseBody(
               [
                 {
@@ -997,14 +1009,14 @@ void main() {
       );
 
       await repository.getWebhooks(page: 2);
-      expect(adapter.lastRequestOptions?.path, '/webhooks.json');
+      expect(adapter.lastRequestOptions?.path, 'webhooks.json');
       expect(adapter.lastRequestOptions?.queryParameters, {'page': 2});
 
       await repository.getWebhook(1);
-      expect(adapter.lastRequestOptions?.path, '/webhooks/1.json');
+      expect(adapter.lastRequestOptions?.path, 'webhooks/1.json');
 
       await repository.createWebhook(webhook);
-      expect(adapter.lastRequestOptions?.path, '/webhooks.json');
+      expect(adapter.lastRequestOptions?.path, 'webhooks.json');
       expect(adapter.lastRequestOptions?.data, {
         'webhook_url': 'https://example.com/webhooks',
         'active': true,
@@ -1012,7 +1024,7 @@ void main() {
       });
 
       await repository.updateWebhook(1, webhook.copyWith(active: false));
-      expect(adapter.lastRequestOptions?.path, '/webhooks/1.json');
+      expect(adapter.lastRequestOptions?.path, 'webhooks/1.json');
       expect(adapter.lastRequestOptions?.data, {
         'webhook_url': 'https://example.com/webhooks',
         'active': false,
@@ -1020,7 +1032,7 @@ void main() {
       });
 
       await repository.deleteWebhook(1);
-      expect(adapter.lastRequestOptions?.path, '/webhooks/1.json');
+      expect(adapter.lastRequestOptions?.path, 'webhooks/1.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
 
       final deliveries = await repository.getFailedDeliveries(
@@ -1029,7 +1041,7 @@ void main() {
       );
       expect(
         adapter.lastRequestOptions?.path,
-        '/webhooks/failed-uuid/failed_deliveries.json',
+        'webhooks/failed-uuid/failed_deliveries.json',
       );
       expect(adapter.lastRequestOptions?.queryParameters, {'page': 3});
       expect(deliveries.currentPage, 3);
@@ -1041,23 +1053,24 @@ void main() {
     test('estimates cover index, search, CRUD and actions', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path == '/invoices.json' && options.method == 'GET') {
+          if (options.path == 'estimates.json' && options.method == 'GET') {
             return jsonResponseBody([
               {'id': 1, 'number': '2026-001', 'subject_id': 1},
             ]);
           }
-          if (options.path == '/invoices/search.json') {
+          if (options.path == 'estimates/search.json') {
             return jsonResponseBody([
               {'id': 1, 'number': '2026-001', 'subject_id': 1},
             ]);
           }
-          if (options.path == '/invoices.json' && options.method == 'POST') {
-            return jsonResponseBody(
-              {'id': 2, 'number': '2026-002', 'subject_id': 1},
-              201,
-            );
+          if (options.path == 'estimates.json' && options.method == 'POST') {
+            return jsonResponseBody({
+              'id': 2,
+              'number': '2026-002',
+              'subject_id': 1,
+            }, 201);
           }
-          if (options.uri.path.contains('/fire.json')) {
+          if (options.uri.path.contains('fire.json')) {
             return emptyResponseBody(204);
           }
           return jsonResponseBody({
@@ -1071,76 +1084,73 @@ void main() {
       final repository = EstimatesRepository(createTestDio(adapter));
 
       await repository.getEstimates(page: 2, status: EstimateStatus.sent);
-      expect(adapter.lastRequestOptions?.path, '/invoices.json');
+      expect(adapter.lastRequestOptions?.path, 'estimates.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
-        'document_type': 'estimate',
         'page': 2,
         'status': 'sent',
       });
 
       await repository.searchEstimates(query: 'test', tags: ['urgent']);
-      expect(adapter.lastRequestOptions?.path, '/invoices/search.json');
+      expect(adapter.lastRequestOptions?.path, 'estimates/search.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
-        'document_type': 'estimate',
         'query': 'test',
         'tags[]': ['urgent'],
       });
 
       await repository.createEstimate(const Estimate(subjectId: 1));
       expect(adapter.lastRequestOptions?.method, 'POST');
-      expect(adapter.lastRequestOptions?.path, '/invoices.json');
-      expect(adapter.lastRequestOptions?.data['document_type'], 'estimate');
+      expect(adapter.lastRequestOptions?.path, 'estimates.json');
 
       await repository.fireAction(1, EstimateFireAction.accept);
-      expect(adapter.lastRequestOptions?.path, '/invoices/1/fire.json');
+      expect(adapter.lastRequestOptions?.path, 'estimates/1/fire.json');
       expect(adapter.lastRequestOptions?.data, {'event': 'accept'});
 
       await repository.createMessage(1, email: 'test@example.com');
-      expect(adapter.lastRequestOptions?.path, '/invoices/1/message.json');
+      expect(adapter.lastRequestOptions?.path, 'estimates/1/message.json');
       expect(adapter.lastRequestOptions?.data, {'email': 'test@example.com'});
 
       await repository.downloadEstimatePdf(1);
-      expect(adapter.lastRequestOptions?.path, '/invoices/1/download.pdf');
+      expect(adapter.lastRequestOptions?.path, 'estimates/1/download.pdf');
     });
 
     test('stats repository coverage', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) => jsonResponseBody({
           'totals': {
-            'all_time': {'paid': '100.0'}
-          }
+            'all_time': {'paid': '100.0'},
+          },
         }),
       );
       final repository = StatsRepository(createTestDio(adapter));
       final stats = await repository.getStats();
 
-      expect(adapter.lastRequestOptions?.path, '/stats.json');
+      expect(adapter.lastRequestOptions?.path, 'stats.json');
       expect(stats.totals?.allTime?.paid, '100.0');
     });
 
     test('bank accounts repository coverage', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) => jsonResponseBody([
-          {'id': 1, 'name': 'Main'}
+          {'id': 1, 'name': 'Main'},
         ]),
       );
       final repository = BankAccountsRepository(createTestDio(adapter));
       final accounts = await repository.getBankAccounts();
 
-      expect(adapter.lastRequestOptions?.path, '/bank_accounts.json');
+      expect(adapter.lastRequestOptions?.path, 'bank_accounts.json');
       expect(accounts.first.name, 'Main');
     });
 
     test('number formats repository coverage', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) => jsonResponseBody([
-          {'id': 1, 'format': '2026'}
+          {'id': 1, 'format': '2026'},
         ]),
       );
       final repository = NumberFormatsRepository(createTestDio(adapter));
       final formats = await repository.getNumberFormats();
 
-      expect(adapter.lastRequestOptions?.path, '/number_formats/invoices.json');
+      expect(adapter.lastRequestOptions?.path, 'number_formats/invoices.json');
       expect(formats.first.format, '2026');
     });
 
@@ -1150,37 +1160,42 @@ void main() {
 
     test('generators and recurring generators extra actions', () async {
       final adapter = RecordingAdapter(
-        onFetch: (options) => jsonResponseBody({
-          'id': 1,
-          'name': 'Test',
-          'subject_id': 1,
-        }),
+        onFetch: (options) =>
+            jsonResponseBody({'id': 1, 'name': 'Test', 'subject_id': 1}),
       );
 
       final genRepo = GeneratorsRepository(createTestDio(adapter));
       await genRepo.fireAction(1, GeneratorFireAction.generate);
-      expect(adapter.lastRequestOptions?.path, '/generators/1/fire.json');
+      expect(adapter.lastRequestOptions?.path, 'generators/1/fire.json');
       expect(adapter.lastRequestOptions?.data, {'event': 'generate'});
 
       final recRepo = RecurringGeneratorsRepository(createTestDio(adapter));
       await recRepo.pause(1);
-      expect(adapter.lastRequestOptions?.path, '/recurring_generators/1/pause.json');
+      expect(
+        adapter.lastRequestOptions?.path,
+        'recurring_generators/1/pause.json',
+      );
       expect(adapter.lastRequestOptions?.method, 'PATCH');
 
       await recRepo.activate(1, nextOccurrenceOn: '2026-05-01');
-      expect(adapter.lastRequestOptions?.path, '/recurring_generators/1/activate.json');
-      expect(adapter.lastRequestOptions?.data, {'next_occurrence_on': '2026-05-01'});
+      expect(
+        adapter.lastRequestOptions?.path,
+        'recurring_generators/1/activate.json',
+      );
+      expect(adapter.lastRequestOptions?.data, {
+        'next_occurrence_on': '2026-05-01',
+      });
     });
 
     test('miscellaneous repository actions', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path.contains('/download')) {
+          if (options.path.contains('download')) {
             return bytesResponseBody([1, 2]);
           }
-          if (options.path.contains('/events/paid.json')) {
+          if (options.path.contains('events/paid.json')) {
             return jsonResponseBody([
-              {'id': 1}
+              {'id': 1},
             ]);
           }
           return jsonResponseBody({'id': 1});
@@ -1190,21 +1205,30 @@ void main() {
 
       final inboxRepo = InboxFilesRepository(dio);
       await inboxRepo.sendToOcr(1);
-      expect(adapter.lastRequestOptions?.path, '/inbox_files/1/send_to_ocr.json');
+      expect(
+        adapter.lastRequestOptions?.path,
+        'inbox_files/1/send_to_ocr.json',
+      );
       await inboxRepo.downloadInboxFile(1);
-      expect(adapter.lastRequestOptions?.path, '/inbox_files/1/download');
+      expect(adapter.lastRequestOptions?.path, 'inbox_files/1/download');
 
       final todoRepo = TodosRepository(dio);
       await todoRepo.toggleCompletion(1);
-      expect(adapter.lastRequestOptions?.path, '/todos/1/toggle_completion.json');
+      expect(
+        adapter.lastRequestOptions?.path,
+        'todos/1/toggle_completion.json',
+      );
 
       final eventRepo = EventsRepository(dio);
       await eventRepo.getEventsPaid();
-      expect(adapter.lastRequestOptions?.path, '/events/paid.json');
+      expect(adapter.lastRequestOptions?.path, 'events/paid.json');
 
       final payRepo = InvoicePaymentsRepository(dio);
       await payRepo.createTaxDocument(10, 20, data: {'custom': 'value'});
-      expect(adapter.lastRequestOptions?.path, '/invoices/10/payments/20/create_tax_document.json');
+      expect(
+        adapter.lastRequestOptions?.path,
+        'invoices/10/payments/20/create_tax_document.json',
+      );
       expect(adapter.lastRequestOptions?.data, {'custom': 'value'});
     });
   });

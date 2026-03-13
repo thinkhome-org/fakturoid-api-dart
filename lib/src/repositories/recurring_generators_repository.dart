@@ -21,7 +21,7 @@ class RecurringGeneratorsRepository {
     int? subjectId,
   }) async {
     final response = await _dio.get(
-      '/recurring_generators.json',
+      'recurring_generators.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'updated_since': updatedSince?.toIso8601String(),
@@ -39,7 +39,7 @@ class RecurringGeneratorsRepository {
 
   /// Detail šablony pravidelné faktury.
   Future<RecurringGenerator> getRecurringGenerator(int id) async {
-    final response = await _dio.get('/recurring_generators/$id.json');
+    final response = await _dio.get('recurring_generators/$id.json');
     return RecurringGenerator.fromJson(response.data);
   }
 
@@ -48,7 +48,7 @@ class RecurringGeneratorsRepository {
     RecurringGenerator generator,
   ) async {
     final response = await _dio.post(
-      '/recurring_generators.json',
+      'recurring_generators.json',
       data: ApiUtils.removeNulls(generator.toJson()),
     );
     return RecurringGenerator.fromJson(response.data);
@@ -60,7 +60,7 @@ class RecurringGeneratorsRepository {
     RecurringGenerator generator,
   ) async {
     final response = await _dio.patch(
-      '/recurring_generators/$id.json',
+      'recurring_generators/$id.json',
       data: ApiUtils.removeNulls(generator.toJson()),
     );
     return RecurringGenerator.fromJson(response.data);
@@ -68,12 +68,12 @@ class RecurringGeneratorsRepository {
 
   /// Smaže šablonu.
   Future<void> deleteRecurringGenerator(int id) async {
-    await _dio.delete('/recurring_generators/$id.json');
+    await _dio.delete('recurring_generators/$id.json');
   }
 
   /// Pozastaví pravidelnou fakturu.
   Future<RecurringGenerator> pause(int id) async {
-    final response = await _dio.patch('/recurring_generators/$id/pause.json');
+    final response = await _dio.patch('recurring_generators/$id/pause.json');
     return RecurringGenerator.fromJson(response.data);
   }
 
@@ -85,7 +85,7 @@ class RecurringGeneratorsRepository {
     String? nextOccurrenceOn,
   }) async {
     final response = await _dio.patch(
-      '/recurring_generators/$id/activate.json',
+      'recurring_generators/$id/activate.json',
       data: nextOccurrenceOn != null
           ? {'next_occurrence_on': nextOccurrenceOn}
           : null,

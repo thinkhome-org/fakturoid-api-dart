@@ -14,14 +14,14 @@ class UsersRepository {
   ///
   /// Tento endpoint není ve specifickém účtu (nepoužívá slug).
   Future<User> getCurrentUser() async {
-    final response = await _rootDio.get('/user.json');
+    final response = await _rootDio.get('user.json');
     return User.fromJson(response.data);
   }
 
   /// Získá seznam uživatelů přiřazených k danému účtu (Account).
   Future<PaginatedResponse<User>> getUsers({int? page}) async {
     final response = await _accountDio.get(
-      '/users.json',
+      'users.json',
       queryParameters: page != null ? {'page': page} : null,
     );
 

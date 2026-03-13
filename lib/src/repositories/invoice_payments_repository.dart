@@ -15,7 +15,7 @@ class InvoicePaymentsRepository {
     InvoicePayment payment,
   ) async {
     final response = await _dio.post(
-      '/invoices/$invoiceId/payments.json',
+      'invoices/$invoiceId/payments.json',
       data: ApiUtils.removeNulls(payment.toJson()),
     );
     return InvoicePayment.fromJson(response.data);
@@ -29,7 +29,7 @@ class InvoicePaymentsRepository {
     Map<String, dynamic>? data,
   }) async {
     final response = await _dio.post(
-      '/invoices/$invoiceId/payments/$paymentId/create_tax_document.json',
+      'invoices/$invoiceId/payments/$paymentId/create_tax_document.json',
       data: data,
     );
 
@@ -38,6 +38,6 @@ class InvoicePaymentsRepository {
 
   /// Smaže existující platbu k faktuře.
   Future<void> deletePayment(int invoiceId, int paymentId) async {
-    await _dio.delete('/invoices/$invoiceId/payments/$paymentId.json');
+    await _dio.delete('invoices/$invoiceId/payments/$paymentId.json');
   }
 }

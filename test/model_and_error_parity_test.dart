@@ -168,13 +168,13 @@ void main() {
     test('stats parses totals and graphs', () {
       final stats = Stats.fromJson({
         'totals': {
-          'all_time': {'paid': '1000.0'}
+          'all_time': {'paid': '1000.0'},
         },
         'graphs': {
           'revenue': [
-            {'date': '2026-01-01', 'amount': '500.0'}
-          ]
-        }
+            {'date': '2026-01-01', 'amount': '500.0'},
+          ],
+        },
       });
 
       expect(stats.totals?.allTime?.paid, '1000.0');

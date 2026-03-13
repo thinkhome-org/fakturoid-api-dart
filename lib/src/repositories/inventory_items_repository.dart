@@ -27,7 +27,7 @@ class InventoryItemsRepository {
     int? page,
   }) async {
     final response = await _dio.get(
-      '/inventory_items.json',
+      'inventory_items.json',
       queryParameters: ApiUtils.removeNulls({
         'article_number': articleNumber,
         'sku': sku,
@@ -57,7 +57,7 @@ class InventoryItemsRepository {
     int? page,
   }) async {
     final response = await _dio.get(
-      '/inventory_items/archived.json',
+      'inventory_items/archived.json',
       queryParameters: ApiUtils.removeNulls({
         'article_number': articleNumber,
         'sku': sku,
@@ -80,7 +80,7 @@ class InventoryItemsRepository {
     int? page,
   }) async {
     final response = await _dio.get(
-      '/inventory_items/low_quantity.json',
+      'inventory_items/low_quantity.json',
       queryParameters: ApiUtils.removeNulls({'page': page}),
     );
     return PaginatedResponse<InventoryItem>.fromResponse(
@@ -96,7 +96,7 @@ class InventoryItemsRepository {
     int? page,
   }) async {
     final response = await _dio.get(
-      '/inventory_items/search.json',
+      'inventory_items/search.json',
       queryParameters: ApiUtils.removeNulls({'query': query, 'page': page}),
     );
     return PaginatedResponse<InventoryItem>.fromResponse(
@@ -108,14 +108,14 @@ class InventoryItemsRepository {
 
   /// Detail položky.
   Future<InventoryItem> getItem(int id) async {
-    final response = await _dio.get('/inventory_items/$id.json');
+    final response = await _dio.get('inventory_items/$id.json');
     return InventoryItem.fromJson(response.data);
   }
 
   /// Vytvoří novou položku.
   Future<InventoryItem> createItem(InventoryItem item) async {
     final response = await _dio.post(
-      '/inventory_items.json',
+      'inventory_items.json',
       data: ApiUtils.removeNulls(item.toJson()),
     );
     return InventoryItem.fromJson(response.data);
@@ -124,7 +124,7 @@ class InventoryItemsRepository {
   /// Upraví existující položku ceníku.
   Future<InventoryItem> updateItem(int id, InventoryItem item) async {
     final response = await _dio.patch(
-      '/inventory_items/$id.json',
+      'inventory_items/$id.json',
       data: ApiUtils.removeNulls(item.toJson()),
     );
     return InventoryItem.fromJson(response.data);
@@ -132,18 +132,18 @@ class InventoryItemsRepository {
 
   /// Smaže položku z ceníku.
   Future<void> deleteItem(int id) async {
-    await _dio.delete('/inventory_items/$id.json');
+    await _dio.delete('inventory_items/$id.json');
   }
 
   /// Archivuje položku.
   Future<InventoryItem> archiveItem(int id) async {
-    final response = await _dio.post('/inventory_items/$id/archive.json');
+    final response = await _dio.post('inventory_items/$id/archive.json');
     return InventoryItem.fromJson(response.data);
   }
 
   /// Obnoví položku z archivu.
   Future<InventoryItem> unarchiveItem(int id) async {
-    final response = await _dio.post('/inventory_items/$id/unarchive.json');
+    final response = await _dio.post('inventory_items/$id/unarchive.json');
     return InventoryItem.fromJson(response.data);
   }
 }

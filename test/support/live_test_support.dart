@@ -397,12 +397,13 @@ final class LiveTestContext {
 
 void runLiveTest(
   String description,
-  Future<void> Function(LiveTestContext context) body,
-) {
+  Future<void> Function(LiveTestContext context) body, {
+  bool skip = false,
+}) {
   late LiveTestContext context;
 
   setUpAll(() async {
-    if (!hasLiveEnvironment) {
+    if (!hasLiveEnvironment || skip) {
       return;
     }
 
@@ -410,7 +411,7 @@ void runLiveTest(
   });
 
   tearDownAll(() async {
-    if (!hasLiveEnvironment) {
+    if (!hasLiveEnvironment || skip) {
       return;
     }
 
@@ -419,5 +420,5 @@ void runLiveTest(
 
   test(description, () async {
     await body(context);
-  }, skip: !hasLiveEnvironment);
+  }, skip: !hasLiveEnvironment || skip);
 }

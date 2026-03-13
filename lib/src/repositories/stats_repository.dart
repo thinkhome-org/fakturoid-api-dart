@@ -8,7 +8,7 @@ class StatsRepository {
 
   /// Vrací finanční statistiky účtu (data z dashboardu).
   Future<Stats> getStats() async {
-    final response = await _dio.get('/stats.json');
+    final response = await _dio.get('stats.json');
     return Stats.fromJson(response.data);
   }
 }

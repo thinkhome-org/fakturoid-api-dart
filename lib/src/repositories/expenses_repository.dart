@@ -36,7 +36,7 @@ class ExpensesRepository {
     ExpenseDocumentType? documentType,
   }) async {
     final response = await _dio.get(
-      '/expenses.json',
+      'expenses.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'until': until?.toIso8601String(),
@@ -70,7 +70,7 @@ class ExpensesRepository {
     List<String>? tags,
   }) async {
     final response = await _dio.get(
-      '/expenses/search.json',
+      'expenses/search.json',
       queryParameters: ApiUtils.removeNulls({
         'query': query,
         'page': page,
@@ -87,14 +87,14 @@ class ExpensesRepository {
 
   /// Získá detail jednoho nákladu podle ID.
   Future<Expense> getExpense(int id) async {
-    final response = await _dio.get('/expenses/$id.json');
+    final response = await _dio.get('expenses/$id.json');
     return Expense.fromJson(response.data);
   }
 
   /// Vytvoří nový náklad.
   Future<Expense> createExpense(Expense expense) async {
     final response = await _dio.post(
-      '/expenses.json',
+      'expenses.json',
       data: ApiUtils.removeNulls(expense.toJson()),
     );
     return Expense.fromJson(response.data);
@@ -103,7 +103,7 @@ class ExpensesRepository {
   /// Upraví existující náklad.
   Future<Expense> updateExpense(int id, Expense expense) async {
     final response = await _dio.patch(
-      '/expenses/$id.json',
+      'expenses/$id.json',
       data: ApiUtils.removeNulls(expense.toJson()),
     );
     return Expense.fromJson(response.data);
@@ -111,22 +111,18 @@ class ExpensesRepository {
 
   /// Smaže náklad podle ID.
   Future<void> deleteExpense(int id) async {
-    await _dio.delete('/expenses/$id.json');
+    await _dio.delete('expenses/$id.json');
   }
 
   /// Provede akci s nákladem (např. uzamčení).
   Future<void> fireAction(int id, ExpenseFireAction action) async {
-    await _dio.post(
-      '/expenses/$id/fire.json',
-      data: {'event': action.value},
-    );
+    await _dio.post('expenses/$id/fire.json', data: {'event': action.value});
   }
-
 
   /// Stáhne konkrétní přílohu z nákladu jako pole bajtů.
   Future<Uint8List> downloadAttachment(int expenseId, int attachmentId) async {
     final response = await _dio.get(
-      '/expenses/$expenseId/attachments/$attachmentId/download',
+      'expenses/$expenseId/attachments/$attachmentId/download',
       options: Options(responseType: ResponseType.bytes),
     );
     return Uint8List.fromList(response.data);

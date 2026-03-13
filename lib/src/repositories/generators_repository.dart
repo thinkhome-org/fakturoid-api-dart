@@ -22,7 +22,7 @@ class GeneratorsRepository {
     int? subjectId,
   }) async {
     final response = await _dio.get(
-      '/generators.json',
+      'generators.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'updated_since': updatedSince?.toIso8601String(),
@@ -40,14 +40,14 @@ class GeneratorsRepository {
 
   /// Detail šablony.
   Future<Generator> getGenerator(int id) async {
-    final response = await _dio.get('/generators/$id.json');
+    final response = await _dio.get('generators/$id.json');
     return Generator.fromJson(response.data);
   }
 
   /// Vytvoří novou šablonu.
   Future<Generator> createGenerator(Generator generator) async {
     final response = await _dio.post(
-      '/generators.json',
+      'generators.json',
       data: ApiUtils.removeNulls(generator.toJson()),
     );
     return Generator.fromJson(response.data);
@@ -56,7 +56,7 @@ class GeneratorsRepository {
   /// Upraví existující šablonu.
   Future<Generator> updateGenerator(int id, Generator generator) async {
     final response = await _dio.patch(
-      '/generators/$id.json',
+      'generators/$id.json',
       data: ApiUtils.removeNulls(generator.toJson()),
     );
     return Generator.fromJson(response.data);
@@ -64,14 +64,11 @@ class GeneratorsRepository {
 
   /// Smaže šablonu.
   Future<void> deleteGenerator(int id) async {
-    await _dio.delete('/generators/$id.json');
+    await _dio.delete('generators/$id.json');
   }
 
   /// Provede akci se šablonou (např. 'generate' pro okamžité vystavení faktury).
   Future<void> fireAction(int id, GeneratorFireAction action) async {
-    await _dio.post(
-      '/generators/$id/fire.json',
-      data: {'event': action.value},
-    );
+    await _dio.post('generators/$id/fire.json', data: {'event': action.value});
   }
 }

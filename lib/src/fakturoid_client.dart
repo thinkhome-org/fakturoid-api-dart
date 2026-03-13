@@ -67,13 +67,14 @@ class FakturoidClient {
   }) {
     // Výchozí TokenStorage je globální (nepoužívá slug jako namespace),
     // protože jeden OAuth token obvykle platí pro všechny účty uživatele.
-    tokenStorage = customTokenStorage ?? SecureStorageService(namespace: 'global');
+    tokenStorage =
+        customTokenStorage ?? SecureStorageService(namespace: 'global');
 
     _rootDio =
         dioOverride ??
         Dio(
           BaseOptions(
-            baseUrl: 'https://app.fakturoid.cz/api/v3',
+            baseUrl: 'https://app.fakturoid.cz/api/v3/',
             headers: {
               'Content-Type': 'application/json',
               'User-Agent': userAgent,
@@ -82,10 +83,16 @@ class FakturoidClient {
         );
 
     _accountDio = Dio(_rootDio.options.copyWith());
-    _accountDio.options.baseUrl = '${_rootDio.options.baseUrl}/accounts/$slug';
+    _accountDio.httpClientAdapter = _rootDio.httpClientAdapter;
+    final rootBaseUrl = _rootDio.options.baseUrl.endsWith('/')
+        ? _rootDio.options.baseUrl.substring(0, _rootDio.options.baseUrl.length - 1)
+        : _rootDio.options.baseUrl;
+    _accountDio.options.baseUrl = '$rootBaseUrl/accounts/$slug/';
 
     auth = AuthRepository(
-      dio: Dio(_rootDio.options.copyWith(headers: {'Accept': 'application/json'})),
+      dio: Dio(
+        _rootDio.options.copyWith(headers: {'Accept': 'application/json'}),
+      )..httpClientAdapter = _rootDio.httpClientAdapter,
       tokenStorage: tokenStorage,
       clientId: clientId,
       clientSecret: clientSecret,
@@ -140,6 +147,6 @@ class FakturoidClient {
   /// Přepne klienta na jiný účet (změní slug v URL).
   /// Užitečné, pokud uživatel má přístup k více účtům.
   void switchAccount(String slug) {
-    _accountDio.options.baseUrl = '${_rootDio.options.baseUrl}/accounts/$slug';
+    _accountDio.options.baseUrl = '${_rootDio.options.baseUrl}/accounts/$slug/';
   }
 }

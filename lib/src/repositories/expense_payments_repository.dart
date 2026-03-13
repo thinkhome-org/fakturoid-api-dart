@@ -15,7 +15,7 @@ class ExpensePaymentsRepository {
     InvoicePayment payment,
   ) async {
     final response = await _dio.post(
-      '/expenses/$expenseId/payments.json',
+      'expenses/$expenseId/payments.json',
       data: ApiUtils.removeNulls(payment.toJson()),
     );
     return InvoicePayment.fromJson(response.data);
@@ -23,6 +23,6 @@ class ExpensePaymentsRepository {
 
   /// Smaže existující platbu k nákladu.
   Future<void> deletePayment(int expenseId, int paymentId) async {
-    await _dio.delete('/expenses/$expenseId/payments/$paymentId.json');
+    await _dio.delete('expenses/$expenseId/payments/$paymentId.json');
   }
 }

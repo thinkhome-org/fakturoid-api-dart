@@ -1,6 +1,10 @@
+@Timeout(Duration(minutes: 10))
+library;
+
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fakturoid_api/fakturoid_api.dart';
 
@@ -126,9 +130,27 @@ Future<List<T>> _collectPages<T>(
 }
 
 Future<void> _ignoreErrors(Future<void> Function() action) async {
-  try {
-    await action();
-  } catch (_) {}
+  var attempts = 0;
+  while (attempts < 3) {
+    try {
+      await action();
+      return;
+    } catch (e) {
+      if (e is DioException && e.response?.statusCode == 429) {
+        attempts++;
+        final retryAfter =
+            int.tryParse(e.response?.headers.value('retry-after') ?? '') ??
+            (attempts * 2);
+        await Future.delayed(Duration(seconds: retryAfter));
+        continue;
+      }
+      break;
+    }
+  }
+}
+
+Future<void> _throttle() async {
+  await Future.delayed(const Duration(milliseconds: 200));
 }
 
 final class _CleanupContext {
@@ -219,6 +241,7 @@ void main() {
       final recurringGenerators = <RecurringGenerator>[];
       final invoices = <Invoice>[];
       final expenses = <Expense>[];
+      final estimates = <Estimate>[];
       final deletedInvoicePaymentIds = <int>[];
       final deletedExpensePaymentIds = <int>[];
 
@@ -231,6 +254,7 @@ void main() {
             ),
           ),
         );
+        await _throttle();
         recurringGenerators.addAll(
           await _collectPages(
             (page) => client.recurringGenerators.getRecurringGenerators(
@@ -239,23 +263,34 @@ void main() {
             ),
           ),
         );
+        await _throttle();
         invoices.addAll(
           await _collectPages(
             (page) =>
                 client.invoices.getInvoices(subjectId: subjectId, page: page),
           ),
         );
+        await _throttle();
         expenses.addAll(
           await _collectPages(
             (page) =>
                 client.expenses.getExpenses(subjectId: subjectId, page: page),
           ),
         );
+        await _throttle();
+        await _ignoreErrors(
+          () => _collectPages(
+            (page) =>
+                client.estimates.getEstimates(subjectId: subjectId, page: page),
+          ).then((e) => estimates.addAll(e)),
+        );
+        await _throttle();
       }
 
       final webhooks = await _collectPages(
         (page) => client.webhooks.getWebhooks(page: page),
       );
+      await _throttle();
       final matchedWebhooks = webhooks
           .where(
             (webhook) => (webhook.webhookUrl ?? '').startsWith(
@@ -267,6 +302,7 @@ void main() {
       final inboxFiles = await _collectPages(
         (page) => client.inboxFiles.getInboxFiles(page: page),
       );
+      await _throttle();
       final matchedInboxFiles = inboxFiles
           .where((file) => (file.filename ?? '').startsWith('opencode-'))
           .toList();
@@ -279,6 +315,7 @@ void main() {
           (page) => client.inventoryItems.getArchivedItems(page: page),
         ),
       ];
+      await _throttle();
       final matchedInventoryItems = inventoryItems
           .fold<Map<int, InventoryItem>>({}, (items, item) {
             final itemId = item.id;
@@ -294,6 +331,7 @@ void main() {
         final invoiceId = invoice.id;
         if (invoiceId != null) {
           final detailedInvoice = await client.invoices.getInvoice(invoiceId);
+          await _throttle();
           for (final payment
               in detailedInvoice.payments ?? const <InvoicePayment>[]) {
             final paymentId = payment.id;
@@ -303,10 +341,12 @@ void main() {
                 () =>
                     client.invoicePayments.deletePayment(invoiceId, paymentId),
               );
+              await _throttle();
             }
           }
 
           await _ignoreErrors(() => client.invoices.deleteInvoice(invoiceId));
+          await _throttle();
         }
       }
 
@@ -314,6 +354,7 @@ void main() {
         final expenseId = expense.id;
         if (expenseId != null) {
           final detailedExpense = await client.expenses.getExpense(expenseId);
+          await _throttle();
           for (final payment
               in detailedExpense.payments ?? const <InvoicePayment>[]) {
             final paymentId = payment.id;
@@ -323,10 +364,22 @@ void main() {
                 () =>
                     client.expensePayments.deletePayment(expenseId, paymentId),
               );
+              await _throttle();
             }
           }
 
           await _ignoreErrors(() => client.expenses.deleteExpense(expenseId));
+          await _throttle();
+        }
+      }
+
+      for (final estimate in estimates) {
+        final estimateId = estimate.id;
+        if (estimateId != null) {
+          await _ignoreErrors(
+            () => client.estimates.deleteEstimate(estimateId),
+          );
+          await _throttle();
         }
       }
 
@@ -338,6 +391,7 @@ void main() {
               recurringId,
             ),
           );
+          await _throttle();
         }
       }
 
@@ -347,6 +401,7 @@ void main() {
           await _ignoreErrors(
             () => client.generators.deleteGenerator(generatorId),
           );
+          await _throttle();
         }
       }
 
@@ -362,6 +417,7 @@ void main() {
             page: page,
           ),
         );
+        await _throttle();
 
         for (final move in moves) {
           final moveId = move.id;
@@ -369,16 +425,19 @@ void main() {
             await _ignoreErrors(
               () => client.inventoryMoves.deleteInventoryMove(itemId, moveId),
             );
+            await _throttle();
           }
         }
 
         await _ignoreErrors(() => client.inventoryItems.deleteItem(itemId));
+        await _throttle();
       }
 
       for (final webhook in matchedWebhooks) {
         final webhookId = webhook.id;
         if (webhookId != null) {
           await _ignoreErrors(() => client.webhooks.deleteWebhook(webhookId));
+          await _throttle();
         }
       }
 
@@ -388,6 +447,7 @@ void main() {
           await _ignoreErrors(
             () => client.inboxFiles.deleteInboxFile(inboxFileId),
           );
+          await _throttle();
         }
       }
 
@@ -395,12 +455,14 @@ void main() {
         final subjectId = subject.id;
         if (subjectId != null) {
           await _ignoreErrors(() => client.subjects.deleteSubject(subjectId));
+          await _throttle();
         }
       }
 
       final remainingSubjects = await _collectPages(
         (page) => client.subjects.getSubjects(page: page),
       );
+      await _throttle();
       final remainingMatchedSubjects = remainingSubjects
           .where(_matchesSubject)
           .toList();
@@ -412,9 +474,11 @@ void main() {
       final remainingWebhooks = await _collectPages(
         (page) => client.webhooks.getWebhooks(page: page),
       );
+      await _throttle();
       final remainingInboxFiles = await _collectPages(
         (page) => client.inboxFiles.getInboxFiles(page: page),
       );
+      await _throttle();
       final remainingInventoryItems = [
         ...await _collectPages(
           (page) => client.inventoryItems.getInventoryItems(page: page),
@@ -423,6 +487,7 @@ void main() {
           (page) => client.inventoryItems.getArchivedItems(page: page),
         ),
       ];
+      await _throttle();
 
       expect(remainingMatchedSubjects, isEmpty);
       expect(
@@ -448,20 +513,31 @@ void main() {
           (page) =>
               client.invoices.getInvoices(subjectId: subjectId, page: page),
         );
+        await _throttle();
         final remainingExpenses = await _collectPages(
           (page) =>
               client.expenses.getExpenses(subjectId: subjectId, page: page),
         );
+        await _throttle();
+        await _ignoreErrors(
+          () => _collectPages(
+            (page) =>
+                client.estimates.getEstimates(subjectId: subjectId, page: page),
+          ).then((remainingEstimates) => expect(remainingEstimates, isEmpty)),
+        );
+        await _throttle();
         final remainingGenerators = await _collectPages(
           (page) =>
               client.generators.getGenerators(subjectId: subjectId, page: page),
         );
+        await _throttle();
         final remainingRecurring = await _collectPages(
           (page) => client.recurringGenerators.getRecurringGenerators(
             subjectId: subjectId,
             page: page,
           ),
         );
+        await _throttle();
 
         expect(remainingInvoices, isEmpty);
         expect(remainingExpenses, isEmpty);

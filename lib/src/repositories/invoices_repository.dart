@@ -35,7 +35,7 @@ class InvoicesRepository {
     InvoiceListDocumentType? documentType,
   }) async {
     final response = await _dio.get(
-      '/invoices.json',
+      'invoices.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'until': until?.toIso8601String(),
@@ -66,7 +66,7 @@ class InvoicesRepository {
     List<String>? tags,
   }) async {
     final response = await _dio.get(
-      '/invoices/search.json',
+      'invoices/search.json',
       queryParameters: ApiUtils.removeNulls({
         'query': query,
         'page': page,
@@ -83,14 +83,14 @@ class InvoicesRepository {
 
   /// Získá detail jedné faktury podle ID.
   Future<Invoice> getInvoice(int id) async {
-    final response = await _dio.get('/invoices/$id.json');
+    final response = await _dio.get('invoices/$id.json');
     return Invoice.fromJson(response.data);
   }
 
   /// Vytvoří novou fakturu (nebo jiný dokument na základě atributu `document_type`).
   Future<Invoice> createInvoice(Invoice invoice, {int? relatedId}) async {
     final response = await _dio.post(
-      '/invoices.json',
+      'invoices.json',
       queryParameters: ApiUtils.removeNulls({'related_id': relatedId}),
       data: ApiUtils.removeNulls(invoice.toJson()),
     );
@@ -100,7 +100,7 @@ class InvoicesRepository {
   /// Upraví existující fakturu.
   Future<Invoice> updateInvoice(int id, Invoice invoice) async {
     final response = await _dio.patch(
-      '/invoices/$id.json',
+      'invoices/$id.json',
       data: ApiUtils.removeNulls(invoice.toJson()),
     );
     return Invoice.fromJson(response.data);
@@ -108,21 +108,18 @@ class InvoicesRepository {
 
   /// Smaže fakturu podle ID.
   Future<void> deleteInvoice(int id) async {
-    await _dio.delete('/invoices/$id.json');
+    await _dio.delete('invoices/$id.json');
   }
 
   /// Provede akci s fakturou (např. označí jako odeslanou, stornuje atd.).
   Future<void> fireAction(int id, InvoiceFireAction action) async {
-    await _dio.post(
-      '/invoices/$id/fire.json',
-      data: {'event': action.value},
-    );
+    await _dio.post('invoices/$id/fire.json', data: {'event': action.value});
   }
 
   /// Stáhne PDF faktury jako pole bajtů (Uint8List), které můžete následně uložit do souboru nebo zobrazit.
   Future<Uint8List> downloadInvoicePdf(int id) async {
     final response = await _dio.get(
-      '/invoices/$id/download.pdf',
+      'invoices/$id/download.pdf',
       options: Options(responseType: ResponseType.bytes),
     );
 
@@ -138,7 +135,7 @@ class InvoicesRepository {
   /// Stáhne konkrétní přílohu z faktury jako pole bajtů.
   Future<Uint8List> downloadAttachment(int invoiceId, int attachmentId) async {
     final response = await _dio.get(
-      '/invoices/$invoiceId/attachments/$attachmentId/download',
+      'invoices/$invoiceId/attachments/$attachmentId/download',
       options: Options(responseType: ResponseType.bytes),
     );
     return _responseBytes(response.data);

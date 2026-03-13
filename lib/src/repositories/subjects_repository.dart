@@ -26,7 +26,7 @@ class SubjectsRepository {
     SubjectStatus? status,
   }) async {
     final response = await _dio.get(
-      '/subjects.json',
+      'subjects.json',
       queryParameters: ApiUtils.removeNulls({
         'since': since?.toIso8601String(),
         'updated_since': updatedSince?.toIso8601String(),
@@ -53,7 +53,7 @@ class SubjectsRepository {
     int? page,
   }) async {
     final response = await _dio.get(
-      '/subjects/search.json',
+      'subjects/search.json',
       queryParameters: ApiUtils.removeNulls({'query': query, 'page': page}),
     );
 
@@ -66,7 +66,7 @@ class SubjectsRepository {
 
   /// Získá detail jednoho kontaktu podle jeho ID.
   Future<Subject> getSubject(int id) async {
-    final response = await _dio.get('/subjects/$id.json');
+    final response = await _dio.get('subjects/$id.json');
     return Subject.fromJson(response.data);
   }
 
@@ -75,7 +75,7 @@ class SubjectsRepository {
   /// Jméno ([Subject.name]) je povinné. Pokud není specifikována země, zkopíruje se z nastavení účtu.
   Future<Subject> createSubject(Subject subject) async {
     final response = await _dio.post(
-      '/subjects.json',
+      'subjects.json',
       data: ApiUtils.removeNulls(subject.toJson()),
     );
     return Subject.fromJson(response.data);
@@ -84,7 +84,7 @@ class SubjectsRepository {
   /// Upraví existující kontakt.
   Future<Subject> updateSubject(int id, Subject subject) async {
     final response = await _dio.patch(
-      '/subjects/$id.json',
+      'subjects/$id.json',
       data: ApiUtils.removeNulls(subject.toJson()),
     );
     return Subject.fromJson(response.data);
@@ -95,15 +95,12 @@ class SubjectsRepository {
   /// Pokud kontakt obsahuje nějaké doklady, nelze jej smazat a Fakturoid vrátí 422 Unprocessable Content
   /// (vyhodí se [FakturoidValidationException]).
   Future<void> deleteSubject(int id) async {
-    await _dio.delete('/subjects/$id.json');
+    await _dio.delete('subjects/$id.json');
   }
 
   /// Provede akci s kontaktem (např. archivace, obnovení).
   Future<void> fireAction(int id, SubjectFireAction action) async {
-    await _dio.post(
-      '/subjects/$id/fire.json',
-      data: {'event': action.value},
-    );
+    await _dio.post('subjects/$id/fire.json', data: {'event': action.value});
   }
 
   /// Archivuje kontakt.
