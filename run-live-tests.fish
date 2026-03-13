@@ -7,7 +7,27 @@ end
 
 source .env.fakturoid.local
 
+set -gx FAKTUROID_PRESERVE_LIVE_FIXTURES true
 flutter test \
-  test/live_smoke_test.dart \
-  test/live_full_api_test.dart \
-  test/live_auth_code_test.dart
+  test/live_authorization_test.dart \
+  test/live_account_test.dart \
+  test/live_users_test.dart \
+  test/live_bank_accounts_test.dart \
+  test/live_number_formats_test.dart \
+  test/live_subjects_test.dart \
+  test/live_invoices_test.dart \
+  test/live_invoice_payments_test.dart \
+  test/live_invoice_messages_test.dart \
+  test/live_expenses_test.dart \
+  test/live_expense_payments_test.dart \
+  test/live_inbox_files_test.dart \
+  test/live_inventory_items_test.dart \
+  test/live_inventory_moves_test.dart \
+  test/live_generators_test.dart \
+  test/live_recurring_generators_test.dart \
+  test/live_todos_test.dart \
+  test/live_events_test.dart \
+  test/live_webhooks_test.dart
+
+set -gx FAKTUROID_RUN_CLEANUP true
+flutter test test/live_cleanup_test.dart

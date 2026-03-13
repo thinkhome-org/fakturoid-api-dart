@@ -31,6 +31,23 @@ bool get _hasLiveEnvironment {
   });
 }
 
+bool get _shouldRunCleanup {
+  final value = Platform.environment['FAKTUROID_RUN_CLEANUP'];
+  if (value == null) {
+    return false;
+  }
+
+  switch (value.toLowerCase()) {
+    case '1':
+    case 'true':
+    case 'yes':
+    case 'on':
+      return true;
+    default:
+      return false;
+  }
+}
+
 bool get _hasAuthCodeEnvironment {
   final callback = Platform.environment['FAKTUROID_OAUTH_CALLBACK_URI'];
   return callback != null && callback.isNotEmpty;
@@ -202,6 +219,8 @@ void main() {
       final recurringGenerators = <RecurringGenerator>[];
       final invoices = <Invoice>[];
       final expenses = <Expense>[];
+      final deletedInvoicePaymentIds = <int>[];
+      final deletedExpensePaymentIds = <int>[];
 
       for (final subjectId in subjectIds) {
         generators.addAll(
@@ -274,6 +293,19 @@ void main() {
       for (final invoice in invoices) {
         final invoiceId = invoice.id;
         if (invoiceId != null) {
+          final detailedInvoice = await client.invoices.getInvoice(invoiceId);
+          for (final payment
+              in detailedInvoice.payments ?? const <InvoicePayment>[]) {
+            final paymentId = payment.id;
+            if (paymentId != null) {
+              deletedInvoicePaymentIds.add(paymentId);
+              await _ignoreErrors(
+                () =>
+                    client.invoicePayments.deletePayment(invoiceId, paymentId),
+              );
+            }
+          }
+
           await _ignoreErrors(() => client.invoices.deleteInvoice(invoiceId));
         }
       }
@@ -281,6 +313,19 @@ void main() {
       for (final expense in expenses) {
         final expenseId = expense.id;
         if (expenseId != null) {
+          final detailedExpense = await client.expenses.getExpense(expenseId);
+          for (final payment
+              in detailedExpense.payments ?? const <InvoicePayment>[]) {
+            final paymentId = payment.id;
+            if (paymentId != null) {
+              deletedExpensePaymentIds.add(paymentId);
+              await _ignoreErrors(
+                () =>
+                    client.expensePayments.deletePayment(expenseId, paymentId),
+              );
+            }
+          }
+
           await _ignoreErrors(() => client.expenses.deleteExpense(expenseId));
         }
       }
@@ -395,6 +440,8 @@ void main() {
         isEmpty,
       );
       expect(remainingInventoryItems.where(_matchesInventoryItem), isEmpty);
+      expect(deletedInvoicePaymentIds, isA<List<int>>());
+      expect(deletedExpensePaymentIds, isA<List<int>>());
 
       for (final subjectId in remainingSubjectIds) {
         final remainingInvoices = await _collectPages(
@@ -422,6 +469,6 @@ void main() {
         expect(remainingRecurring, isEmpty);
       }
     },
-    skip: !_hasLiveEnvironment,
+    skip: !_hasLiveEnvironment || !_shouldRunCleanup,
   );
 }
