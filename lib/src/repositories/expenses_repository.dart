@@ -52,10 +52,11 @@ class ExpensesRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Expense.fromJson(json)).toList();
-
-    return PaginatedResponse<Expense>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Expense>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Expense.fromJson,
+    );
   }
 
   /// Vyhledává v nákladech pomocí fulltextu.
@@ -77,10 +78,11 @@ class ExpensesRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Expense.fromJson(json)).toList();
-
-    return PaginatedResponse<Expense>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Expense>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Expense.fromJson,
+    );
   }
 
   /// Získá detail jednoho nákladu podle ID.

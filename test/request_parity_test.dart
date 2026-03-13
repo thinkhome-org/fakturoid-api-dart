@@ -923,13 +923,20 @@ void main() {
             return jsonResponseBody([]);
           }
           if (options.path.endsWith('/failed_deliveries.json')) {
-            return jsonResponseBody([
+            return jsonResponseBody(
+              [
+                {
+                  'id': 7,
+                  'event_name': 'invoice_paid',
+                  'idempotency_key': '018f3b0d-1c1d-7f2f-a123-abcdef123456',
+                },
+              ],
+              200,
               {
-                'id': 7,
-                'event_name': 'invoice_paid',
-                'idempotency_key': '018f3b0d-1c1d-7f2f-a123-abcdef123456',
+                'x-ratelimit-policy': ['default;q=400;w=60'],
+                'x-ratelimit': ['default;r=398;t=55'],
               },
-            ]);
+            );
           }
           if (options.method == 'DELETE') {
             return emptyResponseBody();
@@ -980,7 +987,10 @@ void main() {
         '/webhooks/failed-uuid/failed_deliveries.json',
       );
       expect(adapter.lastRequestOptions?.queryParameters, {'page': 3});
-      expect(deliveries.single.idempotencyKey, isNotEmpty);
+      expect(deliveries.currentPage, 3);
+      expect(deliveries.items.single.idempotencyKey, isNotEmpty);
+      expect(deliveries.rateLimit?.quota, 400);
+      expect(deliveries.rateLimit?.remaining, 398);
     });
   });
 }

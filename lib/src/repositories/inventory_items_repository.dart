@@ -39,12 +39,10 @@ class InventoryItemsRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => InventoryItem.fromJson(json)).toList();
-
-    return PaginatedResponse<InventoryItem>(
-      items: items,
+    return PaginatedResponse<InventoryItem>.fromResponse(
+      response,
       currentPage: page ?? 1,
+      fromJson: InventoryItem.fromJson,
     );
   }
 
@@ -70,12 +68,10 @@ class InventoryItemsRepository {
         'page': page,
       }),
     );
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => InventoryItem.fromJson(json)).toList();
-
-    return PaginatedResponse<InventoryItem>(
-      items: items,
+    return PaginatedResponse<InventoryItem>.fromResponse(
+      response,
       currentPage: page ?? 1,
+      fromJson: InventoryItem.fromJson,
     );
   }
 
@@ -87,12 +83,10 @@ class InventoryItemsRepository {
       '/inventory_items/low_quantity.json',
       queryParameters: ApiUtils.removeNulls({'page': page}),
     );
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => InventoryItem.fromJson(json)).toList();
-
-    return PaginatedResponse<InventoryItem>(
-      items: items,
+    return PaginatedResponse<InventoryItem>.fromResponse(
+      response,
       currentPage: page ?? 1,
+      fromJson: InventoryItem.fromJson,
     );
   }
 
@@ -105,12 +99,10 @@ class InventoryItemsRepository {
       '/inventory_items/search.json',
       queryParameters: ApiUtils.removeNulls({'query': query, 'page': page}),
     );
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => InventoryItem.fromJson(json)).toList();
-
-    return PaginatedResponse<InventoryItem>(
-      items: items,
+    return PaginatedResponse<InventoryItem>.fromResponse(
+      response,
       currentPage: page ?? 1,
+      fromJson: InventoryItem.fromJson,
     );
   }
 

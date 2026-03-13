@@ -27,10 +27,11 @@ class EventsRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Event.fromJson(json)).toList();
-
-    return PaginatedResponse<Event>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Event>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Event.fromJson,
+    );
   }
 
   /// Vrací seznam událostí o zaplacení (Events Paid).
@@ -52,9 +53,10 @@ class EventsRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Event.fromJson(json)).toList();
-
-    return PaginatedResponse<Event>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Event>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Event.fromJson,
+    );
   }
 }

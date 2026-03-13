@@ -30,10 +30,11 @@ class GeneratorsRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Generator.fromJson(json)).toList();
-
-    return PaginatedResponse<Generator>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Generator>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Generator.fromJson,
+    );
   }
 
   /// Detail šablony.

@@ -21,10 +21,11 @@ class TodosRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Todo.fromJson(json)).toList();
-
-    return PaginatedResponse<Todo>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Todo>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Todo.fromJson,
+    );
   }
 
   /// Označí úkol jako splněný nebo jej vrátí do stavu ke splnění.

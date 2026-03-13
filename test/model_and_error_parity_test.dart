@@ -169,6 +169,32 @@ void main() {
 
       expect(webhook.failedDeliveriesUuid, 'failed-uuid');
     });
+
+    test('paginated responses parse rate limit headers from docs', () {
+      final response = Response<dynamic>(
+        data: [
+          {'failed_deliveries_uuid': 'failed-uuid'},
+        ],
+        headers: Headers.fromMap({
+          'x-ratelimit-policy': ['default;q=400;w=60'],
+          'x-ratelimit': ['default;r=398;t=55'],
+        }),
+        requestOptions: RequestOptions(path: '/webhooks.json'),
+      );
+
+      final paginated = PaginatedResponse<Webhook>.fromResponse(
+        response,
+        currentPage: 2,
+        fromJson: Webhook.fromJson,
+      );
+
+      expect(paginated.currentPage, 2);
+      expect(paginated.rateLimit?.policyName, 'default');
+      expect(paginated.rateLimit?.quota, 400);
+      expect(paginated.rateLimit?.windowSeconds, 60);
+      expect(paginated.rateLimit?.remaining, 398);
+      expect(paginated.rateLimit?.resetInSeconds, 55);
+    });
   });
 
   group('error handling parity', () {
@@ -215,7 +241,14 @@ void main() {
 
     test('error interceptor maps 429 rate limit', () async {
       final adapter = RecordingAdapter(
-        onFetch: (_) => jsonResponseBody({'error': 'too_many_requests'}, 429),
+        onFetch: (_) => jsonResponseBody(
+          {'error': 'too_many_requests'},
+          429,
+          {
+            'x-ratelimit-policy': ['default;q=400;w=60'],
+            'x-ratelimit': ['default;r=0;t=12'],
+          },
+        ),
       );
       final dio = createTestDio(adapter);
       dio.interceptors.add(FakturoidErrorInterceptor());
@@ -226,7 +259,14 @@ void main() {
           isA<DioException>().having(
             (error) => error.error,
             'error',
-            isA<FakturoidRateLimitException>(),
+            isA<FakturoidRateLimitException>()
+                .having((error) => error.rateLimit?.quota, 'quota', 400)
+                .having((error) => error.rateLimit?.remaining, 'remaining', 0)
+                .having(
+                  (error) => error.rateLimit?.resetInSeconds,
+                  'resetInSeconds',
+                  12,
+                ),
           ),
         ),
       );

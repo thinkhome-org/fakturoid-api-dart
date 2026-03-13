@@ -28,12 +28,10 @@ class InventoryMovesRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => InventoryMove.fromJson(json)).toList();
-
-    return PaginatedResponse<InventoryMove>(
-      items: items,
+    return PaginatedResponse<InventoryMove>.fromResponse(
+      response,
       currentPage: page ?? 1,
+      fromJson: InventoryMove.fromJson,
     );
   }
 

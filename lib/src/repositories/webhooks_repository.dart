@@ -15,10 +15,11 @@ class WebhooksRepository {
       queryParameters: ApiUtils.removeNulls({'page': page}),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Webhook.fromJson(json)).toList();
-
-    return PaginatedResponse<Webhook>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Webhook>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Webhook.fromJson,
+    );
   }
 
   /// Detail webhooku.
@@ -52,7 +53,7 @@ class WebhooksRepository {
 
   /// Vrací nedoručené (neúspěšné) webhook zprávy pro zadaný UUID.
   /// Lze použít v případě, kdy Fakturoid nahlásí problém s doručením.
-  Future<List<WebhookFailedDelivery>> getFailedDeliveries(
+  Future<PaginatedResponse<WebhookFailedDelivery>> getFailedDeliveries(
     String failedDeliveriesUuid, {
     int? page,
   }) async {
@@ -61,7 +62,10 @@ class WebhooksRepository {
       queryParameters: ApiUtils.removeNulls({'page': page}),
     );
 
-    final List<dynamic> data = response.data;
-    return data.map((json) => WebhookFailedDelivery.fromJson(json)).toList();
+    return PaginatedResponse<WebhookFailedDelivery>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: WebhookFailedDelivery.fromJson,
+    );
   }
 }

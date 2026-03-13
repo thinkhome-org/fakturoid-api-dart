@@ -30,10 +30,11 @@ class SubjectsRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Subject.fromJson(json)).toList();
-
-    return PaginatedResponse<Subject>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Subject>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Subject.fromJson,
+    );
   }
 
   /// Vyhledává v kontaktech podle polí: name, full_name, email, email_copy, registration_no, vat_no, private_note.
@@ -49,10 +50,11 @@ class SubjectsRepository {
       queryParameters: ApiUtils.removeNulls({'query': query, 'page': page}),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Subject.fromJson(json)).toList();
-
-    return PaginatedResponse<Subject>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Subject>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Subject.fromJson,
+    );
   }
 
   /// Získá detail jednoho kontaktu podle jeho ID.

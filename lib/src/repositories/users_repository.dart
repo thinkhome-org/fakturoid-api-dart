@@ -30,9 +30,10 @@ class UsersRepository {
       queryParameters: page != null ? {'page': page} : null,
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => User.fromJson(json)).toList();
-
-    return PaginatedResponse<User>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<User>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: User.fromJson,
+    );
   }
 }

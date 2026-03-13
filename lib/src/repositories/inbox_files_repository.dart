@@ -16,10 +16,11 @@ class InboxFilesRepository {
       queryParameters: ApiUtils.removeNulls({'page': page}),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => InboxFile.fromJson(json)).toList();
-
-    return PaginatedResponse<InboxFile>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<InboxFile>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: InboxFile.fromJson,
+    );
   }
 
   Future<InboxFile> createInboxFile(

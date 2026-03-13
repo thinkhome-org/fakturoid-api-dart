@@ -50,10 +50,11 @@ class InvoicesRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Invoice.fromJson(json)).toList();
-
-    return PaginatedResponse<Invoice>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Invoice>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Invoice.fromJson,
+    );
   }
 
   /// Vyhledává ve fakturách pomocí fulltextu (vyhledává v čísle, variabilním symbolu, názvu kontaktu apod.).
@@ -73,10 +74,11 @@ class InvoicesRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data.map((json) => Invoice.fromJson(json)).toList();
-
-    return PaginatedResponse<Invoice>(items: items, currentPage: page ?? 1);
+    return PaginatedResponse<Invoice>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: Invoice.fromJson,
+    );
   }
 
   /// Získá detail jedné faktury podle ID.

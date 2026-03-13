@@ -30,14 +30,10 @@ class RecurringGeneratorsRepository {
       }),
     );
 
-    final List<dynamic> data = response.data;
-    final items = data
-        .map((json) => RecurringGenerator.fromJson(json))
-        .toList();
-
-    return PaginatedResponse<RecurringGenerator>(
-      items: items,
+    return PaginatedResponse<RecurringGenerator>.fromResponse(
+      response,
       currentPage: page ?? 1,
+      fromJson: RecurringGenerator.fromJson,
     );
   }
 

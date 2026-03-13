@@ -32,13 +32,20 @@ final class RecordingAdapter implements HttpClientAdapter {
   }
 }
 
-ResponseBody jsonResponseBody(Object? data, [int statusCode = 200]) {
+ResponseBody jsonResponseBody(
+  Object? data, [
+  int statusCode = 200,
+  Map<String, List<String>>? headers,
+]) {
+  final responseHeaders = <String, List<String>>{
+    Headers.contentTypeHeader: [Headers.jsonContentType],
+    ...?headers,
+  };
+
   return ResponseBody.fromBytes(
     Uint8List.fromList(utf8.encode(jsonEncode(data))),
     statusCode,
-    headers: {
-      Headers.contentTypeHeader: [Headers.jsonContentType],
-    },
+    headers: responseHeaders,
   );
 }
 
