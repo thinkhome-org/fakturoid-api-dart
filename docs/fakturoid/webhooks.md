@@ -2,27 +2,27 @@ Zavřít menu
 
 [Fakturoid web →](/)
 
-*   [Introduction](/api/v3)
-*   [Changelog](/api/v3/changelog)
-*   [Authorization](/api/v3/authorization)
-*   [Users](/api/v3/users)
-*   [Account](/api/v3/account)
-*   [Bank Accounts](/api/v3/bank-accounts)
-*   [Number Formats](/api/v3/number-formats)
-*   [Subjects](/api/v3/subjects)
-*   [Invoices](/api/v3/invoices)
-*   [Invoice Payments](/api/v3/invoice-payments)
-*   [Invoice Messages](/api/v3/invoice-messages)
-*   [Expenses](/api/v3/expenses)
-*   [Expense Payments](/api/v3/expense-payments)
-*   [Inbox Files](/api/v3/inbox-files)
-*   [Inventory Items](/api/v3/inventory-items)
-*   [Inventory Moves](/api/v3/inventory-moves)
-*   [Generators](/api/v3/generators)
-*   [Recurring Generators](/api/v3/recurring-generators)
-*   [Events](/api/v3/events)
-*   [Todos](/api/v3/todos)
-*   [Webhooks](/api/v3/webhooks)
+*   [Introduction](https://fakturoid.cz/api/v3)
+*   [Changelog](https://fakturoid.cz/api/v3/changelog)
+*   [Authorization](https://fakturoid.cz/api/v3/authorization)
+*   [Users](https://fakturoid.cz/api/v3/users)
+*   [Account](https://fakturoid.cz/api/v3/account)
+*   [Bank Accounts](https://fakturoid.cz/api/v3/bank-accounts)
+*   [Number Formats](https://fakturoid.cz/api/v3/number-formats)
+*   [Subjects](https://fakturoid.cz/api/v3/subjects)
+*   [Invoices](https://fakturoid.cz/api/v3/invoices)
+*   [Invoice Payments](https://fakturoid.cz/api/v3/invoice-payments)
+*   [Invoice Messages](https://fakturoid.cz/api/v3/invoice-messages)
+*   [Expenses](https://fakturoid.cz/api/v3/expenses)
+*   [Expense Payments](https://fakturoid.cz/api/v3/expense-payments)
+*   [Inbox Files](https://fakturoid.cz/api/v3/inbox-files)
+*   [Inventory Items](https://fakturoid.cz/api/v3/inventory-items)
+*   [Inventory Moves](https://fakturoid.cz/api/v3/inventory-moves)
+*   [Generators](https://fakturoid.cz/api/v3/generators)
+*   [Recurring Generators](https://fakturoid.cz/api/v3/recurring-generators)
+*   [Events](https://fakturoid.cz/api/v3/events)
+*   [Todos](https://fakturoid.cz/api/v3/todos)
+*   [Webhooks](https://fakturoid.cz/api/v3/webhooks)
     *   [Attributes](#attributes)
     *   [Webhook index](#webhook-index)
     *   [Webhook Detail](#webhook-detail)
@@ -127,7 +127,7 @@ Date and time of last webhook update
 
 *   Webhooks are only available in paid plans.
 *   Every account can create webhooks in their account in Fakturoid UI. How to create webhooks in your account see the [support page (cz)](/podpora/automatizace/webhooky).
-*   In addition to the UI, new webhooks can also be created and managed via API using both the [authorization code flow](/api/v3/authorization#authorization-code-flow) and the [client credentials flow](/api/v3/authorization#client-credentials-flow):
+*   In addition to the UI, new webhooks can also be created and managed via API using both the [authorization code flow](https://fakturoid.cz/api/v3/authorization#authorization-code-flow) and the [client credentials flow](https://fakturoid.cz/api/v3/authorization#client-credentials-flow):
 *   **Authorization code flow**
     *   To manage webhooks via API, please [contact our support team](mailto:podpora@fakturoid.cz) first. Without prior authorization, a `Status 403` response will be returned
 *   **Client credentials flow**
@@ -1131,7 +1131,7 @@ Date and time of the event
 
 Event payload
 
-The body contains a resources related to event. For instance, when an invoice is created, the body contains an `invoice` key with the serialized [Invoice](/api/v3/invoices#attributes) object. When additional attributes are listed in the table, they are also included in the body object. More information may be found in the attributes section of API documentation related to the resource.
+The body contains a resources related to event. For instance, when an invoice is created, the body contains an `invoice` key with the serialized [Invoice](https://fakturoid.cz/api/v3/invoices#attributes) object. When additional attributes are listed in the table, they are also included in the body object. More information may be found in the attributes section of API documentation related to the resource.
 
 For example, when an invoice is paid, a payment object is included in the body object. Thus JSON contains an `invoice` object and a `payment` object under the `body` key.
 
@@ -1244,5 +1244,5 @@ Payload example for bulk action
 
 * * *
 
-1.  [API v3](/api/v3)→
-2.  [Webhooks](/api/v3/webhooks)
+1.  [API v3](https://fakturoid.cz/api/v3)→
+2.  [Webhooks](https://fakturoid.cz/api/v3/webhooks)

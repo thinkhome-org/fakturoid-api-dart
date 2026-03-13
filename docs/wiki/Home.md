@@ -20,15 +20,5 @@ Vítejte v oficiální dokumentaci pro Dart/Flutter SDK služby Fakturoid (API v
 
 SDK je rozděleno na specializované repozitáře přístupné skrze hlavní `FakturoidClient`. Každý repozitář odpovídá jedné sekci v oficiální dokumentaci.
 
-```mermaid
-graph TD
-    Client[FakturoidClient] --> Auth[AuthRepository]
-    Client --> Invoices[InvoicesRepository]
-    Client --> Subjects[SubjectsRepository]
-    Client --> Expenses[ExpensesRepository]
-    Client --> Inventory[InventoryRepository]
-    Client --> Others[...]
-```
-
 ---
 *Dokumentace je platná pro verzi SDK 0.0.1 a Fakturoid API v3 (stav k březnu 2026).*

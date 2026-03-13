@@ -8,24 +8,33 @@ Fakturoid API v3 využívá výhradně **OAuth 2.0**. SDK podporuje oba hlavní 
 Ideální pro skripty nebo interní nástroje, kde neběží interakce s koncovým uživatelem.
 
 ```dart
-final client = FakturoidClient(...);
-await client.auth.loginWithClientCredentials();
-// SDK nyní automaticky spravuje accessToken
+Future<void> main() async {
+  final client = FakturoidClient(
+    slug: 'mojefirma',
+    clientId: 'CLIENT_ID',
+    clientSecret: 'CLIENT_SECRET',
+    redirectUri: 'https://example.com/callback',
+    userAgent: 'MojeApp (jan@novak.cz)',
+  );
+
+  await client.auth.loginWithClientCredentials();
+  // SDK nyní automaticky spravuje accessToken
+}
 ```
 
 ### 2. Authorization Code Flow s PKCE (Pro uživatelské aplikace)
 Standardní tok pro webové a mobilní aplikace, kde se uživatel přihlašuje přes prohlížeč.
 
 ```dart
-final client = FakturoidClient(...);
+Future<void> login(FakturoidClient client) async {
+  // A) Získání URL pro prohlížeč
+  final authUrl = await client.auth.getAuthorizationUrl();
+  // Otevřete authUrl v in-app browseru
 
-// A) Získání URL pro prohlížeč
-final authUrl = await client.auth.getAuthorizationUrl();
-// Otevřete authUrl v in-app browseru
-
-// B) Po přesměrování zpět do aplikace získáte callback URI
-final callbackUri = Uri.parse('mojeapp://callback?code=...&state=...');
-await client.auth.exchangeAuthorizationCode(callbackUri);
+  // B) Po přesměrování zpět do aplikace získáte callback URI
+  final callbackUri = Uri.parse('mojeapp://callback?code=CODE&state=STATE');
+  await client.auth.exchangeAuthorizationCode(callbackUri);
+}
 ```
 
 ## 💾 Správa tokenů (TokenStorage)
@@ -39,10 +48,41 @@ Můžete implementovat vlastní úložiště pomocí rozhraní `TokenStorage`:
 ```dart
 class MyDatabaseTokenStorage implements TokenStorage {
   @override
-  Future<void> saveTokens({required String accessToken, ...}) async {
+  Future<void> saveTokens({
+    required String accessToken,
+    String? refreshToken,
+    required String tokenType,
+    required DateTime expiresAt,
+  }) async {
     // Uložit do vaší DB
   }
-  // ... implementace dalších metod
+
+  @override
+  Future<Map<String, String?>> getTokens() async {
+    return {
+      'accessToken': '...',
+      'refreshToken': '...',
+      'tokenType': 'Bearer',
+      'expiresAt': '...',
+    };
+  }
+
+  @override
+  Future<void> clearAll() async {
+    // Smazat z DB
+  }
+
+  @override
+  Future<void> saveAuthState(String state) async {}
+
+  @override
+  Future<String?> getAuthState() async => null;
+
+  @override
+  Future<void> savePkceVerifier(String verifier) async {}
+
+  @override
+  Future<String?> getPkceVerifier() async => null;
 }
 ```
 

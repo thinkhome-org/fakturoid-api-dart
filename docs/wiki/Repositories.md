@@ -12,7 +12,7 @@ Každý repozitář v SDK je přístupný skrze instanci `FakturoidClient` a odp
 | `inventoryItems` | Skladové položky a ceník. | CRUD, `archiveItem`, `unarchiveItem`. |
 | `inventoryMoves` | Skladové pohyby (naskladnění/vyskladnění). | CRUD, globální seznam, vnořené detaily. |
 | `generators` | Šablony faktur (Generátory). | CRUD. |
-| `recurringGenerators`| Pravidelné faktury. | CRUD, `pause`, `activate`. |
+| `recurringGenerators` | Pravidelné faktury. | CRUD, `pause`, `activate`. |
 | `invoicePayments` | Platby k fakturám. | CRUD, `createTaxDocument`. |
 | `expensePayments` | Platby k nákladům. | CRUD. |
 | `invoiceMessages` | Odesílání faktur e-mailem. | `createMessage`. |
@@ -32,14 +32,18 @@ Většina metod pro získání seznamu (`getInvoices`, `getSubjects` atd.) podpo
 *   `page` – Stránkování (standardně 40 záznamů).
 *   `since`, `until` – Filtrování podle data.
 *   `status` – Stav dokladu (např. `InvoiceStatus.paid`).
-*   `tags[]` – Filtrování podle štítků (podporuje pole stringů).
+*   `tags` – Filtrování podle štítků (podporuje pole stringů).
 
 ## 🚀 Hromadné operace (Bulk)
 
 SDK podporuje hromadné operace tam, kde je API v3 nabízí:
+
 ```dart
-await client.invoices.bulkDelete([101, 102, 103]);
-await client.invoices.bulkFireAction([101, 102], InvoiceFireAction.markAsSent);
+Future<void> bulkOperations(FakturoidClient client) async {
+  final ids = <int>[101, 102, 103];
+  await client.invoices.bulkDelete(ids);
+  await client.invoices.bulkFireAction(ids, InvoiceFireAction.markAsSent);
+}
 ```
 
 ---

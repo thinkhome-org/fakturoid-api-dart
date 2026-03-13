@@ -23,9 +23,9 @@ import 'package:fakturoid_api/fakturoid_api.dart';
 
 final client = FakturoidClient(
   slug: 'mojefirma',
-  clientId: '...',
-  clientSecret: '...',
-  redirectUri: '...',
+  clientId: 'CLIENT_ID',
+  clientSecret: 'CLIENT_SECRET',
+  redirectUri: 'https://example.com/callback',
   userAgent: 'MojeApp (jan@novak.cz)',
 );
 ```
@@ -34,28 +34,33 @@ final client = FakturoidClient(
 
 ### Načtení detailu účtu
 ```dart
-final account = await client.account.getAccount();
-print('Název firmy: ${account.name}');
+Future<void> showAccountName(FakturoidClient client) async {
+  final account = await client.account.getAccount();
+  print('Název firmy: ${account.name}');
+}
 ```
 
 ### Seznam posledních faktur
 ```dart
-final response = await client.invoices.getInvoices(page: 1);
-for (var invoice in response.items) {
-  print('Faktura č. ${invoice.number} pro ${invoice.subjectName}');
+Future<void> listInvoices(FakturoidClient client) async {
+  final response = await client.invoices.getInvoices(page: 1);
+  for (final invoice in response.items) {
+    print('Faktura č. ${invoice.number} pro ${invoice.subjectName}');
+  }
 }
 ```
 
 ### Vytvoření nového kontaktu
 ```dart
-final newSubject = Subject(
-  name: 'Bruce Wayne',
-  email: 'bruce@wayne.com',
-  type: SubjectType.customer,
-);
+Future<void> createSubject(FakturoidClient client) async {
+  final newSubject = Subject(
+    name: 'Bruce Wayne',
+    email: 'bruce@wayne.com',
+  );
 
-final created = await client.subjects.createSubject(newSubject);
-print('Vytvořen subjekt s ID: ${created.id}');
+  final created = await client.subjects.createSubject(newSubject);
+  print('Vytvořen subjekt s ID: ${created.id}');
+}
 ```
 
 ## 🛠 Doporučené postupy

@@ -32,9 +32,9 @@ import 'package:fakturoid_api/fakturoid_api.dart';
 void main() async {
   final client = FakturoidClient(
     slug: 'mojefirma',
-    clientId: '...',
-    clientSecret: '...',
-    redirectUri: '...',
+    clientId: 'CLIENT_ID',
+    clientSecret: 'CLIENT_SECRET',
+    redirectUri: 'https://example.com/callback',
     userAgent: 'MojeApp (jan@novak.cz)',
   );
 
@@ -42,10 +42,15 @@ void main() async {
   await client.auth.loginWithClientCredentials();
 
   // Vytvoření faktury
-  final invoice = await client.invoices.createInvoice(Invoice(
+  final invoice = await client.invoices.createInvoice(const Invoice(
     subjectId: 12345,
     lines: [
-      InvoiceLine(name: 'Služby', quantity: '1', unitPrice: '1000', vatRate: 21),
+      InvoiceLine(
+        name: 'Služby',
+        quantity: '1',
+        unitPrice: '1000',
+        vatRate: 21,
+      ),
     ],
   ));
 

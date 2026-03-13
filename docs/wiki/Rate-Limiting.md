@@ -10,10 +10,13 @@ Standardní limit je **400 požadavků za minutu** na jeden uživatelský účet
 Každá výjimka vyvolaná API voláním (`FakturoidException`) obsahuje objekt `FakturoidRateLimit`, pokud jsou tyto informace v odpovědi dostupné:
 
 ```dart
-try {
-  await client.invoices.getInvoices();
-} on FakturoidRateLimitException catch (e) {
-  print('Limit vyčerpán! Reset za: ${e.rateLimit?.resetInSeconds} sekund');
+Future<void> checkInvoices(FakturoidClient client) async {
+  try {
+    await client.invoices.getInvoices();
+  } on FakturoidRateLimitException catch (e) {
+    final reset = e.rateLimit?.resetInSeconds;
+    print('Limit vyčerpán! Reset za: $reset sekund');
+  }
 }
 ```
 
@@ -29,18 +32,20 @@ Všechny výjimky dědí z `FakturoidException`:
 | Výjimka | HTTP Kód | Popis |
 | :--- | :--- | :--- |
 | `FakturoidAuthException` | 401, 403 | Problém s tokenem nebo oprávněním. |
-| `FakturoidNotFoundException`| 404 | Prostředek (např. faktura s daným ID) neexistuje. |
-| `FakturoidValidationException`| 422 | Chyba v datech (např. neplatné IČO). Obsahuje mapu `errors`. |
+| `FakturoidNotFoundException` | 404 | Prostředek (např. faktura s daným ID) neexistuje. |
+| `FakturoidValidationException` | 422 | Chyba v datech (např. neplatné IČO). Obsahuje mapu `errors`. |
 | `FakturoidRateLimitException` | 429 | Překročen limit požadavků. |
 | `FakturoidApiErrorException` | 4xx, 5xx | Ostatní chyby serveru. |
 
 ### Příklad ošetření validace
 ```dart
-try {
-  await client.subjects.createSubject(Subject(name: ''));
-} on FakturoidValidationException catch (e) {
-  // e.errors obsahuje detaily, např. {name: [can't be blank]}
-  print('Chyba validace: ${e.errors}');
+Future<void> createSubject(FakturoidClient client) async {
+  try {
+    await client.subjects.createSubject(const Subject(name: ''));
+  } on FakturoidValidationException catch (e) {
+    // e.errors obsahuje detaily, např. {name: [can't be blank]}
+    print('Chyba validace: ${e.errors}');
+  }
 }
 ```
 

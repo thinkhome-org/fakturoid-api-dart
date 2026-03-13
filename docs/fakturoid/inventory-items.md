@@ -2,21 +2,21 @@ Zavřít menu
 
 [Fakturoid web →](/)
 
-*   [Introduction](/api/v3)
-*   [Changelog](/api/v3/changelog)
-*   [Authorization](/api/v3/authorization)
-*   [Users](/api/v3/users)
-*   [Account](/api/v3/account)
-*   [Bank Accounts](/api/v3/bank-accounts)
-*   [Number Formats](/api/v3/number-formats)
-*   [Subjects](/api/v3/subjects)
-*   [Invoices](/api/v3/invoices)
-*   [Invoice Payments](/api/v3/invoice-payments)
-*   [Invoice Messages](/api/v3/invoice-messages)
-*   [Expenses](/api/v3/expenses)
-*   [Expense Payments](/api/v3/expense-payments)
-*   [Inbox Files](/api/v3/inbox-files)
-*   [Inventory Items](/api/v3/inventory-items)
+*   [Introduction](https://fakturoid.cz/api/v3)
+*   [Changelog](https://fakturoid.cz/api/v3/changelog)
+*   [Authorization](https://fakturoid.cz/api/v3/authorization)
+*   [Users](https://fakturoid.cz/api/v3/users)
+*   [Account](https://fakturoid.cz/api/v3/account)
+*   [Bank Accounts](https://fakturoid.cz/api/v3/bank-accounts)
+*   [Number Formats](https://fakturoid.cz/api/v3/number-formats)
+*   [Subjects](https://fakturoid.cz/api/v3/subjects)
+*   [Invoices](https://fakturoid.cz/api/v3/invoices)
+*   [Invoice Payments](https://fakturoid.cz/api/v3/invoice-payments)
+*   [Invoice Messages](https://fakturoid.cz/api/v3/invoice-messages)
+*   [Expenses](https://fakturoid.cz/api/v3/expenses)
+*   [Expense Payments](https://fakturoid.cz/api/v3/expense-payments)
+*   [Inbox Files](https://fakturoid.cz/api/v3/inbox-files)
+*   [Inventory Items](https://fakturoid.cz/api/v3/inventory-items)
     *   [Attributes](#attributes)
     *   [Items Index](#items-index)
     *   [Archived Items](#archived-items)
@@ -28,12 +28,12 @@ Zavřít menu
     *   [Delete Item](#delete-item)
     *   [Archive Item](#archive-item)
     *   [Unarchive Item](#unarchive-item)
-*   [Inventory Moves](/api/v3/inventory-moves)
-*   [Generators](/api/v3/generators)
-*   [Recurring Generators](/api/v3/recurring-generators)
-*   [Events](/api/v3/events)
-*   [Todos](/api/v3/todos)
-*   [Webhooks](/api/v3/webhooks)
+*   [Inventory Moves](https://fakturoid.cz/api/v3/inventory-moves)
+*   [Generators](https://fakturoid.cz/api/v3/generators)
+*   [Recurring Generators](https://fakturoid.cz/api/v3/recurring-generators)
+*   [Events](https://fakturoid.cz/api/v3/events)
+*   [Todos](https://fakturoid.cz/api/v3/todos)
+*   [Webhooks](https://fakturoid.cz/api/v3/webhooks)
 
 # Inventory Items
 
@@ -1348,5 +1348,5 @@ Inventory item ID
 
 * * *
 
-1.  [API v3](/api/v3)→
-2.  [Inventory Items](/api/v3/inventory-items)
+1.  [API v3](https://fakturoid.cz/api/v3)→
+2.  [Inventory Items](https://fakturoid.cz/api/v3/inventory-items)

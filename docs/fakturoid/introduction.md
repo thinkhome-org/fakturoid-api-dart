@@ -2,27 +2,27 @@ Zavřít menu
 
 [Fakturoid web →](/)
 
-*   [Introduction](/api/v3)
-*   [Changelog](/api/v3/changelog)
-*   [Authorization](/api/v3/authorization)
-*   [Users](/api/v3/users)
-*   [Account](/api/v3/account)
-*   [Bank Accounts](/api/v3/bank-accounts)
-*   [Number Formats](/api/v3/number-formats)
-*   [Subjects](/api/v3/subjects)
-*   [Invoices](/api/v3/invoices)
-*   [Invoice Payments](/api/v3/invoice-payments)
-*   [Invoice Messages](/api/v3/invoice-messages)
-*   [Expenses](/api/v3/expenses)
-*   [Expense Payments](/api/v3/expense-payments)
-*   [Inbox Files](/api/v3/inbox-files)
-*   [Inventory Items](/api/v3/inventory-items)
-*   [Inventory Moves](/api/v3/inventory-moves)
-*   [Generators](/api/v3/generators)
-*   [Recurring Generators](/api/v3/recurring-generators)
-*   [Events](/api/v3/events)
-*   [Todos](/api/v3/todos)
-*   [Webhooks](/api/v3/webhooks)
+*   [Introduction](https://fakturoid.cz/api/v3)
+*   [Changelog](https://fakturoid.cz/api/v3/changelog)
+*   [Authorization](https://fakturoid.cz/api/v3/authorization)
+*   [Users](https://fakturoid.cz/api/v3/users)
+*   [Account](https://fakturoid.cz/api/v3/account)
+*   [Bank Accounts](https://fakturoid.cz/api/v3/bank-accounts)
+*   [Number Formats](https://fakturoid.cz/api/v3/number-formats)
+*   [Subjects](https://fakturoid.cz/api/v3/subjects)
+*   [Invoices](https://fakturoid.cz/api/v3/invoices)
+*   [Invoice Payments](https://fakturoid.cz/api/v3/invoice-payments)
+*   [Invoice Messages](https://fakturoid.cz/api/v3/invoice-messages)
+*   [Expenses](https://fakturoid.cz/api/v3/expenses)
+*   [Expense Payments](https://fakturoid.cz/api/v3/expense-payments)
+*   [Inbox Files](https://fakturoid.cz/api/v3/inbox-files)
+*   [Inventory Items](https://fakturoid.cz/api/v3/inventory-items)
+*   [Inventory Moves](https://fakturoid.cz/api/v3/inventory-moves)
+*   [Generators](https://fakturoid.cz/api/v3/generators)
+*   [Recurring Generators](https://fakturoid.cz/api/v3/recurring-generators)
+*   [Events](https://fakturoid.cz/api/v3/events)
+*   [Todos](https://fakturoid.cz/api/v3/todos)
+*   [Webhooks](https://fakturoid.cz/api/v3/webhooks)
 
 # API v3
 
@@ -41,7 +41,7 @@ For example if the account name is `applecorp`, the URL will look like this:
 
 `https://app.fakturoid.cz/api/v3/accounts/applecorp/invoices.json`
 
-List of all accounts for the current user can be obtained via [current user endpoint](/api/v3/users#current-user).
+List of all accounts for the current user can be obtained via [current user endpoint](https://fakturoid.cz/api/v3/users#current-user).
 
 ### [Identification](#identification)
 
@@ -59,7 +59,7 @@ Requests requesting a different type of response will receive `415 Unsupported 
 
 ## [Authorization](#authorization)
 
-Fakturoid supports [OAuth 2 protocol](/api/v3/authorization) for authorization.
+Fakturoid supports [OAuth 2 protocol](https://fakturoid.cz/api/v3/authorization) for authorization.
 
 ## [Pagination](#pagination)
 
@@ -120,5 +120,5 @@ If the Fakturoid account is blocked due to an overdue invoice from Fakturoid, t
 
 * * *
 
-1.  [API v3](/api/v3)→
-2.  [API v3](/api/v3)
+1.  [API v3](https://fakturoid.cz/api/v3)→
+2.  [API v3](https://fakturoid.cz/api/v3)
