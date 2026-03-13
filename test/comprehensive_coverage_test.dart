@@ -168,7 +168,7 @@ void main() {
       await client.todos.toggleCompletion(1);
       expect(
         adapter.lastRequestOptions?.path,
-        'todos/1/toggle.json',
+        'todos/1/toggle_completion.json',
       );
     });
 

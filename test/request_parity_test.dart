@@ -1199,12 +1199,12 @@ void main() {
       expect(adapter.lastRequestOptions?.path, 'inbox_files/1/download');
 
       final todoRepo = TodosRepository(dio);
-      await todoRepo.toggleCompletion(1);
+      await repository.toggleCompletion(1);
       expect(
         adapter.lastRequestOptions?.path,
-        'todos/1/toggle.json',
+        'todos/1/toggle_completion.json',
       );
-      expect(adapter.lastRequestOptions?.method, 'PATCH');
+      expect(adapter.lastRequestOptions?.method, 'POST');
 
       final eventRepo = EventsRepository(dio);
       await eventRepo.getEventsPaid();

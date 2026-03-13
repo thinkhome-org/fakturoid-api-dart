@@ -83,7 +83,8 @@ class FakturoidClient {
     _accountDio = Dio(_rootDio.options.copyWith());
     _accountDio.httpClientAdapter = _rootDio.httpClientAdapter;
     final rootBaseUrl = _rootDio.options.baseUrl.endsWith('/')
-        ? _rootDio.options.baseUrl.substring(0, _rootDio.options.baseUrl.length - 1)
+        ? _rootDio.options.baseUrl
+            .substring(0, _rootDio.options.baseUrl.length - 1)
         : _rootDio.options.baseUrl;
     _accountDio.options.baseUrl = '$rootBaseUrl/accounts/$slug/';
 

@@ -30,7 +30,7 @@ class TodosRepository {
 
   /// Označí úkol jako splněný nebo jej vrátí do stavu ke splnění.
   Future<Todo> toggleCompletion(int id) async {
-    final response = await _dio.patch('todos/$id/toggle.json');
+    final response = await _dio.post('todos/$id/toggle_completion.json');
     return Todo.fromJson(response.data);
   }
 }
