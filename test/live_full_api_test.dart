@@ -120,18 +120,6 @@ String _resolveSlug(User user) {
   throw StateError('Unable to resolve Fakturoid account slug from /user.json.');
 }
 
-FakturoidValidationException? _validationError(Object error) {
-  if (error is FakturoidValidationException) {
-    return error;
-  }
-
-  if (error is DioException && error.error is FakturoidValidationException) {
-    return error.error as FakturoidValidationException;
-  }
-
-  return null;
-}
-
 FakturoidAuthException? _authError(Object error) {
   if (error is FakturoidAuthException) {
     return error;
@@ -172,7 +160,7 @@ Invoice _buildInvoice(_LiveContext context, String suffix) {
   return Invoice(
     subjectId: context.baseSubject.id!,
     documentType: DocumentType.proforma,
-    proformaFollowupDocument: ProformaFollowupDocument.taxDocument,
+    proformaFollowupDocument: ProformaFollowupDocument.none,
     numberFormatId: context.numberFormatId,
     variableSymbol: _variableSymbol('I', context.runId),
     privateNote: 'OpenCode invoice $suffix',
@@ -208,13 +196,14 @@ RecurringGenerator _buildRecurringGenerator(
   _LiveContext context,
   String suffix,
 ) {
-  final today = _isoDate(DateTime.now().toUtc());
+  final nextRun = _isoDate(DateTime.now().toUtc().add(const Duration(days: 7)));
 
   return RecurringGenerator(
     name: 'OpenCode recurring $suffix',
     subjectId: context.baseSubject.id!,
     active: true,
-    startDate: today,
+    startDate: nextRun,
+    nextOccurrenceOn: nextRun,
     monthsPeriod: 1,
     sendEmail: false,
     note: 'Recurring $suffix',
@@ -484,6 +473,7 @@ void main() {
             amount: '100.00',
             paidOn: _isoDate(DateTime.now().toUtc()),
             bankAccountId: context.bankAccountId,
+            proformaFollowupDocument: ProformaFollowupDocument.none,
           ),
         );
         _reportPreservedFixture('invoice-payment', payment.id);
@@ -496,20 +486,8 @@ void main() {
           deliverNow: false,
         );
 
-        InvoicePayment? taxDocument;
-        FakturoidValidationException? taxDocumentError;
-
-        try {
-          taxDocument = await context.client.invoicePayments.createTaxDocument(
-            invoiceId,
-            payment.id!,
-          );
-        } catch (error) {
-          taxDocumentError = _validationError(error);
-          if (taxDocumentError == null) {
-            rethrow;
-          }
-        }
+        final taxDocument = await context.client.invoicePayments
+            .createTaxDocument(invoiceId, payment.id!);
 
         expect(listed.items.any((item) => item.id == invoiceId), isTrue);
         expect(searched.items, isA<List<Invoice>>());
@@ -520,16 +498,9 @@ void main() {
         expect(invoiceAttachmentBytes, isNotNull);
         expect(invoiceAttachmentBytes, isNotEmpty);
         expect(payment.id, isNotNull);
-        if (taxDocument != null) {
-          expect(taxDocument.id, isNotNull);
-          _reportPreservedFixture('tax-document', taxDocument.id);
-        }
-        if (taxDocumentError != null) {
-          expect(
-            taxDocumentError.errors['document'] ?? const <Object>[],
-            contains('Tax document already created'),
-          );
-        }
+        expect(taxDocument.id, isNotNull);
+        expect(taxDocument.taxDocumentId, isNotNull);
+        _reportPreservedFixture('tax-document', taxDocument.taxDocumentId);
 
         final paymentId = payment.id!;
         if (!_shouldPreserveFixtures) {
@@ -809,13 +780,11 @@ void main() {
               ).copyWith(note: 'updated-$suffix'),
             );
 
-        await context.client.recurringGenerators.pause(recurringId);
-
-        await _ignoreErrors(
-          () => context.client.recurringGenerators.activate(
-            recurringId,
-            nextOccurrenceOn: '2099-12-31',
-          ),
+        final paused = await context.client.recurringGenerators.pause(
+          recurringId,
+        );
+        final activated = await context.client.recurringGenerators.activate(
+          recurringId,
         );
 
         expect(listed.items.any((entry) => entry.id == generatorId), isTrue);
@@ -827,6 +796,8 @@ void main() {
         );
         expect(recurringFetched.id, recurringId);
         expect(recurringUpdated.note, 'updated-$suffix');
+        expect(paused.active, isFalse);
+        expect(activated.active, isTrue);
       } finally {
         final recurringId = recurringGenerator?.id;
         final generatorId = generator?.id;
