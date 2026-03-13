@@ -70,7 +70,7 @@ class InvoicesRepository {
       queryParameters: ApiUtils.removeNulls({
         'query': query,
         'page': page,
-        'tags': tags,
+        'tags[]': tags,
       }),
     );
 
@@ -115,7 +115,7 @@ class InvoicesRepository {
   Future<void> fireAction(int id, InvoiceFireAction action) async {
     await _dio.post(
       '/invoices/$id/fire.json',
-      queryParameters: {'event': action.value},
+      data: {'event': action.value},
     );
   }
 

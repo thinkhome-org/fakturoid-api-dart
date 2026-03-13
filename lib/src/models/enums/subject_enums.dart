@@ -26,3 +26,18 @@ enum WebinvoiceHistory {
   @JsonValue('client_portal')
   clientPortal,
 }
+
+enum SubjectFireAction {
+  archive('archive'),
+  unarchive('unarchive');
+
+  final String value;
+  const SubjectFireAction(this.value);
+}
+
+enum SubjectStatus {
+  @JsonValue('active')
+  active,
+  @JsonValue('archived')
+  archived,
+}

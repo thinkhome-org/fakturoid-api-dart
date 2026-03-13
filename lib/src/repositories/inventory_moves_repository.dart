@@ -43,13 +43,21 @@ class InventoryMovesRepository {
     DateTime? updatedUntil,
     int? page,
   }) async {
-    return getAllInventoryMoves(
-      since: since,
-      until: until,
-      updatedSince: updatedSince,
-      updatedUntil: updatedUntil,
-      inventoryItemId: inventoryItemId,
-      page: page,
+    final response = await _dio.get(
+      '/inventory_items/$inventoryItemId/inventory_moves.json',
+      queryParameters: ApiUtils.removeNulls({
+        'since': since?.toIso8601String(),
+        'until': until?.toIso8601String(),
+        'updated_since': updatedSince?.toIso8601String(),
+        'updated_until': updatedUntil?.toIso8601String(),
+        'page': page,
+      }),
+    );
+
+    return PaginatedResponse<InventoryMove>.fromResponse(
+      response,
+      currentPage: page ?? 1,
+      fromJson: InventoryMove.fromJson,
     );
   }
 

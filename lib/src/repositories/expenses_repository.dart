@@ -74,7 +74,7 @@ class ExpensesRepository {
       queryParameters: ApiUtils.removeNulls({
         'query': query,
         'page': page,
-        'tags': tags,
+        'tags[]': tags,
       }),
     );
 
@@ -114,13 +114,14 @@ class ExpensesRepository {
     await _dio.delete('/expenses/$id.json');
   }
 
-  /// Provede akci s nákladem (zamknout/odemknout).
+  /// Provede akci s nákladem (např. uzamčení).
   Future<void> fireAction(int id, ExpenseFireAction action) async {
     await _dio.post(
       '/expenses/$id/fire.json',
-      queryParameters: {'event': action.value},
+      data: {'event': action.value},
     );
   }
+
 
   /// Stáhne konkrétní přílohu z nákladu jako pole bajtů.
   Future<Uint8List> downloadAttachment(int expenseId, int attachmentId) async {

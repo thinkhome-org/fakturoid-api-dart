@@ -1,0 +1,522 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'estimate.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+
+/// @nodoc
+mixin _$Estimate {
+
+ int? get id;@JsonKey(name: 'custom_id') String? get customId;@JsonKey(name: 'document_type') EstimateDocumentType? get documentType; String? get number;@JsonKey(name: 'number_format_id') int? get numberFormatId;@JsonKey(name: 'your_name') String? get yourName;@JsonKey(name: 'your_street') String? get yourStreet;@JsonKey(name: 'your_city') String? get yourCity;@JsonKey(name: 'your_zip') String? get yourZip;@JsonKey(name: 'your_country') String? get yourCountry;@JsonKey(name: 'your_registration_no') String? get yourRegistrationNo;@JsonKey(name: 'your_vat_no') String? get yourVatNo;@JsonKey(name: 'your_local_vat_no') String? get yourLocalVatNo;@JsonKey(name: 'client_name') String? get clientName;@JsonKey(name: 'client_street') String? get clientStreet;@JsonKey(name: 'client_city') String? get clientCity;@JsonKey(name: 'client_zip') String? get clientZip;@JsonKey(name: 'client_country') String? get clientCountry;@JsonKey(name: 'client_has_delivery_address') bool? get clientHasDeliveryAddress;@JsonKey(name: 'client_delivery_name') String? get clientDeliveryName;@JsonKey(name: 'client_delivery_street') String? get clientDeliveryStreet;@JsonKey(name: 'client_delivery_city') String? get clientDeliveryCity;@JsonKey(name: 'client_delivery_zip') String? get clientDeliveryZip;@JsonKey(name: 'client_delivery_country') String? get clientDeliveryCountry;@JsonKey(name: 'client_registration_no') String? get clientRegistrationNo;@JsonKey(name: 'client_vat_no') String? get clientVatNo;@JsonKey(name: 'client_local_vat_no') String? get clientLocalVatNo;@JsonKey(name: 'subject_id') int get subjectId;@JsonKey(name: 'subject_custom_id') String? get subjectCustomId; String? get token; EstimateStatus? get status;@JsonKey(name: 'order_number') String? get orderNumber;@JsonKey(name: 'issued_on') String? get issuedOn;@JsonKey(name: 'taxable_fulfillment_due') String? get taxableFulfillmentDue; int? get due;@JsonKey(name: 'due_on') String? get dueOn;@JsonKey(name: 'sent_at') DateTime? get sentAt;@JsonKey(name: 'accepted_at') DateTime? get acceptedAt;@JsonKey(name: 'rejected_at') DateTime? get rejectedAt;@JsonKey(name: 'cancelled_at') DateTime? get cancelledAt;@JsonKey(name: 'locked_at') DateTime? get lockedAt; String? get note;@JsonKey(name: 'footer_note') String? get footerNote;@JsonKey(name: 'private_note') String? get privateNote; List<String>? get tags;@JsonKey(name: 'bank_account_id') int? get bankAccountId;@JsonKey(name: 'bank_account') String? get bankAccount; String? get iban;@JsonKey(name: 'swift_bic') String? get swiftBic;@JsonKey(name: 'payment_method') PaymentMethod? get paymentMethod; String? get currency;@JsonKey(name: 'exchange_rate') String? get exchangeRate; DocumentLanguage? get language;@JsonKey(name: 'transferred_tax_liability') bool? get transferredTaxLiability;@JsonKey(name: 'supply_code') String? get supplyCode; OssMode? get oss;@JsonKey(name: 'vat_price_mode') VatPriceMode? get vatPriceMode;@JsonKey(name: 'round_total') bool? get roundTotal; String? get subtotal; String? get total;@JsonKey(name: 'native_subtotal') String? get nativeSubtotal;@JsonKey(name: 'native_total') String? get nativeTotal; List<InvoiceLine>? get lines;@JsonKey(name: 'vat_rates_summary') List<VatRateSummary>? get vatRatesSummary; List<DocumentAttachment>? get attachments;@JsonKey(name: 'html_url') String? get htmlUrl;@JsonKey(name: 'public_html_url') String? get publicHtmlUrl; String? get url;@JsonKey(name: 'pdf_url') String? get pdfUrl;@JsonKey(name: 'subject_url') String? get subjectUrl;@JsonKey(name: 'created_at') DateTime? get createdAt;@JsonKey(name: 'updated_at') DateTime? get updatedAt;
+/// Create a copy of Estimate
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$EstimateCopyWith<Estimate> get copyWith => _$EstimateCopyWithImpl<Estimate>(this as Estimate, _$identity);
+
+  /// Serializes this Estimate to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Estimate&&(identical(other.id, id) || other.id == id)&&(identical(other.customId, customId) || other.customId == customId)&&(identical(other.documentType, documentType) || other.documentType == documentType)&&(identical(other.number, number) || other.number == number)&&(identical(other.numberFormatId, numberFormatId) || other.numberFormatId == numberFormatId)&&(identical(other.yourName, yourName) || other.yourName == yourName)&&(identical(other.yourStreet, yourStreet) || other.yourStreet == yourStreet)&&(identical(other.yourCity, yourCity) || other.yourCity == yourCity)&&(identical(other.yourZip, yourZip) || other.yourZip == yourZip)&&(identical(other.yourCountry, yourCountry) || other.yourCountry == yourCountry)&&(identical(other.yourRegistrationNo, yourRegistrationNo) || other.yourRegistrationNo == yourRegistrationNo)&&(identical(other.yourVatNo, yourVatNo) || other.yourVatNo == yourVatNo)&&(identical(other.yourLocalVatNo, yourLocalVatNo) || other.yourLocalVatNo == yourLocalVatNo)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.clientStreet, clientStreet) || other.clientStreet == clientStreet)&&(identical(other.clientCity, clientCity) || other.clientCity == clientCity)&&(identical(other.clientZip, clientZip) || other.clientZip == clientZip)&&(identical(other.clientCountry, clientCountry) || other.clientCountry == clientCountry)&&(identical(other.clientHasDeliveryAddress, clientHasDeliveryAddress) || other.clientHasDeliveryAddress == clientHasDeliveryAddress)&&(identical(other.clientDeliveryName, clientDeliveryName) || other.clientDeliveryName == clientDeliveryName)&&(identical(other.clientDeliveryStreet, clientDeliveryStreet) || other.clientDeliveryStreet == clientDeliveryStreet)&&(identical(other.clientDeliveryCity, clientDeliveryCity) || other.clientDeliveryCity == clientDeliveryCity)&&(identical(other.clientDeliveryZip, clientDeliveryZip) || other.clientDeliveryZip == clientDeliveryZip)&&(identical(other.clientDeliveryCountry, clientDeliveryCountry) || other.clientDeliveryCountry == clientDeliveryCountry)&&(identical(other.clientRegistrationNo, clientRegistrationNo) || other.clientRegistrationNo == clientRegistrationNo)&&(identical(other.clientVatNo, clientVatNo) || other.clientVatNo == clientVatNo)&&(identical(other.clientLocalVatNo, clientLocalVatNo) || other.clientLocalVatNo == clientLocalVatNo)&&(identical(other.subjectId, subjectId) || other.subjectId == subjectId)&&(identical(other.subjectCustomId, subjectCustomId) || other.subjectCustomId == subjectCustomId)&&(identical(other.token, token) || other.token == token)&&(identical(other.status, status) || other.status == status)&&(identical(other.orderNumber, orderNumber) || other.orderNumber == orderNumber)&&(identical(other.issuedOn, issuedOn) || other.issuedOn == issuedOn)&&(identical(other.taxableFulfillmentDue, taxableFulfillmentDue) || other.taxableFulfillmentDue == taxableFulfillmentDue)&&(identical(other.due, due) || other.due == due)&&(identical(other.dueOn, dueOn) || other.dueOn == dueOn)&&(identical(other.sentAt, sentAt) || other.sentAt == sentAt)&&(identical(other.acceptedAt, acceptedAt) || other.acceptedAt == acceptedAt)&&(identical(other.rejectedAt, rejectedAt) || other.rejectedAt == rejectedAt)&&(identical(other.cancelledAt, cancelledAt) || other.cancelledAt == cancelledAt)&&(identical(other.lockedAt, lockedAt) || other.lockedAt == lockedAt)&&(identical(other.note, note) || other.note == note)&&(identical(other.footerNote, footerNote) || other.footerNote == footerNote)&&(identical(other.privateNote, privateNote) || other.privateNote == privateNote)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.bankAccountId, bankAccountId) || other.bankAccountId == bankAccountId)&&(identical(other.bankAccount, bankAccount) || other.bankAccount == bankAccount)&&(identical(other.iban, iban) || other.iban == iban)&&(identical(other.swiftBic, swiftBic) || other.swiftBic == swiftBic)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.exchangeRate, exchangeRate) || other.exchangeRate == exchangeRate)&&(identical(other.language, language) || other.language == language)&&(identical(other.transferredTaxLiability, transferredTaxLiability) || other.transferredTaxLiability == transferredTaxLiability)&&(identical(other.supplyCode, supplyCode) || other.supplyCode == supplyCode)&&(identical(other.oss, oss) || other.oss == oss)&&(identical(other.vatPriceMode, vatPriceMode) || other.vatPriceMode == vatPriceMode)&&(identical(other.roundTotal, roundTotal) || other.roundTotal == roundTotal)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.total, total) || other.total == total)&&(identical(other.nativeSubtotal, nativeSubtotal) || other.nativeSubtotal == nativeSubtotal)&&(identical(other.nativeTotal, nativeTotal) || other.nativeTotal == nativeTotal)&&const DeepCollectionEquality().equals(other.lines, lines)&&const DeepCollectionEquality().equals(other.vatRatesSummary, vatRatesSummary)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.htmlUrl, htmlUrl) || other.htmlUrl == htmlUrl)&&(identical(other.publicHtmlUrl, publicHtmlUrl) || other.publicHtmlUrl == publicHtmlUrl)&&(identical(other.url, url) || other.url == url)&&(identical(other.pdfUrl, pdfUrl) || other.pdfUrl == pdfUrl)&&(identical(other.subjectUrl, subjectUrl) || other.subjectUrl == subjectUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hashAll([runtimeType,id,customId,documentType,number,numberFormatId,yourName,yourStreet,yourCity,yourZip,yourCountry,yourRegistrationNo,yourVatNo,yourLocalVatNo,clientName,clientStreet,clientCity,clientZip,clientCountry,clientHasDeliveryAddress,clientDeliveryName,clientDeliveryStreet,clientDeliveryCity,clientDeliveryZip,clientDeliveryCountry,clientRegistrationNo,clientVatNo,clientLocalVatNo,subjectId,subjectCustomId,token,status,orderNumber,issuedOn,taxableFulfillmentDue,due,dueOn,sentAt,acceptedAt,rejectedAt,cancelledAt,lockedAt,note,footerNote,privateNote,const DeepCollectionEquality().hash(tags),bankAccountId,bankAccount,iban,swiftBic,paymentMethod,currency,exchangeRate,language,transferredTaxLiability,supplyCode,oss,vatPriceMode,roundTotal,subtotal,total,nativeSubtotal,nativeTotal,const DeepCollectionEquality().hash(lines),const DeepCollectionEquality().hash(vatRatesSummary),const DeepCollectionEquality().hash(attachments),htmlUrl,publicHtmlUrl,url,pdfUrl,subjectUrl,createdAt,updatedAt]);
+
+@override
+String toString() {
+  return 'Estimate(id: $id, customId: $customId, documentType: $documentType, number: $number, numberFormatId: $numberFormatId, yourName: $yourName, yourStreet: $yourStreet, yourCity: $yourCity, yourZip: $yourZip, yourCountry: $yourCountry, yourRegistrationNo: $yourRegistrationNo, yourVatNo: $yourVatNo, yourLocalVatNo: $yourLocalVatNo, clientName: $clientName, clientStreet: $clientStreet, clientCity: $clientCity, clientZip: $clientZip, clientCountry: $clientCountry, clientHasDeliveryAddress: $clientHasDeliveryAddress, clientDeliveryName: $clientDeliveryName, clientDeliveryStreet: $clientDeliveryStreet, clientDeliveryCity: $clientDeliveryCity, clientDeliveryZip: $clientDeliveryZip, clientDeliveryCountry: $clientDeliveryCountry, clientRegistrationNo: $clientRegistrationNo, clientVatNo: $clientVatNo, clientLocalVatNo: $clientLocalVatNo, subjectId: $subjectId, subjectCustomId: $subjectCustomId, token: $token, status: $status, orderNumber: $orderNumber, issuedOn: $issuedOn, taxableFulfillmentDue: $taxableFulfillmentDue, due: $due, dueOn: $dueOn, sentAt: $sentAt, acceptedAt: $acceptedAt, rejectedAt: $rejectedAt, cancelledAt: $cancelledAt, lockedAt: $lockedAt, note: $note, footerNote: $footerNote, privateNote: $privateNote, tags: $tags, bankAccountId: $bankAccountId, bankAccount: $bankAccount, iban: $iban, swiftBic: $swiftBic, paymentMethod: $paymentMethod, currency: $currency, exchangeRate: $exchangeRate, language: $language, transferredTaxLiability: $transferredTaxLiability, supplyCode: $supplyCode, oss: $oss, vatPriceMode: $vatPriceMode, roundTotal: $roundTotal, subtotal: $subtotal, total: $total, nativeSubtotal: $nativeSubtotal, nativeTotal: $nativeTotal, lines: $lines, vatRatesSummary: $vatRatesSummary, attachments: $attachments, htmlUrl: $htmlUrl, publicHtmlUrl: $publicHtmlUrl, url: $url, pdfUrl: $pdfUrl, subjectUrl: $subjectUrl, createdAt: $createdAt, updatedAt: $updatedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $EstimateCopyWith<$Res>  {
+  factory $EstimateCopyWith(Estimate value, $Res Function(Estimate) _then) = _$EstimateCopyWithImpl;
+@useResult
+$Res call({
+ int? id,@JsonKey(name: 'custom_id') String? customId,@JsonKey(name: 'document_type') EstimateDocumentType? documentType, String? number,@JsonKey(name: 'number_format_id') int? numberFormatId,@JsonKey(name: 'your_name') String? yourName,@JsonKey(name: 'your_street') String? yourStreet,@JsonKey(name: 'your_city') String? yourCity,@JsonKey(name: 'your_zip') String? yourZip,@JsonKey(name: 'your_country') String? yourCountry,@JsonKey(name: 'your_registration_no') String? yourRegistrationNo,@JsonKey(name: 'your_vat_no') String? yourVatNo,@JsonKey(name: 'your_local_vat_no') String? yourLocalVatNo,@JsonKey(name: 'client_name') String? clientName,@JsonKey(name: 'client_street') String? clientStreet,@JsonKey(name: 'client_city') String? clientCity,@JsonKey(name: 'client_zip') String? clientZip,@JsonKey(name: 'client_country') String? clientCountry,@JsonKey(name: 'client_has_delivery_address') bool? clientHasDeliveryAddress,@JsonKey(name: 'client_delivery_name') String? clientDeliveryName,@JsonKey(name: 'client_delivery_street') String? clientDeliveryStreet,@JsonKey(name: 'client_delivery_city') String? clientDeliveryCity,@JsonKey(name: 'client_delivery_zip') String? clientDeliveryZip,@JsonKey(name: 'client_delivery_country') String? clientDeliveryCountry,@JsonKey(name: 'client_registration_no') String? clientRegistrationNo,@JsonKey(name: 'client_vat_no') String? clientVatNo,@JsonKey(name: 'client_local_vat_no') String? clientLocalVatNo,@JsonKey(name: 'subject_id') int subjectId,@JsonKey(name: 'subject_custom_id') String? subjectCustomId, String? token, EstimateStatus? status,@JsonKey(name: 'order_number') String? orderNumber,@JsonKey(name: 'issued_on') String? issuedOn,@JsonKey(name: 'taxable_fulfillment_due') String? taxableFulfillmentDue, int? due,@JsonKey(name: 'due_on') String? dueOn,@JsonKey(name: 'sent_at') DateTime? sentAt,@JsonKey(name: 'accepted_at') DateTime? acceptedAt,@JsonKey(name: 'rejected_at') DateTime? rejectedAt,@JsonKey(name: 'cancelled_at') DateTime? cancelledAt,@JsonKey(name: 'locked_at') DateTime? lockedAt, String? note,@JsonKey(name: 'footer_note') String? footerNote,@JsonKey(name: 'private_note') String? privateNote, List<String>? tags,@JsonKey(name: 'bank_account_id') int? bankAccountId,@JsonKey(name: 'bank_account') String? bankAccount, String? iban,@JsonKey(name: 'swift_bic') String? swiftBic,@JsonKey(name: 'payment_method') PaymentMethod? paymentMethod, String? currency,@JsonKey(name: 'exchange_rate') String? exchangeRate, DocumentLanguage? language,@JsonKey(name: 'transferred_tax_liability') bool? transferredTaxLiability,@JsonKey(name: 'supply_code') String? supplyCode, OssMode? oss,@JsonKey(name: 'vat_price_mode') VatPriceMode? vatPriceMode,@JsonKey(name: 'round_total') bool? roundTotal, String? subtotal, String? total,@JsonKey(name: 'native_subtotal') String? nativeSubtotal,@JsonKey(name: 'native_total') String? nativeTotal, List<InvoiceLine>? lines,@JsonKey(name: 'vat_rates_summary') List<VatRateSummary>? vatRatesSummary, List<DocumentAttachment>? attachments,@JsonKey(name: 'html_url') String? htmlUrl,@JsonKey(name: 'public_html_url') String? publicHtmlUrl, String? url,@JsonKey(name: 'pdf_url') String? pdfUrl,@JsonKey(name: 'subject_url') String? subjectUrl,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'updated_at') DateTime? updatedAt
+});
+
+
+
+
+}
+/// @nodoc
+class _$EstimateCopyWithImpl<$Res>
+    implements $EstimateCopyWith<$Res> {
+  _$EstimateCopyWithImpl(this._self, this._then);
+
+  final Estimate _self;
+  final $Res Function(Estimate) _then;
+
+/// Create a copy of Estimate
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? customId = freezed,Object? documentType = freezed,Object? number = freezed,Object? numberFormatId = freezed,Object? yourName = freezed,Object? yourStreet = freezed,Object? yourCity = freezed,Object? yourZip = freezed,Object? yourCountry = freezed,Object? yourRegistrationNo = freezed,Object? yourVatNo = freezed,Object? yourLocalVatNo = freezed,Object? clientName = freezed,Object? clientStreet = freezed,Object? clientCity = freezed,Object? clientZip = freezed,Object? clientCountry = freezed,Object? clientHasDeliveryAddress = freezed,Object? clientDeliveryName = freezed,Object? clientDeliveryStreet = freezed,Object? clientDeliveryCity = freezed,Object? clientDeliveryZip = freezed,Object? clientDeliveryCountry = freezed,Object? clientRegistrationNo = freezed,Object? clientVatNo = freezed,Object? clientLocalVatNo = freezed,Object? subjectId = null,Object? subjectCustomId = freezed,Object? token = freezed,Object? status = freezed,Object? orderNumber = freezed,Object? issuedOn = freezed,Object? taxableFulfillmentDue = freezed,Object? due = freezed,Object? dueOn = freezed,Object? sentAt = freezed,Object? acceptedAt = freezed,Object? rejectedAt = freezed,Object? cancelledAt = freezed,Object? lockedAt = freezed,Object? note = freezed,Object? footerNote = freezed,Object? privateNote = freezed,Object? tags = freezed,Object? bankAccountId = freezed,Object? bankAccount = freezed,Object? iban = freezed,Object? swiftBic = freezed,Object? paymentMethod = freezed,Object? currency = freezed,Object? exchangeRate = freezed,Object? language = freezed,Object? transferredTaxLiability = freezed,Object? supplyCode = freezed,Object? oss = freezed,Object? vatPriceMode = freezed,Object? roundTotal = freezed,Object? subtotal = freezed,Object? total = freezed,Object? nativeSubtotal = freezed,Object? nativeTotal = freezed,Object? lines = freezed,Object? vatRatesSummary = freezed,Object? attachments = freezed,Object? htmlUrl = freezed,Object? publicHtmlUrl = freezed,Object? url = freezed,Object? pdfUrl = freezed,Object? subjectUrl = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+  return _then(_self.copyWith(
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,customId: freezed == customId ? _self.customId : customId // ignore: cast_nullable_to_non_nullable
+as String?,documentType: freezed == documentType ? _self.documentType : documentType // ignore: cast_nullable_to_non_nullable
+as EstimateDocumentType?,number: freezed == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as String?,numberFormatId: freezed == numberFormatId ? _self.numberFormatId : numberFormatId // ignore: cast_nullable_to_non_nullable
+as int?,yourName: freezed == yourName ? _self.yourName : yourName // ignore: cast_nullable_to_non_nullable
+as String?,yourStreet: freezed == yourStreet ? _self.yourStreet : yourStreet // ignore: cast_nullable_to_non_nullable
+as String?,yourCity: freezed == yourCity ? _self.yourCity : yourCity // ignore: cast_nullable_to_non_nullable
+as String?,yourZip: freezed == yourZip ? _self.yourZip : yourZip // ignore: cast_nullable_to_non_nullable
+as String?,yourCountry: freezed == yourCountry ? _self.yourCountry : yourCountry // ignore: cast_nullable_to_non_nullable
+as String?,yourRegistrationNo: freezed == yourRegistrationNo ? _self.yourRegistrationNo : yourRegistrationNo // ignore: cast_nullable_to_non_nullable
+as String?,yourVatNo: freezed == yourVatNo ? _self.yourVatNo : yourVatNo // ignore: cast_nullable_to_non_nullable
+as String?,yourLocalVatNo: freezed == yourLocalVatNo ? _self.yourLocalVatNo : yourLocalVatNo // ignore: cast_nullable_to_non_nullable
+as String?,clientName: freezed == clientName ? _self.clientName : clientName // ignore: cast_nullable_to_non_nullable
+as String?,clientStreet: freezed == clientStreet ? _self.clientStreet : clientStreet // ignore: cast_nullable_to_non_nullable
+as String?,clientCity: freezed == clientCity ? _self.clientCity : clientCity // ignore: cast_nullable_to_non_nullable
+as String?,clientZip: freezed == clientZip ? _self.clientZip : clientZip // ignore: cast_nullable_to_non_nullable
+as String?,clientCountry: freezed == clientCountry ? _self.clientCountry : clientCountry // ignore: cast_nullable_to_non_nullable
+as String?,clientHasDeliveryAddress: freezed == clientHasDeliveryAddress ? _self.clientHasDeliveryAddress : clientHasDeliveryAddress // ignore: cast_nullable_to_non_nullable
+as bool?,clientDeliveryName: freezed == clientDeliveryName ? _self.clientDeliveryName : clientDeliveryName // ignore: cast_nullable_to_non_nullable
+as String?,clientDeliveryStreet: freezed == clientDeliveryStreet ? _self.clientDeliveryStreet : clientDeliveryStreet // ignore: cast_nullable_to_non_nullable
+as String?,clientDeliveryCity: freezed == clientDeliveryCity ? _self.clientDeliveryCity : clientDeliveryCity // ignore: cast_nullable_to_non_nullable
+as String?,clientDeliveryZip: freezed == clientDeliveryZip ? _self.clientDeliveryZip : clientDeliveryZip // ignore: cast_nullable_to_non_nullable
+as String?,clientDeliveryCountry: freezed == clientDeliveryCountry ? _self.clientDeliveryCountry : clientDeliveryCountry // ignore: cast_nullable_to_non_nullable
+as String?,clientRegistrationNo: freezed == clientRegistrationNo ? _self.clientRegistrationNo : clientRegistrationNo // ignore: cast_nullable_to_non_nullable
+as String?,clientVatNo: freezed == clientVatNo ? _self.clientVatNo : clientVatNo // ignore: cast_nullable_to_non_nullable
+as String?,clientLocalVatNo: freezed == clientLocalVatNo ? _self.clientLocalVatNo : clientLocalVatNo // ignore: cast_nullable_to_non_nullable
+as String?,subjectId: null == subjectId ? _self.subjectId : subjectId // ignore: cast_nullable_to_non_nullable
+as int,subjectCustomId: freezed == subjectCustomId ? _self.subjectCustomId : subjectCustomId // ignore: cast_nullable_to_non_nullable
+as String?,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
+as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as EstimateStatus?,orderNumber: freezed == orderNumber ? _self.orderNumber : orderNumber // ignore: cast_nullable_to_non_nullable
+as String?,issuedOn: freezed == issuedOn ? _self.issuedOn : issuedOn // ignore: cast_nullable_to_non_nullable
+as String?,taxableFulfillmentDue: freezed == taxableFulfillmentDue ? _self.taxableFulfillmentDue : taxableFulfillmentDue // ignore: cast_nullable_to_non_nullable
+as String?,due: freezed == due ? _self.due : due // ignore: cast_nullable_to_non_nullable
+as int?,dueOn: freezed == dueOn ? _self.dueOn : dueOn // ignore: cast_nullable_to_non_nullable
+as String?,sentAt: freezed == sentAt ? _self.sentAt : sentAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,acceptedAt: freezed == acceptedAt ? _self.acceptedAt : acceptedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,rejectedAt: freezed == rejectedAt ? _self.rejectedAt : rejectedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,cancelledAt: freezed == cancelledAt ? _self.cancelledAt : cancelledAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,lockedAt: freezed == lockedAt ? _self.lockedAt : lockedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
+as String?,footerNote: freezed == footerNote ? _self.footerNote : footerNote // ignore: cast_nullable_to_non_nullable
+as String?,privateNote: freezed == privateNote ? _self.privateNote : privateNote // ignore: cast_nullable_to_non_nullable
+as String?,tags: freezed == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
+as List<String>?,bankAccountId: freezed == bankAccountId ? _self.bankAccountId : bankAccountId // ignore: cast_nullable_to_non_nullable
+as int?,bankAccount: freezed == bankAccount ? _self.bankAccount : bankAccount // ignore: cast_nullable_to_non_nullable
+as String?,iban: freezed == iban ? _self.iban : iban // ignore: cast_nullable_to_non_nullable
+as String?,swiftBic: freezed == swiftBic ? _self.swiftBic : swiftBic // ignore: cast_nullable_to_non_nullable
+as String?,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
+as PaymentMethod?,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String?,exchangeRate: freezed == exchangeRate ? _self.exchangeRate : exchangeRate // ignore: cast_nullable_to_non_nullable
+as String?,language: freezed == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
+as DocumentLanguage?,transferredTaxLiability: freezed == transferredTaxLiability ? _self.transferredTaxLiability : transferredTaxLiability // ignore: cast_nullable_to_non_nullable
+as bool?,supplyCode: freezed == supplyCode ? _self.supplyCode : supplyCode // ignore: cast_nullable_to_non_nullable
+as String?,oss: freezed == oss ? _self.oss : oss // ignore: cast_nullable_to_non_nullable
+as OssMode?,vatPriceMode: freezed == vatPriceMode ? _self.vatPriceMode : vatPriceMode // ignore: cast_nullable_to_non_nullable
+as VatPriceMode?,roundTotal: freezed == roundTotal ? _self.roundTotal : roundTotal // ignore: cast_nullable_to_non_nullable
+as bool?,subtotal: freezed == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
+as String?,total: freezed == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
+as String?,nativeSubtotal: freezed == nativeSubtotal ? _self.nativeSubtotal : nativeSubtotal // ignore: cast_nullable_to_non_nullable
+as String?,nativeTotal: freezed == nativeTotal ? _self.nativeTotal : nativeTotal // ignore: cast_nullable_to_non_nullable
+as String?,lines: freezed == lines ? _self.lines : lines // ignore: cast_nullable_to_non_nullable
+as List<InvoiceLine>?,vatRatesSummary: freezed == vatRatesSummary ? _self.vatRatesSummary : vatRatesSummary // ignore: cast_nullable_to_non_nullable
+as List<VatRateSummary>?,attachments: freezed == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<DocumentAttachment>?,htmlUrl: freezed == htmlUrl ? _self.htmlUrl : htmlUrl // ignore: cast_nullable_to_non_nullable
+as String?,publicHtmlUrl: freezed == publicHtmlUrl ? _self.publicHtmlUrl : publicHtmlUrl // ignore: cast_nullable_to_non_nullable
+as String?,url: freezed == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String?,pdfUrl: freezed == pdfUrl ? _self.pdfUrl : pdfUrl // ignore: cast_nullable_to_non_nullable
+as String?,subjectUrl: freezed == subjectUrl ? _self.subjectUrl : subjectUrl // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [Estimate].
+extension EstimatePatterns on Estimate {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Estimate value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Estimate() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Estimate value)  $default,){
+final _that = this;
+switch (_that) {
+case _Estimate():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Estimate value)?  $default,){
+final _that = this;
+switch (_that) {
+case _Estimate() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'custom_id')  String? customId, @JsonKey(name: 'document_type')  EstimateDocumentType? documentType,  String? number, @JsonKey(name: 'number_format_id')  int? numberFormatId, @JsonKey(name: 'your_name')  String? yourName, @JsonKey(name: 'your_street')  String? yourStreet, @JsonKey(name: 'your_city')  String? yourCity, @JsonKey(name: 'your_zip')  String? yourZip, @JsonKey(name: 'your_country')  String? yourCountry, @JsonKey(name: 'your_registration_no')  String? yourRegistrationNo, @JsonKey(name: 'your_vat_no')  String? yourVatNo, @JsonKey(name: 'your_local_vat_no')  String? yourLocalVatNo, @JsonKey(name: 'client_name')  String? clientName, @JsonKey(name: 'client_street')  String? clientStreet, @JsonKey(name: 'client_city')  String? clientCity, @JsonKey(name: 'client_zip')  String? clientZip, @JsonKey(name: 'client_country')  String? clientCountry, @JsonKey(name: 'client_has_delivery_address')  bool? clientHasDeliveryAddress, @JsonKey(name: 'client_delivery_name')  String? clientDeliveryName, @JsonKey(name: 'client_delivery_street')  String? clientDeliveryStreet, @JsonKey(name: 'client_delivery_city')  String? clientDeliveryCity, @JsonKey(name: 'client_delivery_zip')  String? clientDeliveryZip, @JsonKey(name: 'client_delivery_country')  String? clientDeliveryCountry, @JsonKey(name: 'client_registration_no')  String? clientRegistrationNo, @JsonKey(name: 'client_vat_no')  String? clientVatNo, @JsonKey(name: 'client_local_vat_no')  String? clientLocalVatNo, @JsonKey(name: 'subject_id')  int subjectId, @JsonKey(name: 'subject_custom_id')  String? subjectCustomId,  String? token,  EstimateStatus? status, @JsonKey(name: 'order_number')  String? orderNumber, @JsonKey(name: 'issued_on')  String? issuedOn, @JsonKey(name: 'taxable_fulfillment_due')  String? taxableFulfillmentDue,  int? due, @JsonKey(name: 'due_on')  String? dueOn, @JsonKey(name: 'sent_at')  DateTime? sentAt, @JsonKey(name: 'accepted_at')  DateTime? acceptedAt, @JsonKey(name: 'rejected_at')  DateTime? rejectedAt, @JsonKey(name: 'cancelled_at')  DateTime? cancelledAt, @JsonKey(name: 'locked_at')  DateTime? lockedAt,  String? note, @JsonKey(name: 'footer_note')  String? footerNote, @JsonKey(name: 'private_note')  String? privateNote,  List<String>? tags, @JsonKey(name: 'bank_account_id')  int? bankAccountId, @JsonKey(name: 'bank_account')  String? bankAccount,  String? iban, @JsonKey(name: 'swift_bic')  String? swiftBic, @JsonKey(name: 'payment_method')  PaymentMethod? paymentMethod,  String? currency, @JsonKey(name: 'exchange_rate')  String? exchangeRate,  DocumentLanguage? language, @JsonKey(name: 'transferred_tax_liability')  bool? transferredTaxLiability, @JsonKey(name: 'supply_code')  String? supplyCode,  OssMode? oss, @JsonKey(name: 'vat_price_mode')  VatPriceMode? vatPriceMode, @JsonKey(name: 'round_total')  bool? roundTotal,  String? subtotal,  String? total, @JsonKey(name: 'native_subtotal')  String? nativeSubtotal, @JsonKey(name: 'native_total')  String? nativeTotal,  List<InvoiceLine>? lines, @JsonKey(name: 'vat_rates_summary')  List<VatRateSummary>? vatRatesSummary,  List<DocumentAttachment>? attachments, @JsonKey(name: 'html_url')  String? htmlUrl, @JsonKey(name: 'public_html_url')  String? publicHtmlUrl,  String? url, @JsonKey(name: 'pdf_url')  String? pdfUrl, @JsonKey(name: 'subject_url')  String? subjectUrl, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Estimate() when $default != null:
+return $default(_that.id,_that.customId,_that.documentType,_that.number,_that.numberFormatId,_that.yourName,_that.yourStreet,_that.yourCity,_that.yourZip,_that.yourCountry,_that.yourRegistrationNo,_that.yourVatNo,_that.yourLocalVatNo,_that.clientName,_that.clientStreet,_that.clientCity,_that.clientZip,_that.clientCountry,_that.clientHasDeliveryAddress,_that.clientDeliveryName,_that.clientDeliveryStreet,_that.clientDeliveryCity,_that.clientDeliveryZip,_that.clientDeliveryCountry,_that.clientRegistrationNo,_that.clientVatNo,_that.clientLocalVatNo,_that.subjectId,_that.subjectCustomId,_that.token,_that.status,_that.orderNumber,_that.issuedOn,_that.taxableFulfillmentDue,_that.due,_that.dueOn,_that.sentAt,_that.acceptedAt,_that.rejectedAt,_that.cancelledAt,_that.lockedAt,_that.note,_that.footerNote,_that.privateNote,_that.tags,_that.bankAccountId,_that.bankAccount,_that.iban,_that.swiftBic,_that.paymentMethod,_that.currency,_that.exchangeRate,_that.language,_that.transferredTaxLiability,_that.supplyCode,_that.oss,_that.vatPriceMode,_that.roundTotal,_that.subtotal,_that.total,_that.nativeSubtotal,_that.nativeTotal,_that.lines,_that.vatRatesSummary,_that.attachments,_that.htmlUrl,_that.publicHtmlUrl,_that.url,_that.pdfUrl,_that.subjectUrl,_that.createdAt,_that.updatedAt);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'custom_id')  String? customId, @JsonKey(name: 'document_type')  EstimateDocumentType? documentType,  String? number, @JsonKey(name: 'number_format_id')  int? numberFormatId, @JsonKey(name: 'your_name')  String? yourName, @JsonKey(name: 'your_street')  String? yourStreet, @JsonKey(name: 'your_city')  String? yourCity, @JsonKey(name: 'your_zip')  String? yourZip, @JsonKey(name: 'your_country')  String? yourCountry, @JsonKey(name: 'your_registration_no')  String? yourRegistrationNo, @JsonKey(name: 'your_vat_no')  String? yourVatNo, @JsonKey(name: 'your_local_vat_no')  String? yourLocalVatNo, @JsonKey(name: 'client_name')  String? clientName, @JsonKey(name: 'client_street')  String? clientStreet, @JsonKey(name: 'client_city')  String? clientCity, @JsonKey(name: 'client_zip')  String? clientZip, @JsonKey(name: 'client_country')  String? clientCountry, @JsonKey(name: 'client_has_delivery_address')  bool? clientHasDeliveryAddress, @JsonKey(name: 'client_delivery_name')  String? clientDeliveryName, @JsonKey(name: 'client_delivery_street')  String? clientDeliveryStreet, @JsonKey(name: 'client_delivery_city')  String? clientDeliveryCity, @JsonKey(name: 'client_delivery_zip')  String? clientDeliveryZip, @JsonKey(name: 'client_delivery_country')  String? clientDeliveryCountry, @JsonKey(name: 'client_registration_no')  String? clientRegistrationNo, @JsonKey(name: 'client_vat_no')  String? clientVatNo, @JsonKey(name: 'client_local_vat_no')  String? clientLocalVatNo, @JsonKey(name: 'subject_id')  int subjectId, @JsonKey(name: 'subject_custom_id')  String? subjectCustomId,  String? token,  EstimateStatus? status, @JsonKey(name: 'order_number')  String? orderNumber, @JsonKey(name: 'issued_on')  String? issuedOn, @JsonKey(name: 'taxable_fulfillment_due')  String? taxableFulfillmentDue,  int? due, @JsonKey(name: 'due_on')  String? dueOn, @JsonKey(name: 'sent_at')  DateTime? sentAt, @JsonKey(name: 'accepted_at')  DateTime? acceptedAt, @JsonKey(name: 'rejected_at')  DateTime? rejectedAt, @JsonKey(name: 'cancelled_at')  DateTime? cancelledAt, @JsonKey(name: 'locked_at')  DateTime? lockedAt,  String? note, @JsonKey(name: 'footer_note')  String? footerNote, @JsonKey(name: 'private_note')  String? privateNote,  List<String>? tags, @JsonKey(name: 'bank_account_id')  int? bankAccountId, @JsonKey(name: 'bank_account')  String? bankAccount,  String? iban, @JsonKey(name: 'swift_bic')  String? swiftBic, @JsonKey(name: 'payment_method')  PaymentMethod? paymentMethod,  String? currency, @JsonKey(name: 'exchange_rate')  String? exchangeRate,  DocumentLanguage? language, @JsonKey(name: 'transferred_tax_liability')  bool? transferredTaxLiability, @JsonKey(name: 'supply_code')  String? supplyCode,  OssMode? oss, @JsonKey(name: 'vat_price_mode')  VatPriceMode? vatPriceMode, @JsonKey(name: 'round_total')  bool? roundTotal,  String? subtotal,  String? total, @JsonKey(name: 'native_subtotal')  String? nativeSubtotal, @JsonKey(name: 'native_total')  String? nativeTotal,  List<InvoiceLine>? lines, @JsonKey(name: 'vat_rates_summary')  List<VatRateSummary>? vatRatesSummary,  List<DocumentAttachment>? attachments, @JsonKey(name: 'html_url')  String? htmlUrl, @JsonKey(name: 'public_html_url')  String? publicHtmlUrl,  String? url, @JsonKey(name: 'pdf_url')  String? pdfUrl, @JsonKey(name: 'subject_url')  String? subjectUrl, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)  $default,) {final _that = this;
+switch (_that) {
+case _Estimate():
+return $default(_that.id,_that.customId,_that.documentType,_that.number,_that.numberFormatId,_that.yourName,_that.yourStreet,_that.yourCity,_that.yourZip,_that.yourCountry,_that.yourRegistrationNo,_that.yourVatNo,_that.yourLocalVatNo,_that.clientName,_that.clientStreet,_that.clientCity,_that.clientZip,_that.clientCountry,_that.clientHasDeliveryAddress,_that.clientDeliveryName,_that.clientDeliveryStreet,_that.clientDeliveryCity,_that.clientDeliveryZip,_that.clientDeliveryCountry,_that.clientRegistrationNo,_that.clientVatNo,_that.clientLocalVatNo,_that.subjectId,_that.subjectCustomId,_that.token,_that.status,_that.orderNumber,_that.issuedOn,_that.taxableFulfillmentDue,_that.due,_that.dueOn,_that.sentAt,_that.acceptedAt,_that.rejectedAt,_that.cancelledAt,_that.lockedAt,_that.note,_that.footerNote,_that.privateNote,_that.tags,_that.bankAccountId,_that.bankAccount,_that.iban,_that.swiftBic,_that.paymentMethod,_that.currency,_that.exchangeRate,_that.language,_that.transferredTaxLiability,_that.supplyCode,_that.oss,_that.vatPriceMode,_that.roundTotal,_that.subtotal,_that.total,_that.nativeSubtotal,_that.nativeTotal,_that.lines,_that.vatRatesSummary,_that.attachments,_that.htmlUrl,_that.publicHtmlUrl,_that.url,_that.pdfUrl,_that.subjectUrl,_that.createdAt,_that.updatedAt);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'custom_id')  String? customId, @JsonKey(name: 'document_type')  EstimateDocumentType? documentType,  String? number, @JsonKey(name: 'number_format_id')  int? numberFormatId, @JsonKey(name: 'your_name')  String? yourName, @JsonKey(name: 'your_street')  String? yourStreet, @JsonKey(name: 'your_city')  String? yourCity, @JsonKey(name: 'your_zip')  String? yourZip, @JsonKey(name: 'your_country')  String? yourCountry, @JsonKey(name: 'your_registration_no')  String? yourRegistrationNo, @JsonKey(name: 'your_vat_no')  String? yourVatNo, @JsonKey(name: 'your_local_vat_no')  String? yourLocalVatNo, @JsonKey(name: 'client_name')  String? clientName, @JsonKey(name: 'client_street')  String? clientStreet, @JsonKey(name: 'client_city')  String? clientCity, @JsonKey(name: 'client_zip')  String? clientZip, @JsonKey(name: 'client_country')  String? clientCountry, @JsonKey(name: 'client_has_delivery_address')  bool? clientHasDeliveryAddress, @JsonKey(name: 'client_delivery_name')  String? clientDeliveryName, @JsonKey(name: 'client_delivery_street')  String? clientDeliveryStreet, @JsonKey(name: 'client_delivery_city')  String? clientDeliveryCity, @JsonKey(name: 'client_delivery_zip')  String? clientDeliveryZip, @JsonKey(name: 'client_delivery_country')  String? clientDeliveryCountry, @JsonKey(name: 'client_registration_no')  String? clientRegistrationNo, @JsonKey(name: 'client_vat_no')  String? clientVatNo, @JsonKey(name: 'client_local_vat_no')  String? clientLocalVatNo, @JsonKey(name: 'subject_id')  int subjectId, @JsonKey(name: 'subject_custom_id')  String? subjectCustomId,  String? token,  EstimateStatus? status, @JsonKey(name: 'order_number')  String? orderNumber, @JsonKey(name: 'issued_on')  String? issuedOn, @JsonKey(name: 'taxable_fulfillment_due')  String? taxableFulfillmentDue,  int? due, @JsonKey(name: 'due_on')  String? dueOn, @JsonKey(name: 'sent_at')  DateTime? sentAt, @JsonKey(name: 'accepted_at')  DateTime? acceptedAt, @JsonKey(name: 'rejected_at')  DateTime? rejectedAt, @JsonKey(name: 'cancelled_at')  DateTime? cancelledAt, @JsonKey(name: 'locked_at')  DateTime? lockedAt,  String? note, @JsonKey(name: 'footer_note')  String? footerNote, @JsonKey(name: 'private_note')  String? privateNote,  List<String>? tags, @JsonKey(name: 'bank_account_id')  int? bankAccountId, @JsonKey(name: 'bank_account')  String? bankAccount,  String? iban, @JsonKey(name: 'swift_bic')  String? swiftBic, @JsonKey(name: 'payment_method')  PaymentMethod? paymentMethod,  String? currency, @JsonKey(name: 'exchange_rate')  String? exchangeRate,  DocumentLanguage? language, @JsonKey(name: 'transferred_tax_liability')  bool? transferredTaxLiability, @JsonKey(name: 'supply_code')  String? supplyCode,  OssMode? oss, @JsonKey(name: 'vat_price_mode')  VatPriceMode? vatPriceMode, @JsonKey(name: 'round_total')  bool? roundTotal,  String? subtotal,  String? total, @JsonKey(name: 'native_subtotal')  String? nativeSubtotal, @JsonKey(name: 'native_total')  String? nativeTotal,  List<InvoiceLine>? lines, @JsonKey(name: 'vat_rates_summary')  List<VatRateSummary>? vatRatesSummary,  List<DocumentAttachment>? attachments, @JsonKey(name: 'html_url')  String? htmlUrl, @JsonKey(name: 'public_html_url')  String? publicHtmlUrl,  String? url, @JsonKey(name: 'pdf_url')  String? pdfUrl, @JsonKey(name: 'subject_url')  String? subjectUrl, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'updated_at')  DateTime? updatedAt)?  $default,) {final _that = this;
+switch (_that) {
+case _Estimate() when $default != null:
+return $default(_that.id,_that.customId,_that.documentType,_that.number,_that.numberFormatId,_that.yourName,_that.yourStreet,_that.yourCity,_that.yourZip,_that.yourCountry,_that.yourRegistrationNo,_that.yourVatNo,_that.yourLocalVatNo,_that.clientName,_that.clientStreet,_that.clientCity,_that.clientZip,_that.clientCountry,_that.clientHasDeliveryAddress,_that.clientDeliveryName,_that.clientDeliveryStreet,_that.clientDeliveryCity,_that.clientDeliveryZip,_that.clientDeliveryCountry,_that.clientRegistrationNo,_that.clientVatNo,_that.clientLocalVatNo,_that.subjectId,_that.subjectCustomId,_that.token,_that.status,_that.orderNumber,_that.issuedOn,_that.taxableFulfillmentDue,_that.due,_that.dueOn,_that.sentAt,_that.acceptedAt,_that.rejectedAt,_that.cancelledAt,_that.lockedAt,_that.note,_that.footerNote,_that.privateNote,_that.tags,_that.bankAccountId,_that.bankAccount,_that.iban,_that.swiftBic,_that.paymentMethod,_that.currency,_that.exchangeRate,_that.language,_that.transferredTaxLiability,_that.supplyCode,_that.oss,_that.vatPriceMode,_that.roundTotal,_that.subtotal,_that.total,_that.nativeSubtotal,_that.nativeTotal,_that.lines,_that.vatRatesSummary,_that.attachments,_that.htmlUrl,_that.publicHtmlUrl,_that.url,_that.pdfUrl,_that.subjectUrl,_that.createdAt,_that.updatedAt);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _Estimate implements Estimate {
+  const _Estimate({this.id, @JsonKey(name: 'custom_id') this.customId, @JsonKey(name: 'document_type') this.documentType, this.number, @JsonKey(name: 'number_format_id') this.numberFormatId, @JsonKey(name: 'your_name') this.yourName, @JsonKey(name: 'your_street') this.yourStreet, @JsonKey(name: 'your_city') this.yourCity, @JsonKey(name: 'your_zip') this.yourZip, @JsonKey(name: 'your_country') this.yourCountry, @JsonKey(name: 'your_registration_no') this.yourRegistrationNo, @JsonKey(name: 'your_vat_no') this.yourVatNo, @JsonKey(name: 'your_local_vat_no') this.yourLocalVatNo, @JsonKey(name: 'client_name') this.clientName, @JsonKey(name: 'client_street') this.clientStreet, @JsonKey(name: 'client_city') this.clientCity, @JsonKey(name: 'client_zip') this.clientZip, @JsonKey(name: 'client_country') this.clientCountry, @JsonKey(name: 'client_has_delivery_address') this.clientHasDeliveryAddress, @JsonKey(name: 'client_delivery_name') this.clientDeliveryName, @JsonKey(name: 'client_delivery_street') this.clientDeliveryStreet, @JsonKey(name: 'client_delivery_city') this.clientDeliveryCity, @JsonKey(name: 'client_delivery_zip') this.clientDeliveryZip, @JsonKey(name: 'client_delivery_country') this.clientDeliveryCountry, @JsonKey(name: 'client_registration_no') this.clientRegistrationNo, @JsonKey(name: 'client_vat_no') this.clientVatNo, @JsonKey(name: 'client_local_vat_no') this.clientLocalVatNo, @JsonKey(name: 'subject_id') required this.subjectId, @JsonKey(name: 'subject_custom_id') this.subjectCustomId, this.token, this.status, @JsonKey(name: 'order_number') this.orderNumber, @JsonKey(name: 'issued_on') this.issuedOn, @JsonKey(name: 'taxable_fulfillment_due') this.taxableFulfillmentDue, this.due, @JsonKey(name: 'due_on') this.dueOn, @JsonKey(name: 'sent_at') this.sentAt, @JsonKey(name: 'accepted_at') this.acceptedAt, @JsonKey(name: 'rejected_at') this.rejectedAt, @JsonKey(name: 'cancelled_at') this.cancelledAt, @JsonKey(name: 'locked_at') this.lockedAt, this.note, @JsonKey(name: 'footer_note') this.footerNote, @JsonKey(name: 'private_note') this.privateNote, final  List<String>? tags, @JsonKey(name: 'bank_account_id') this.bankAccountId, @JsonKey(name: 'bank_account') this.bankAccount, this.iban, @JsonKey(name: 'swift_bic') this.swiftBic, @JsonKey(name: 'payment_method') this.paymentMethod, this.currency, @JsonKey(name: 'exchange_rate') this.exchangeRate, this.language, @JsonKey(name: 'transferred_tax_liability') this.transferredTaxLiability, @JsonKey(name: 'supply_code') this.supplyCode, this.oss, @JsonKey(name: 'vat_price_mode') this.vatPriceMode, @JsonKey(name: 'round_total') this.roundTotal, this.subtotal, this.total, @JsonKey(name: 'native_subtotal') this.nativeSubtotal, @JsonKey(name: 'native_total') this.nativeTotal, final  List<InvoiceLine>? lines, @JsonKey(name: 'vat_rates_summary') final  List<VatRateSummary>? vatRatesSummary, final  List<DocumentAttachment>? attachments, @JsonKey(name: 'html_url') this.htmlUrl, @JsonKey(name: 'public_html_url') this.publicHtmlUrl, this.url, @JsonKey(name: 'pdf_url') this.pdfUrl, @JsonKey(name: 'subject_url') this.subjectUrl, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt}): _tags = tags,_lines = lines,_vatRatesSummary = vatRatesSummary,_attachments = attachments;
+  factory _Estimate.fromJson(Map<String, dynamic> json) => _$EstimateFromJson(json);
+
+@override final  int? id;
+@override@JsonKey(name: 'custom_id') final  String? customId;
+@override@JsonKey(name: 'document_type') final  EstimateDocumentType? documentType;
+@override final  String? number;
+@override@JsonKey(name: 'number_format_id') final  int? numberFormatId;
+@override@JsonKey(name: 'your_name') final  String? yourName;
+@override@JsonKey(name: 'your_street') final  String? yourStreet;
+@override@JsonKey(name: 'your_city') final  String? yourCity;
+@override@JsonKey(name: 'your_zip') final  String? yourZip;
+@override@JsonKey(name: 'your_country') final  String? yourCountry;
+@override@JsonKey(name: 'your_registration_no') final  String? yourRegistrationNo;
+@override@JsonKey(name: 'your_vat_no') final  String? yourVatNo;
+@override@JsonKey(name: 'your_local_vat_no') final  String? yourLocalVatNo;
+@override@JsonKey(name: 'client_name') final  String? clientName;
+@override@JsonKey(name: 'client_street') final  String? clientStreet;
+@override@JsonKey(name: 'client_city') final  String? clientCity;
+@override@JsonKey(name: 'client_zip') final  String? clientZip;
+@override@JsonKey(name: 'client_country') final  String? clientCountry;
+@override@JsonKey(name: 'client_has_delivery_address') final  bool? clientHasDeliveryAddress;
+@override@JsonKey(name: 'client_delivery_name') final  String? clientDeliveryName;
+@override@JsonKey(name: 'client_delivery_street') final  String? clientDeliveryStreet;
+@override@JsonKey(name: 'client_delivery_city') final  String? clientDeliveryCity;
+@override@JsonKey(name: 'client_delivery_zip') final  String? clientDeliveryZip;
+@override@JsonKey(name: 'client_delivery_country') final  String? clientDeliveryCountry;
+@override@JsonKey(name: 'client_registration_no') final  String? clientRegistrationNo;
+@override@JsonKey(name: 'client_vat_no') final  String? clientVatNo;
+@override@JsonKey(name: 'client_local_vat_no') final  String? clientLocalVatNo;
+@override@JsonKey(name: 'subject_id') final  int subjectId;
+@override@JsonKey(name: 'subject_custom_id') final  String? subjectCustomId;
+@override final  String? token;
+@override final  EstimateStatus? status;
+@override@JsonKey(name: 'order_number') final  String? orderNumber;
+@override@JsonKey(name: 'issued_on') final  String? issuedOn;
+@override@JsonKey(name: 'taxable_fulfillment_due') final  String? taxableFulfillmentDue;
+@override final  int? due;
+@override@JsonKey(name: 'due_on') final  String? dueOn;
+@override@JsonKey(name: 'sent_at') final  DateTime? sentAt;
+@override@JsonKey(name: 'accepted_at') final  DateTime? acceptedAt;
+@override@JsonKey(name: 'rejected_at') final  DateTime? rejectedAt;
+@override@JsonKey(name: 'cancelled_at') final  DateTime? cancelledAt;
+@override@JsonKey(name: 'locked_at') final  DateTime? lockedAt;
+@override final  String? note;
+@override@JsonKey(name: 'footer_note') final  String? footerNote;
+@override@JsonKey(name: 'private_note') final  String? privateNote;
+ final  List<String>? _tags;
+@override List<String>? get tags {
+  final value = _tags;
+  if (value == null) return null;
+  if (_tags is EqualUnmodifiableListView) return _tags;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override@JsonKey(name: 'bank_account_id') final  int? bankAccountId;
+@override@JsonKey(name: 'bank_account') final  String? bankAccount;
+@override final  String? iban;
+@override@JsonKey(name: 'swift_bic') final  String? swiftBic;
+@override@JsonKey(name: 'payment_method') final  PaymentMethod? paymentMethod;
+@override final  String? currency;
+@override@JsonKey(name: 'exchange_rate') final  String? exchangeRate;
+@override final  DocumentLanguage? language;
+@override@JsonKey(name: 'transferred_tax_liability') final  bool? transferredTaxLiability;
+@override@JsonKey(name: 'supply_code') final  String? supplyCode;
+@override final  OssMode? oss;
+@override@JsonKey(name: 'vat_price_mode') final  VatPriceMode? vatPriceMode;
+@override@JsonKey(name: 'round_total') final  bool? roundTotal;
+@override final  String? subtotal;
+@override final  String? total;
+@override@JsonKey(name: 'native_subtotal') final  String? nativeSubtotal;
+@override@JsonKey(name: 'native_total') final  String? nativeTotal;
+ final  List<InvoiceLine>? _lines;
+@override List<InvoiceLine>? get lines {
+  final value = _lines;
+  if (value == null) return null;
+  if (_lines is EqualUnmodifiableListView) return _lines;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+ final  List<VatRateSummary>? _vatRatesSummary;
+@override@JsonKey(name: 'vat_rates_summary') List<VatRateSummary>? get vatRatesSummary {
+  final value = _vatRatesSummary;
+  if (value == null) return null;
+  if (_vatRatesSummary is EqualUnmodifiableListView) return _vatRatesSummary;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+ final  List<DocumentAttachment>? _attachments;
+@override List<DocumentAttachment>? get attachments {
+  final value = _attachments;
+  if (value == null) return null;
+  if (_attachments is EqualUnmodifiableListView) return _attachments;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override@JsonKey(name: 'html_url') final  String? htmlUrl;
+@override@JsonKey(name: 'public_html_url') final  String? publicHtmlUrl;
+@override final  String? url;
+@override@JsonKey(name: 'pdf_url') final  String? pdfUrl;
+@override@JsonKey(name: 'subject_url') final  String? subjectUrl;
+@override@JsonKey(name: 'created_at') final  DateTime? createdAt;
+@override@JsonKey(name: 'updated_at') final  DateTime? updatedAt;
+
+/// Create a copy of Estimate
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$EstimateCopyWith<_Estimate> get copyWith => __$EstimateCopyWithImpl<_Estimate>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$EstimateToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Estimate&&(identical(other.id, id) || other.id == id)&&(identical(other.customId, customId) || other.customId == customId)&&(identical(other.documentType, documentType) || other.documentType == documentType)&&(identical(other.number, number) || other.number == number)&&(identical(other.numberFormatId, numberFormatId) || other.numberFormatId == numberFormatId)&&(identical(other.yourName, yourName) || other.yourName == yourName)&&(identical(other.yourStreet, yourStreet) || other.yourStreet == yourStreet)&&(identical(other.yourCity, yourCity) || other.yourCity == yourCity)&&(identical(other.yourZip, yourZip) || other.yourZip == yourZip)&&(identical(other.yourCountry, yourCountry) || other.yourCountry == yourCountry)&&(identical(other.yourRegistrationNo, yourRegistrationNo) || other.yourRegistrationNo == yourRegistrationNo)&&(identical(other.yourVatNo, yourVatNo) || other.yourVatNo == yourVatNo)&&(identical(other.yourLocalVatNo, yourLocalVatNo) || other.yourLocalVatNo == yourLocalVatNo)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.clientStreet, clientStreet) || other.clientStreet == clientStreet)&&(identical(other.clientCity, clientCity) || other.clientCity == clientCity)&&(identical(other.clientZip, clientZip) || other.clientZip == clientZip)&&(identical(other.clientCountry, clientCountry) || other.clientCountry == clientCountry)&&(identical(other.clientHasDeliveryAddress, clientHasDeliveryAddress) || other.clientHasDeliveryAddress == clientHasDeliveryAddress)&&(identical(other.clientDeliveryName, clientDeliveryName) || other.clientDeliveryName == clientDeliveryName)&&(identical(other.clientDeliveryStreet, clientDeliveryStreet) || other.clientDeliveryStreet == clientDeliveryStreet)&&(identical(other.clientDeliveryCity, clientDeliveryCity) || other.clientDeliveryCity == clientDeliveryCity)&&(identical(other.clientDeliveryZip, clientDeliveryZip) || other.clientDeliveryZip == clientDeliveryZip)&&(identical(other.clientDeliveryCountry, clientDeliveryCountry) || other.clientDeliveryCountry == clientDeliveryCountry)&&(identical(other.clientRegistrationNo, clientRegistrationNo) || other.clientRegistrationNo == clientRegistrationNo)&&(identical(other.clientVatNo, clientVatNo) || other.clientVatNo == clientVatNo)&&(identical(other.clientLocalVatNo, clientLocalVatNo) || other.clientLocalVatNo == clientLocalVatNo)&&(identical(other.subjectId, subjectId) || other.subjectId == subjectId)&&(identical(other.subjectCustomId, subjectCustomId) || other.subjectCustomId == subjectCustomId)&&(identical(other.token, token) || other.token == token)&&(identical(other.status, status) || other.status == status)&&(identical(other.orderNumber, orderNumber) || other.orderNumber == orderNumber)&&(identical(other.issuedOn, issuedOn) || other.issuedOn == issuedOn)&&(identical(other.taxableFulfillmentDue, taxableFulfillmentDue) || other.taxableFulfillmentDue == taxableFulfillmentDue)&&(identical(other.due, due) || other.due == due)&&(identical(other.dueOn, dueOn) || other.dueOn == dueOn)&&(identical(other.sentAt, sentAt) || other.sentAt == sentAt)&&(identical(other.acceptedAt, acceptedAt) || other.acceptedAt == acceptedAt)&&(identical(other.rejectedAt, rejectedAt) || other.rejectedAt == rejectedAt)&&(identical(other.cancelledAt, cancelledAt) || other.cancelledAt == cancelledAt)&&(identical(other.lockedAt, lockedAt) || other.lockedAt == lockedAt)&&(identical(other.note, note) || other.note == note)&&(identical(other.footerNote, footerNote) || other.footerNote == footerNote)&&(identical(other.privateNote, privateNote) || other.privateNote == privateNote)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.bankAccountId, bankAccountId) || other.bankAccountId == bankAccountId)&&(identical(other.bankAccount, bankAccount) || other.bankAccount == bankAccount)&&(identical(other.iban, iban) || other.iban == iban)&&(identical(other.swiftBic, swiftBic) || other.swiftBic == swiftBic)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.exchangeRate, exchangeRate) || other.exchangeRate == exchangeRate)&&(identical(other.language, language) || other.language == language)&&(identical(other.transferredTaxLiability, transferredTaxLiability) || other.transferredTaxLiability == transferredTaxLiability)&&(identical(other.supplyCode, supplyCode) || other.supplyCode == supplyCode)&&(identical(other.oss, oss) || other.oss == oss)&&(identical(other.vatPriceMode, vatPriceMode) || other.vatPriceMode == vatPriceMode)&&(identical(other.roundTotal, roundTotal) || other.roundTotal == roundTotal)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.total, total) || other.total == total)&&(identical(other.nativeSubtotal, nativeSubtotal) || other.nativeSubtotal == nativeSubtotal)&&(identical(other.nativeTotal, nativeTotal) || other.nativeTotal == nativeTotal)&&const DeepCollectionEquality().equals(other._lines, _lines)&&const DeepCollectionEquality().equals(other._vatRatesSummary, _vatRatesSummary)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.htmlUrl, htmlUrl) || other.htmlUrl == htmlUrl)&&(identical(other.publicHtmlUrl, publicHtmlUrl) || other.publicHtmlUrl == publicHtmlUrl)&&(identical(other.url, url) || other.url == url)&&(identical(other.pdfUrl, pdfUrl) || other.pdfUrl == pdfUrl)&&(identical(other.subjectUrl, subjectUrl) || other.subjectUrl == subjectUrl)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hashAll([runtimeType,id,customId,documentType,number,numberFormatId,yourName,yourStreet,yourCity,yourZip,yourCountry,yourRegistrationNo,yourVatNo,yourLocalVatNo,clientName,clientStreet,clientCity,clientZip,clientCountry,clientHasDeliveryAddress,clientDeliveryName,clientDeliveryStreet,clientDeliveryCity,clientDeliveryZip,clientDeliveryCountry,clientRegistrationNo,clientVatNo,clientLocalVatNo,subjectId,subjectCustomId,token,status,orderNumber,issuedOn,taxableFulfillmentDue,due,dueOn,sentAt,acceptedAt,rejectedAt,cancelledAt,lockedAt,note,footerNote,privateNote,const DeepCollectionEquality().hash(_tags),bankAccountId,bankAccount,iban,swiftBic,paymentMethod,currency,exchangeRate,language,transferredTaxLiability,supplyCode,oss,vatPriceMode,roundTotal,subtotal,total,nativeSubtotal,nativeTotal,const DeepCollectionEquality().hash(_lines),const DeepCollectionEquality().hash(_vatRatesSummary),const DeepCollectionEquality().hash(_attachments),htmlUrl,publicHtmlUrl,url,pdfUrl,subjectUrl,createdAt,updatedAt]);
+
+@override
+String toString() {
+  return 'Estimate(id: $id, customId: $customId, documentType: $documentType, number: $number, numberFormatId: $numberFormatId, yourName: $yourName, yourStreet: $yourStreet, yourCity: $yourCity, yourZip: $yourZip, yourCountry: $yourCountry, yourRegistrationNo: $yourRegistrationNo, yourVatNo: $yourVatNo, yourLocalVatNo: $yourLocalVatNo, clientName: $clientName, clientStreet: $clientStreet, clientCity: $clientCity, clientZip: $clientZip, clientCountry: $clientCountry, clientHasDeliveryAddress: $clientHasDeliveryAddress, clientDeliveryName: $clientDeliveryName, clientDeliveryStreet: $clientDeliveryStreet, clientDeliveryCity: $clientDeliveryCity, clientDeliveryZip: $clientDeliveryZip, clientDeliveryCountry: $clientDeliveryCountry, clientRegistrationNo: $clientRegistrationNo, clientVatNo: $clientVatNo, clientLocalVatNo: $clientLocalVatNo, subjectId: $subjectId, subjectCustomId: $subjectCustomId, token: $token, status: $status, orderNumber: $orderNumber, issuedOn: $issuedOn, taxableFulfillmentDue: $taxableFulfillmentDue, due: $due, dueOn: $dueOn, sentAt: $sentAt, acceptedAt: $acceptedAt, rejectedAt: $rejectedAt, cancelledAt: $cancelledAt, lockedAt: $lockedAt, note: $note, footerNote: $footerNote, privateNote: $privateNote, tags: $tags, bankAccountId: $bankAccountId, bankAccount: $bankAccount, iban: $iban, swiftBic: $swiftBic, paymentMethod: $paymentMethod, currency: $currency, exchangeRate: $exchangeRate, language: $language, transferredTaxLiability: $transferredTaxLiability, supplyCode: $supplyCode, oss: $oss, vatPriceMode: $vatPriceMode, roundTotal: $roundTotal, subtotal: $subtotal, total: $total, nativeSubtotal: $nativeSubtotal, nativeTotal: $nativeTotal, lines: $lines, vatRatesSummary: $vatRatesSummary, attachments: $attachments, htmlUrl: $htmlUrl, publicHtmlUrl: $publicHtmlUrl, url: $url, pdfUrl: $pdfUrl, subjectUrl: $subjectUrl, createdAt: $createdAt, updatedAt: $updatedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$EstimateCopyWith<$Res> implements $EstimateCopyWith<$Res> {
+  factory _$EstimateCopyWith(_Estimate value, $Res Function(_Estimate) _then) = __$EstimateCopyWithImpl;
+@override @useResult
+$Res call({
+ int? id,@JsonKey(name: 'custom_id') String? customId,@JsonKey(name: 'document_type') EstimateDocumentType? documentType, String? number,@JsonKey(name: 'number_format_id') int? numberFormatId,@JsonKey(name: 'your_name') String? yourName,@JsonKey(name: 'your_street') String? yourStreet,@JsonKey(name: 'your_city') String? yourCity,@JsonKey(name: 'your_zip') String? yourZip,@JsonKey(name: 'your_country') String? yourCountry,@JsonKey(name: 'your_registration_no') String? yourRegistrationNo,@JsonKey(name: 'your_vat_no') String? yourVatNo,@JsonKey(name: 'your_local_vat_no') String? yourLocalVatNo,@JsonKey(name: 'client_name') String? clientName,@JsonKey(name: 'client_street') String? clientStreet,@JsonKey(name: 'client_city') String? clientCity,@JsonKey(name: 'client_zip') String? clientZip,@JsonKey(name: 'client_country') String? clientCountry,@JsonKey(name: 'client_has_delivery_address') bool? clientHasDeliveryAddress,@JsonKey(name: 'client_delivery_name') String? clientDeliveryName,@JsonKey(name: 'client_delivery_street') String? clientDeliveryStreet,@JsonKey(name: 'client_delivery_city') String? clientDeliveryCity,@JsonKey(name: 'client_delivery_zip') String? clientDeliveryZip,@JsonKey(name: 'client_delivery_country') String? clientDeliveryCountry,@JsonKey(name: 'client_registration_no') String? clientRegistrationNo,@JsonKey(name: 'client_vat_no') String? clientVatNo,@JsonKey(name: 'client_local_vat_no') String? clientLocalVatNo,@JsonKey(name: 'subject_id') int subjectId,@JsonKey(name: 'subject_custom_id') String? subjectCustomId, String? token, EstimateStatus? status,@JsonKey(name: 'order_number') String? orderNumber,@JsonKey(name: 'issued_on') String? issuedOn,@JsonKey(name: 'taxable_fulfillment_due') String? taxableFulfillmentDue, int? due,@JsonKey(name: 'due_on') String? dueOn,@JsonKey(name: 'sent_at') DateTime? sentAt,@JsonKey(name: 'accepted_at') DateTime? acceptedAt,@JsonKey(name: 'rejected_at') DateTime? rejectedAt,@JsonKey(name: 'cancelled_at') DateTime? cancelledAt,@JsonKey(name: 'locked_at') DateTime? lockedAt, String? note,@JsonKey(name: 'footer_note') String? footerNote,@JsonKey(name: 'private_note') String? privateNote, List<String>? tags,@JsonKey(name: 'bank_account_id') int? bankAccountId,@JsonKey(name: 'bank_account') String? bankAccount, String? iban,@JsonKey(name: 'swift_bic') String? swiftBic,@JsonKey(name: 'payment_method') PaymentMethod? paymentMethod, String? currency,@JsonKey(name: 'exchange_rate') String? exchangeRate, DocumentLanguage? language,@JsonKey(name: 'transferred_tax_liability') bool? transferredTaxLiability,@JsonKey(name: 'supply_code') String? supplyCode, OssMode? oss,@JsonKey(name: 'vat_price_mode') VatPriceMode? vatPriceMode,@JsonKey(name: 'round_total') bool? roundTotal, String? subtotal, String? total,@JsonKey(name: 'native_subtotal') String? nativeSubtotal,@JsonKey(name: 'native_total') String? nativeTotal, List<InvoiceLine>? lines,@JsonKey(name: 'vat_rates_summary') List<VatRateSummary>? vatRatesSummary, List<DocumentAttachment>? attachments,@JsonKey(name: 'html_url') String? htmlUrl,@JsonKey(name: 'public_html_url') String? publicHtmlUrl, String? url,@JsonKey(name: 'pdf_url') String? pdfUrl,@JsonKey(name: 'subject_url') String? subjectUrl,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'updated_at') DateTime? updatedAt
+});
+
+
+
+
+}
+/// @nodoc
+class __$EstimateCopyWithImpl<$Res>
+    implements _$EstimateCopyWith<$Res> {
+  __$EstimateCopyWithImpl(this._self, this._then);
+
+  final _Estimate _self;
+  final $Res Function(_Estimate) _then;
+
+/// Create a copy of Estimate
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? customId = freezed,Object? documentType = freezed,Object? number = freezed,Object? numberFormatId = freezed,Object? yourName = freezed,Object? yourStreet = freezed,Object? yourCity = freezed,Object? yourZip = freezed,Object? yourCountry = freezed,Object? yourRegistrationNo = freezed,Object? yourVatNo = freezed,Object? yourLocalVatNo = freezed,Object? clientName = freezed,Object? clientStreet = freezed,Object? clientCity = freezed,Object? clientZip = freezed,Object? clientCountry = freezed,Object? clientHasDeliveryAddress = freezed,Object? clientDeliveryName = freezed,Object? clientDeliveryStreet = freezed,Object? clientDeliveryCity = freezed,Object? clientDeliveryZip = freezed,Object? clientDeliveryCountry = freezed,Object? clientRegistrationNo = freezed,Object? clientVatNo = freezed,Object? clientLocalVatNo = freezed,Object? subjectId = null,Object? subjectCustomId = freezed,Object? token = freezed,Object? status = freezed,Object? orderNumber = freezed,Object? issuedOn = freezed,Object? taxableFulfillmentDue = freezed,Object? due = freezed,Object? dueOn = freezed,Object? sentAt = freezed,Object? acceptedAt = freezed,Object? rejectedAt = freezed,Object? cancelledAt = freezed,Object? lockedAt = freezed,Object? note = freezed,Object? footerNote = freezed,Object? privateNote = freezed,Object? tags = freezed,Object? bankAccountId = freezed,Object? bankAccount = freezed,Object? iban = freezed,Object? swiftBic = freezed,Object? paymentMethod = freezed,Object? currency = freezed,Object? exchangeRate = freezed,Object? language = freezed,Object? transferredTaxLiability = freezed,Object? supplyCode = freezed,Object? oss = freezed,Object? vatPriceMode = freezed,Object? roundTotal = freezed,Object? subtotal = freezed,Object? total = freezed,Object? nativeSubtotal = freezed,Object? nativeTotal = freezed,Object? lines = freezed,Object? vatRatesSummary = freezed,Object? attachments = freezed,Object? htmlUrl = freezed,Object? publicHtmlUrl = freezed,Object? url = freezed,Object? pdfUrl = freezed,Object? subjectUrl = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+  return _then(_Estimate(
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,customId: freezed == customId ? _self.customId : customId // ignore: cast_nullable_to_non_nullable
+as String?,documentType: freezed == documentType ? _self.documentType : documentType // ignore: cast_nullable_to_non_nullable
+as EstimateDocumentType?,number: freezed == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as String?,numberFormatId: freezed == numberFormatId ? _self.numberFormatId : numberFormatId // ignore: cast_nullable_to_non_nullable
+as int?,yourName: freezed == yourName ? _self.yourName : yourName // ignore: cast_nullable_to_non_nullable
+as String?,yourStreet: freezed == yourStreet ? _self.yourStreet : yourStreet // ignore: cast_nullable_to_non_nullable
+as String?,yourCity: freezed == yourCity ? _self.yourCity : yourCity // ignore: cast_nullable_to_non_nullable
+as String?,yourZip: freezed == yourZip ? _self.yourZip : yourZip // ignore: cast_nullable_to_non_nullable
+as String?,yourCountry: freezed == yourCountry ? _self.yourCountry : yourCountry // ignore: cast_nullable_to_non_nullable
+as String?,yourRegistrationNo: freezed == yourRegistrationNo ? _self.yourRegistrationNo : yourRegistrationNo // ignore: cast_nullable_to_non_nullable
+as String?,yourVatNo: freezed == yourVatNo ? _self.yourVatNo : yourVatNo // ignore: cast_nullable_to_non_nullable
+as String?,yourLocalVatNo: freezed == yourLocalVatNo ? _self.yourLocalVatNo : yourLocalVatNo // ignore: cast_nullable_to_non_nullable
+as String?,clientName: freezed == clientName ? _self.clientName : clientName // ignore: cast_nullable_to_non_nullable
+as String?,clientStreet: freezed == clientStreet ? _self.clientStreet : clientStreet // ignore: cast_nullable_to_non_nullable
+as String?,clientCity: freezed == clientCity ? _self.clientCity : clientCity // ignore: cast_nullable_to_non_nullable
+as String?,clientZip: freezed == clientZip ? _self.clientZip : clientZip // ignore: cast_nullable_to_non_nullable
+as String?,clientCountry: freezed == clientCountry ? _self.clientCountry : clientCountry // ignore: cast_nullable_to_non_nullable
+as String?,clientHasDeliveryAddress: freezed == clientHasDeliveryAddress ? _self.clientHasDeliveryAddress : clientHasDeliveryAddress // ignore: cast_nullable_to_non_nullable
+as bool?,clientDeliveryName: freezed == clientDeliveryName ? _self.clientDeliveryName : clientDeliveryName // ignore: cast_nullable_to_non_nullable
+as String?,clientDeliveryStreet: freezed == clientDeliveryStreet ? _self.clientDeliveryStreet : clientDeliveryStreet // ignore: cast_nullable_to_non_nullable
+as String?,clientDeliveryCity: freezed == clientDeliveryCity ? _self.clientDeliveryCity : clientDeliveryCity // ignore: cast_nullable_to_non_nullable
+as String?,clientDeliveryZip: freezed == clientDeliveryZip ? _self.clientDeliveryZip : clientDeliveryZip // ignore: cast_nullable_to_non_nullable
+as String?,clientDeliveryCountry: freezed == clientDeliveryCountry ? _self.clientDeliveryCountry : clientDeliveryCountry // ignore: cast_nullable_to_non_nullable
+as String?,clientRegistrationNo: freezed == clientRegistrationNo ? _self.clientRegistrationNo : clientRegistrationNo // ignore: cast_nullable_to_non_nullable
+as String?,clientVatNo: freezed == clientVatNo ? _self.clientVatNo : clientVatNo // ignore: cast_nullable_to_non_nullable
+as String?,clientLocalVatNo: freezed == clientLocalVatNo ? _self.clientLocalVatNo : clientLocalVatNo // ignore: cast_nullable_to_non_nullable
+as String?,subjectId: null == subjectId ? _self.subjectId : subjectId // ignore: cast_nullable_to_non_nullable
+as int,subjectCustomId: freezed == subjectCustomId ? _self.subjectCustomId : subjectCustomId // ignore: cast_nullable_to_non_nullable
+as String?,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
+as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as EstimateStatus?,orderNumber: freezed == orderNumber ? _self.orderNumber : orderNumber // ignore: cast_nullable_to_non_nullable
+as String?,issuedOn: freezed == issuedOn ? _self.issuedOn : issuedOn // ignore: cast_nullable_to_non_nullable
+as String?,taxableFulfillmentDue: freezed == taxableFulfillmentDue ? _self.taxableFulfillmentDue : taxableFulfillmentDue // ignore: cast_nullable_to_non_nullable
+as String?,due: freezed == due ? _self.due : due // ignore: cast_nullable_to_non_nullable
+as int?,dueOn: freezed == dueOn ? _self.dueOn : dueOn // ignore: cast_nullable_to_non_nullable
+as String?,sentAt: freezed == sentAt ? _self.sentAt : sentAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,acceptedAt: freezed == acceptedAt ? _self.acceptedAt : acceptedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,rejectedAt: freezed == rejectedAt ? _self.rejectedAt : rejectedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,cancelledAt: freezed == cancelledAt ? _self.cancelledAt : cancelledAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,lockedAt: freezed == lockedAt ? _self.lockedAt : lockedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
+as String?,footerNote: freezed == footerNote ? _self.footerNote : footerNote // ignore: cast_nullable_to_non_nullable
+as String?,privateNote: freezed == privateNote ? _self.privateNote : privateNote // ignore: cast_nullable_to_non_nullable
+as String?,tags: freezed == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
+as List<String>?,bankAccountId: freezed == bankAccountId ? _self.bankAccountId : bankAccountId // ignore: cast_nullable_to_non_nullable
+as int?,bankAccount: freezed == bankAccount ? _self.bankAccount : bankAccount // ignore: cast_nullable_to_non_nullable
+as String?,iban: freezed == iban ? _self.iban : iban // ignore: cast_nullable_to_non_nullable
+as String?,swiftBic: freezed == swiftBic ? _self.swiftBic : swiftBic // ignore: cast_nullable_to_non_nullable
+as String?,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
+as PaymentMethod?,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String?,exchangeRate: freezed == exchangeRate ? _self.exchangeRate : exchangeRate // ignore: cast_nullable_to_non_nullable
+as String?,language: freezed == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
+as DocumentLanguage?,transferredTaxLiability: freezed == transferredTaxLiability ? _self.transferredTaxLiability : transferredTaxLiability // ignore: cast_nullable_to_non_nullable
+as bool?,supplyCode: freezed == supplyCode ? _self.supplyCode : supplyCode // ignore: cast_nullable_to_non_nullable
+as String?,oss: freezed == oss ? _self.oss : oss // ignore: cast_nullable_to_non_nullable
+as OssMode?,vatPriceMode: freezed == vatPriceMode ? _self.vatPriceMode : vatPriceMode // ignore: cast_nullable_to_non_nullable
+as VatPriceMode?,roundTotal: freezed == roundTotal ? _self.roundTotal : roundTotal // ignore: cast_nullable_to_non_nullable
+as bool?,subtotal: freezed == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
+as String?,total: freezed == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
+as String?,nativeSubtotal: freezed == nativeSubtotal ? _self.nativeSubtotal : nativeSubtotal // ignore: cast_nullable_to_non_nullable
+as String?,nativeTotal: freezed == nativeTotal ? _self.nativeTotal : nativeTotal // ignore: cast_nullable_to_non_nullable
+as String?,lines: freezed == lines ? _self._lines : lines // ignore: cast_nullable_to_non_nullable
+as List<InvoiceLine>?,vatRatesSummary: freezed == vatRatesSummary ? _self._vatRatesSummary : vatRatesSummary // ignore: cast_nullable_to_non_nullable
+as List<VatRateSummary>?,attachments: freezed == attachments ? _self._attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<DocumentAttachment>?,htmlUrl: freezed == htmlUrl ? _self.htmlUrl : htmlUrl // ignore: cast_nullable_to_non_nullable
+as String?,publicHtmlUrl: freezed == publicHtmlUrl ? _self.publicHtmlUrl : publicHtmlUrl // ignore: cast_nullable_to_non_nullable
+as String?,url: freezed == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String?,pdfUrl: freezed == pdfUrl ? _self.pdfUrl : pdfUrl // ignore: cast_nullable_to_non_nullable
+as String?,subjectUrl: freezed == subjectUrl ? _self.subjectUrl : subjectUrl // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+
+}
+
+// dart format on

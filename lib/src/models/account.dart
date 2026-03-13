@@ -22,6 +22,7 @@ abstract class Account with _$Account {
     @JsonKey(name: 'vat_mode') AccountVatMode? vatMode,
     @JsonKey(name: 'vat_price_mode') String? vatPriceMode,
     String? street,
+    String? street2,
     String? city,
     String? zip,
     String? country,

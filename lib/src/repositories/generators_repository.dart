@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../core/responses/paginated_response.dart';
 import '../core/utils/api_utils.dart';
 import '../models/generator.dart';
+import '../models/enums/generator_enums.dart';
 
 class GeneratorsRepository {
   final Dio _dio;
@@ -64,5 +65,13 @@ class GeneratorsRepository {
   /// Smaže šablonu.
   Future<void> deleteGenerator(int id) async {
     await _dio.delete('/generators/$id.json');
+  }
+
+  /// Provede akci se šablonou (např. 'generate' pro okamžité vystavení faktury).
+  Future<void> fireAction(int id, GeneratorFireAction action) async {
+    await _dio.post(
+      '/generators/$id/fire.json',
+      data: {'event': action.value},
+    );
   }
 }

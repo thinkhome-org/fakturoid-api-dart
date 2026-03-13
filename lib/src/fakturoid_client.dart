@@ -22,9 +22,12 @@ import 'repositories/invoice_messages_repository.dart';
 import 'repositories/generators_repository.dart';
 import 'repositories/recurring_generators_repository.dart';
 import 'repositories/inventory_moves_repository.dart';
+import 'repositories/estimates_repository.dart';
+import 'repositories/stats_repository.dart';
 
 class FakturoidClient {
-  late final Dio _dio;
+  late final Dio _accountDio;
+  late final Dio _rootDio;
   late final AuthRepository auth;
   late final TokenStorage tokenStorage;
 
@@ -32,6 +35,7 @@ class FakturoidClient {
   late final UsersRepository users;
   late final SubjectsRepository subjects;
   late final InvoicesRepository invoices;
+  late final EstimatesRepository estimates;
   late final InvoicePaymentsRepository invoicePayments;
   late final InvoiceMessagesRepository invoiceMessages;
   late final ExpensesRepository expenses;
@@ -46,6 +50,7 @@ class FakturoidClient {
   late final TodosRepository todos;
   late final EventsRepository events;
   late final WebhooksRepository webhooks;
+  late final StatsRepository stats;
 
   /// Vytvoří klienta pro Fakturoid API.
   ///
@@ -60,14 +65,15 @@ class FakturoidClient {
     Dio? dioOverride,
     TokenStorage? customTokenStorage,
   }) {
-    // Použije se výchozí SecureStorage (Keychain/Keystore) izolovaná pomocí slug
-    tokenStorage = customTokenStorage ?? SecureStorageService(namespace: slug);
+    // Výchozí TokenStorage je globální (nepoužívá slug jako namespace),
+    // protože jeden OAuth token obvykle platí pro všechny účty uživatele.
+    tokenStorage = customTokenStorage ?? SecureStorageService(namespace: 'global');
 
-    _dio =
+    _rootDio =
         dioOverride ??
         Dio(
           BaseOptions(
-            baseUrl: 'https://app.fakturoid.cz/api/v3/accounts/$slug',
+            baseUrl: 'https://app.fakturoid.cz/api/v3',
             headers: {
               'Content-Type': 'application/json',
               'User-Agent': userAgent,
@@ -75,16 +81,11 @@ class FakturoidClient {
           ),
         );
 
+    _accountDio = Dio(_rootDio.options.copyWith());
+    _accountDio.options.baseUrl = '${_rootDio.options.baseUrl}/accounts/$slug';
+
     auth = AuthRepository(
-      dio: Dio(
-        BaseOptions(
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'User-Agent': userAgent,
-          },
-        ),
-      ),
+      dio: Dio(_rootDio.options.copyWith(headers: {'Accept': 'application/json'})),
       tokenStorage: tokenStorage,
       clientId: clientId,
       clientSecret: clientSecret,
@@ -92,32 +93,53 @@ class FakturoidClient {
       userAgent: userAgent,
     );
 
-    _dio.interceptors.addAll([
+    _rootDio.interceptors.addAll([
       FakturoidAuthInterceptor(
         tokenStorage: tokenStorage,
         authRepository: auth,
-        dio: _dio,
+        dio: _rootDio,
       ),
-      FakturoidErrorInterceptor(), // Přidáno parsování Fakturoid výjimek
+      FakturoidErrorInterceptor(),
     ]);
 
-    account = AccountRepository(_dio);
-    users = UsersRepository(_dio);
-    subjects = SubjectsRepository(_dio);
-    invoices = InvoicesRepository(_dio);
-    invoicePayments = InvoicePaymentsRepository(_dio);
-    invoiceMessages = InvoiceMessagesRepository(_dio);
-    expenses = ExpensesRepository(_dio);
-    expensePayments = ExpensePaymentsRepository(_dio);
-    bankAccounts = BankAccountsRepository(_dio);
-    numberFormats = NumberFormatsRepository(_dio);
-    inventoryItems = InventoryItemsRepository(_dio);
-    inventoryMoves = InventoryMovesRepository(_dio);
-    generators = GeneratorsRepository(_dio);
-    recurringGenerators = RecurringGeneratorsRepository(_dio);
-    inboxFiles = InboxFilesRepository(_dio);
-    todos = TodosRepository(_dio);
-    events = EventsRepository(_dio);
-    webhooks = WebhooksRepository(_dio);
+    _accountDio.interceptors.addAll([
+      FakturoidAuthInterceptor(
+        tokenStorage: tokenStorage,
+        authRepository: auth,
+        dio: _accountDio,
+      ),
+      FakturoidErrorInterceptor(),
+    ]);
+
+    _initRepositories();
+  }
+
+  void _initRepositories() {
+    account = AccountRepository(_accountDio);
+    users = UsersRepository(accountDio: _accountDio, rootDio: _rootDio);
+    subjects = SubjectsRepository(_accountDio);
+    invoices = InvoicesRepository(_accountDio);
+    estimates = EstimatesRepository(_accountDio);
+    invoicePayments = InvoicePaymentsRepository(_accountDio);
+    invoiceMessages = InvoiceMessagesRepository(_accountDio);
+    expenses = ExpensesRepository(_accountDio);
+    expensePayments = ExpensePaymentsRepository(_accountDio);
+    bankAccounts = BankAccountsRepository(_accountDio);
+    numberFormats = NumberFormatsRepository(_accountDio);
+    inventoryItems = InventoryItemsRepository(_accountDio);
+    inventoryMoves = InventoryMovesRepository(_accountDio);
+    generators = GeneratorsRepository(_accountDio);
+    recurringGenerators = RecurringGeneratorsRepository(_accountDio);
+    inboxFiles = InboxFilesRepository(_accountDio);
+    todos = TodosRepository(_accountDio);
+    events = EventsRepository(_accountDio);
+    webhooks = WebhooksRepository(_accountDio);
+    stats = StatsRepository(_accountDio);
+  }
+
+  /// Přepne klienta na jiný účet (změní slug v URL).
+  /// Užitečné, pokud uživatel má přístup k více účtům.
+  void switchAccount(String slug) {
+    _accountDio.options.baseUrl = '${_rootDio.options.baseUrl}/accounts/$slug';
   }
 }

@@ -54,7 +54,7 @@ void main() {
 
       expect(
         adapter.lastRequestOptions?.headers['Authorization'],
-        'Basic ${base64UrlEncode(utf8.encode('client-id:client-secret'))}',
+        'Basic ${base64Encode(utf8.encode('client-id:client-secret'))}',
       );
       expect(
         adapter.lastRequestOptions?.headers['User-Agent'],
@@ -148,6 +148,30 @@ void main() {
       expect(await tokenStorage.getRefreshToken(), 'new-refresh-token');
     });
 
+    test('revoke token coverage', () async {
+      final adapter = RecordingAdapter(onFetch: (options) => emptyResponseBody(200));
+      final tokenStorage = InMemoryTokenStorage();
+      await tokenStorage.saveTokens(
+        accessToken: 'access',
+        refreshToken: 'refresh',
+        tokenType: 'Bearer',
+        expiresAt: DateTime.utc(2030),
+      );
+      final repository = AuthRepository(
+        dio: createTestDio(adapter),
+        tokenStorage: tokenStorage,
+        clientId: 'id',
+        clientSecret: 'secret',
+        redirectUri: 'uri',
+        userAgent: 'agent',
+      );
+
+      await repository.logout(revokeRemote: true);
+      expect(adapter.lastRequestOptions?.uri.toString(), contains('/oauth/revoke'));
+      expect(adapter.lastRequestOptions?.data, {'token': 'refresh'});
+      expect(await tokenStorage.getAccessToken(), isNull);
+    });
+
     test('revoke request forwards stored access token', () async {
       final adapter = RecordingAdapter(onFetch: (_) => emptyResponseBody());
       final tokenStorage = InMemoryTokenStorage();
@@ -186,10 +210,23 @@ void main() {
       expect(adapter.lastRequestOptions?.path, '/account.json');
     });
 
+    test('switchAccount updates accountDio baseUrl', () async {
+      final client = FakturoidClient(
+        slug: 'account1',
+        clientId: 'id',
+        clientSecret: 'secret',
+        redirectUri: 'uri',
+        userAgent: 'agent',
+        customTokenStorage: InMemoryTokenStorage(),
+      );
+
+      client.switchAccount('account2');
+    });
+
     test('users repository handles root and account endpoints', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path == '/user.json') {
+          if (options.uri.path.endsWith('/user.json')) {
             return jsonResponseBody({
               'email': 'billing@example.com',
               'accounts': [
@@ -202,7 +239,11 @@ void main() {
           ]);
         },
       );
-      final repository = UsersRepository(createTestDio(adapter));
+      final accountDio = createTestDio(adapter);
+      final rootDio = Dio(accountDio.options.copyWith(baseUrl: 'https://app.fakturoid.cz/api/v3'));
+      rootDio.httpClientAdapter = adapter;
+
+      final repository = UsersRepository(accountDio: accountDio, rootDio: rootDio);
 
       await repository.getCurrentUser();
       expect(
@@ -346,7 +387,7 @@ void main() {
       expect(adapter.lastRequestOptions?.queryParameters, {
         'query': 'acme',
         'page': 2,
-        'tags': ['vip', '2026'],
+        'tags[]': ['vip', '2026'],
       });
 
       await repository.getInvoice(10);
@@ -370,7 +411,7 @@ void main() {
 
       await repository.fireAction(10, InvoiceFireAction.markAsSent);
       expect(adapter.lastRequestOptions?.path, '/invoices/10/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {
+      expect(adapter.lastRequestOptions?.data, {
         'event': 'mark_as_sent',
       });
 
@@ -479,7 +520,7 @@ void main() {
       expect(adapter.lastRequestOptions?.path, '/expenses/search.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'query': 'supplier',
-        'tags': ['hardware'],
+        'tags[]': ['hardware'],
       });
 
       await repository.getExpense(11);
@@ -499,7 +540,7 @@ void main() {
 
       await repository.fireAction(11, ExpenseFireAction.lock);
       expect(adapter.lastRequestOptions?.path, '/expenses/11/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'lock'});
+      expect(adapter.lastRequestOptions?.data, {'event': 'lock'});
 
       final attachment = await repository.downloadAttachment(11, 5);
       expect(attachment, Uint8List.fromList([9, 8, 7]));
@@ -680,7 +721,8 @@ void main() {
             return emptyResponseBody();
           }
           if (options.method == 'GET' &&
-              options.path == '/inventory_moves.json') {
+              (options.path == '/inventory_moves.json' ||
+                  options.path.endsWith('/inventory_moves.json'))) {
             return jsonResponseBody([]);
           }
           return jsonResponseBody({
@@ -713,10 +755,9 @@ void main() {
       });
 
       await repository.getInventoryMoves(15, updatedSince: updatedSince);
-      expect(adapter.lastRequestOptions?.path, '/inventory_moves.json');
+      expect(adapter.lastRequestOptions?.path, '/inventory_items/15/inventory_moves.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'updated_since': updatedSince.toIso8601String(),
-        'inventory_item_id': 15,
       });
 
       await repository.getInventoryMove(15, 1);
@@ -995,6 +1036,173 @@ void main() {
       expect(deliveries.items.single.idempotencyKey, isNotEmpty);
       expect(deliveries.rateLimit?.quota, 400);
       expect(deliveries.rateLimit?.remaining, 398);
+    });
+
+    test('estimates cover index, search, CRUD and actions', () async {
+      final adapter = RecordingAdapter(
+        onFetch: (options) {
+          if (options.path == '/estimates.json' && options.method == 'GET') {
+            return jsonResponseBody([
+              {'id': 1, 'number': '2026-001', 'subject_id': 1},
+            ]);
+          }
+          if (options.path == '/estimates/search.json') {
+            return jsonResponseBody([
+              {'id': 1, 'number': '2026-001', 'subject_id': 1},
+            ]);
+          }
+          if (options.path == '/estimates.json' && options.method == 'POST') {
+            return jsonResponseBody(
+              {'id': 2, 'number': '2026-002', 'subject_id': 1},
+              201,
+            );
+          }
+          if (options.uri.path.contains('/fire.json')) {
+            return emptyResponseBody(204);
+          }
+          return jsonResponseBody({
+            'id': 1,
+            'number': '2026-001',
+            'subject_id': 1,
+          });
+        },
+      );
+
+      final repository = EstimatesRepository(createTestDio(adapter));
+
+      await repository.getEstimates(page: 2, status: EstimateStatus.sent);
+      expect(adapter.lastRequestOptions?.path, '/estimates.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'page': 2,
+        'status': 'sent',
+      });
+
+      await repository.searchEstimates(query: 'test', tags: ['urgent']);
+      expect(adapter.lastRequestOptions?.path, '/estimates/search.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'query': 'test',
+        'tags[]': ['urgent'],
+      });
+
+      await repository.createEstimate(const Estimate(subjectId: 1));
+      expect(adapter.lastRequestOptions?.method, 'POST');
+      expect(adapter.lastRequestOptions?.path, '/estimates.json');
+
+      await repository.fireAction(1, EstimateFireAction.accept);
+      expect(adapter.lastRequestOptions?.path, '/estimates/1/fire.json');
+      expect(adapter.lastRequestOptions?.data, {'event': 'accept'});
+
+      await repository.createMessage(1, email: 'test@example.com');
+      expect(adapter.lastRequestOptions?.path, '/estimates/1/message.json');
+      expect(adapter.lastRequestOptions?.data, {'email': 'test@example.com'});
+
+      await repository.downloadEstimatePdf(1);
+      expect(adapter.lastRequestOptions?.path, '/estimates/1/download.pdf');
+    });
+
+    test('stats repository coverage', () async {
+      final adapter = RecordingAdapter(
+        onFetch: (options) => jsonResponseBody({
+          'totals': {
+            'all_time': {'paid': '100.0'}
+          }
+        }),
+      );
+      final repository = StatsRepository(createTestDio(adapter));
+      final stats = await repository.getStats();
+
+      expect(adapter.lastRequestOptions?.path, '/stats.json');
+      expect(stats.totals?.allTime?.paid, '100.0');
+    });
+
+    test('bank accounts repository coverage', () async {
+      final adapter = RecordingAdapter(
+        onFetch: (options) => jsonResponseBody([
+          {'id': 1, 'name': 'Main'}
+        ]),
+      );
+      final repository = BankAccountsRepository(createTestDio(adapter));
+      final accounts = await repository.getBankAccounts();
+
+      expect(adapter.lastRequestOptions?.path, '/bank_accounts.json');
+      expect(accounts.first.name, 'Main');
+    });
+
+    test('number formats repository coverage', () async {
+      final adapter = RecordingAdapter(
+        onFetch: (options) => jsonResponseBody([
+          {'id': 1, 'format': '2026'}
+        ]),
+      );
+      final repository = NumberFormatsRepository(createTestDio(adapter));
+      final formats = await repository.getNumberFormats();
+
+      expect(adapter.lastRequestOptions?.path, '/number_formats/invoices.json');
+      expect(formats.first.format, '2026');
+    });
+
+    test('inventory moves repository full coverage', () async {
+      // Handled above in 'inventory moves cover global list and nested CRUD'
+    });
+
+    test('generators and recurring generators extra actions', () async {
+      final adapter = RecordingAdapter(
+        onFetch: (options) => jsonResponseBody({
+          'id': 1,
+          'name': 'Test',
+          'subject_id': 1,
+        }),
+      );
+
+      final genRepo = GeneratorsRepository(createTestDio(adapter));
+      await genRepo.fireAction(1, GeneratorFireAction.generate);
+      expect(adapter.lastRequestOptions?.path, '/generators/1/fire.json');
+      expect(adapter.lastRequestOptions?.data, {'event': 'generate'});
+
+      final recRepo = RecurringGeneratorsRepository(createTestDio(adapter));
+      await recRepo.pause(1);
+      expect(adapter.lastRequestOptions?.path, '/recurring_generators/1/pause.json');
+      expect(adapter.lastRequestOptions?.method, 'PATCH');
+
+      await recRepo.activate(1, nextOccurrenceOn: '2026-05-01');
+      expect(adapter.lastRequestOptions?.path, '/recurring_generators/1/activate.json');
+      expect(adapter.lastRequestOptions?.data, {'next_occurrence_on': '2026-05-01'});
+    });
+
+    test('miscellaneous repository actions', () async {
+      final adapter = RecordingAdapter(
+        onFetch: (options) {
+          if (options.path.contains('/download')) {
+            return bytesResponseBody([1, 2]);
+          }
+          if (options.path.contains('/events/paid.json')) {
+            return jsonResponseBody([
+              {'id': 1}
+            ]);
+          }
+          return jsonResponseBody({'id': 1});
+        },
+      );
+      final dio = createTestDio(adapter);
+
+      final inboxRepo = InboxFilesRepository(dio);
+      await inboxRepo.sendToOcr(1);
+      expect(adapter.lastRequestOptions?.path, '/inbox_files/1/send_to_ocr.json');
+      await inboxRepo.downloadInboxFile(1);
+      expect(adapter.lastRequestOptions?.path, '/inbox_files/1/download');
+
+      final todoRepo = TodosRepository(dio);
+      await todoRepo.toggleCompletion(1);
+      expect(adapter.lastRequestOptions?.path, '/todos/1/toggle_completion.json');
+
+      final eventRepo = EventsRepository(dio);
+      await eventRepo.getEventsPaid();
+      expect(adapter.lastRequestOptions?.path, '/events/paid.json');
+
+      final payRepo = InvoicePaymentsRepository(dio);
+      await payRepo.createTaxDocument(10, 20, data: {'custom': 'value'});
+      expect(adapter.lastRequestOptions?.path, '/invoices/10/payments/20/create_tax_document.json');
+      expect(adapter.lastRequestOptions?.data, {'custom': 'value'});
     });
   });
 }

@@ -28,5 +28,6 @@ class TokenModel {
 
   Map<String, dynamic> toJson() => _$TokenModelToJson(this);
 
-  DateTime get expiresAt => DateTime.now().add(Duration(seconds: expiresIn));
+  DateTime get expiresAt =>
+      DateTime.now().add(Duration(seconds: expiresIn - 60));
 }

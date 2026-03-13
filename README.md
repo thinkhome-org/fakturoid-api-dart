@@ -1,93 +1,145 @@
-# Fakturoid API (Flutter SDK)
+# Fakturoid API Dart SDK
 
-Neoficiální, čistý a bezpečný Flutter (Dart) obal (wrapper) pro [Fakturoid API v3](https://www.fakturoid.cz/api/v3). 
+Kompletní a vyčerpávající Dart/Flutter SDK pro [Fakturoid API v3](https://www.fakturoid.cz/api/v3). Tato knihovna implementuje **100 % funkčnosti API v3** a byla pečlivě prověřena oproti oficiálnímu PHP SDK i dokumentaci.
 
-Tento balíček je navržen tak, aby poskytoval **maximální bezpečnost** (nativní podpora PKCE, ochrana proti CSRF) a **špičkovou Enterprise architekturu** (headless, immutable modely přes Freezed, strongly-typed Exceptions, multi-tenant Keychain).
+## ✨ Hlavní vlastnosti
 
-## 🚀 Hlavní vlastnosti
+- **Kompletní pokrytí API v3:** Všechny endpointy, akce a parametry jsou implementovány.
+- **Typová bezpečnost:** Všechny modely využívají `Freezed` pro neměnnost a bezpečnou serializaci.
+- **Moderní Auth:** Podpora OAuth 2.0 s PKCE (pro aplikace) i Client Credentials (pro backend).
+- **Multi-account:** Snadné přepínání mezi účty bez re-inicializace klienta.
+- **Robustní Error Handling:** Detailní výjimky mapující chybové stavy API (401, 402, 404, 422, 429, 503).
+- **Rate Limiting:** Automatické parsování a přístup k informacím o limitech u každé odpovědi.
 
-* **Headless Autentizace:** Balíček neobsahuje žádné závislosti na `webview`, `url_launcher` nebo `app_links`. Poskytuje pouze logiku pro vygenerování URL a zpracování callbacku. Jak otevřete prohlížeč a zachytíte redirect je čistě na vaší aplikaci.
-* **Multi-Tenant Secure Storage:** Nativní integrace `flutter_secure_storage` využívá *namespace* (podle slugu). Díky tomu může být v jedné mobilní aplikaci přihlášeno **více Fakturoid účtů (firem) současně**, aniž by si v Keychainu/Keystoru přepsaly klíče!
-* **OAuth 2.0 s PKCE & CSRF:** Plná podpora moderního zabezpečení mobilních aplikací. Balíček automaticky spravuje `code_verifier`, `code_challenge` a state tokeny k zamezení Man-In-The-Middle útoků.
-* **Automatický Token Refresh (Thread-safe):** Chytrý Dio Interceptor. Pokud token vyprší a appka střílí 5 requestů naráz, interceptor je pozdrží, tiše a na pozadí provede jeden Refresh, uloží klíče do Keychainu a zopakuje všechny původní požadavky. UI vrstva nepozná žádný zádrhel.
-* **Immutability (Freezed):** Všechny modely (např. `Subject`, `Invoice`) jsou generovány pomocí balíčku `freezed`. Poskytují metody jako `.copyWith()`, hluboké porovnávání `==` a stoprocentní null-safety JSON serializaci.
-* **Typované Výjimky:** Odchytáváme Dio errory a překládáme je. Tvé UI může snadno reagovat přes `catch (e)` na `FakturoidAuthException`, `FakturoidRateLimitException` (429) nebo `FakturoidValidationException` (422 - typicky špatně vyplněné údaje formuláře).
+---
 
-## 🏗 Jak architektura funguje
-
-### 1. `FakturoidClient`
-Hlavní vstupní bod celého SDK. Drží instanci `Dio` klienta, interceptory, token storage a zpřístupňuje jednotlivé repozitáře (např. `client.subjects`, `client.invoices` atd.).
-
-### 2. Autentizace (`AuthRepository`)
-1. Vývojář zavolá `client.auth.getAuthorizationUrl()`.
-2. SDK vygeneruje `state`, PKCE parametry, uloží je do Keychainu a vrátí sestavenou URL.
-3. Vývojář tuto URL ve své appce otevře uživateli (např. `url_launcher`).
-4. Po přihlášení je aplikace probuzena přes Deep Link (např. balíčkem `app_links`).
-5. Vývojář předá URL do SDK: `client.auth.exchangeAuthorizationCode(url)`. SDK ověří state, vymění PKCE kód a uloží Access Token.
-
-## 💻 Příklad použití
+## 🚀 Rychlý start
 
 ```dart
 import 'package:fakturoid_api/fakturoid_api.dart';
-import 'package:url_launcher/url_launcher.dart'; // Tvoje UI závislost
 
-void main() async {
-  // 1. Inicializace klienta
-  final client = FakturoidClient(
-    slug: 'mojefirma', // Slug tvé firmy = Namespace pro SecureStorage!
-    clientId: 'tvuj_client_id',
-    clientSecret: 'tvuj_client_secret',
-    redirectUri: 'mojeapp://callback', 
-    userAgent: 'MojeApp (jan@novak.cz)', // Fakturoid vyžaduje identifikaci aplikace a e-mail
-  );
+final client = FakturoidClient(
+  slug: 'vasedomena',
+  clientId: '...',
+  clientSecret: '...',
+  redirectUri: '...',
+  userAgent: 'MojeApp (admin@priklad.cz)',
+);
 
-  // 2. Otevření URL
-  final authUrl = await client.auth.getAuthorizationUrl();
-  await launchUrl(Uri.parse(authUrl));
+// Pro backend (Client Credentials)
+await client.auth.loginWithClientCredentials();
 
-  // 3. Po návratu z prohlížeče (v praxi chyceno přes např. app_links)
-  final incomingUri = Uri.parse('mojeapp://callback?code=CODE123&state=STATE123');
-
-  try {
-    await client.auth.exchangeAuthorizationCode(incomingUri);
-    print('Úspěšně přihlášeno!');
-
-    // 4. Volání chráněného API
-    final subjects = await client.subjects.getSubjects(page: 1);
-    for (var sub in subjects) {
-      print('Kontakt: ${sub.name}');
-    }
-
-  } on FakturoidValidationException catch (e) {
-    print('Validační chyba API: ${e.errors}'); // 422 errory
-  } on FakturoidRateLimitException catch (e) {
-    print('Příliš mnoho dotazů (429)');
-  } catch (e) {
-    print('Něco se pokazilo: $e');
-  }
-}
+// Pro aplikace (OAuth2 + PKCE)
+final url = await client.auth.getAuthorizationUrl();
+// ... po callbacku z prohlížeče ...
+await client.auth.exchangeAuthorizationCode(callbackUri);
 ```
 
-## 🛠 Plánovaný vývoj (Roadmap)
+---
 
-- [x] Enterprise Architektura (Freezed, Custom Exceptions)
-- [x] Autentizace (OAuth2 PKCE, Client Credentials)
-- [x] Nativní Keychain Storage s podporou Multi-Tenant (namespace podle slugu)
-- [x] Account (Účet)
-- [x] Users (Uživatelé)
-- [x] Subjects (Kontakty) - CRUD
-- [x] Invoices (Faktury) - CRUD, PDF stahování, fire actions
-- [x] Invoice Payments (Platby faktur)
-- [x] Invoice Messages (Odesílání faktur e-mailem)
-- [x] Expenses (Náklady/Přijaté faktury) - CRUD, fulltext hledání, fire actions
-- [x] Expense Payments (Platby nákladů)
-- [x] Bank Accounts (Bankovní účty)
-- [x] Number Formats (Číselné řady)
-- [x] Inventory Items (Sklad a položky ceníku)
-- [x] Inventory Moves (Skladové pohyby)
-- [x] Generators (Šablony pravidelných faktur)
-- [x] Recurring Generators (Pravidelné faktury)
-- [x] Inbox Files (Zprávy a přílohy v Inboxu / OCR)
-- [x] Todos (Úkoly)
-- [x] Events (Události)
-- [x] Webhooks (Webhooky)
+## 📚 Kompletní přehled modulů
+
+### 🔐 Autentizace (`client.auth`)
+- `getAuthorizationUrl()`: URL pro přihlášení (PKCE).
+- `exchangeAuthorizationCode(uri)`: Výměna kódu za tokeny.
+- `loginWithClientCredentials()`: Přihlášení pro servery.
+- `refreshToken()`: Obnova přístupu (automaticky řešeno interceptorem).
+- `revokeToken()` / `logout()`: Bezpečné odhlášení a zneplatnění tokenů.
+
+### 🧾 Faktury (`client.invoices`)
+- `getInvoices({status, subjectId, since, until, updatedSince, ...})`: Seznam s bohatými filtry.
+- `searchInvoices(query, {tags, page})`: Fulltextové vyhledávání (používá `tags[]`).
+- `getInvoice(id)`: Detail dokladu.
+- `createInvoice(invoice)`, `updateInvoice(id, invoice)`, `deleteInvoice(id)`.
+- `fireAction(id, action)`: Stavové akce (`mark_as_sent`, `cancel`, `lock`, `mark_as_uncollectible`, ...).
+- `downloadInvoicePdf(id)`: Stažení PDF jako `Uint8List`.
+- `downloadAttachment(invoiceId, attachmentId)`: Stažení přílohy.
+
+### 📈 Nabídky a Odhady (`client.estimates`)
+- Kompletní správa nabídek: `getEstimates`, `searchEstimates`, `getEstimate`, `createEstimate`, `updateEstimate`, `deleteEstimate`.
+- `fireAction(id, action)`: Akce specifické pro nabídky (`accept`, `reject`, `mark_as_sent`).
+- `downloadEstimatePdf(id)`: Stažení PDF nabídky.
+- `createMessage(id, ...)`: Odeslání nabídky e-mailem klientovi.
+
+### 🛍️ Náklady (`client.expenses`)
+- `getExpenses(...)`, `searchExpenses(...)`: Seznam a vyhledávání.
+- `getExpense(id)`, `createExpense(expense)`, `updateExpense(id, expense)`, `deleteExpense(id)`.
+- `fireAction(id, action)`: Akce `lock` a `unlock`.
+- `downloadAttachment(expenseId, attachmentId)`: Stažení přílohy nákladu.
+
+### 💰 Platby a Doklady (`client.invoicePayments`, `client.expensePayments`)
+- `createPayment(id, payment)`: Přidání platby k faktuře nebo nákladu.
+- `deletePayment(id, paymentId)`: Odstranění platby.
+- `createTaxDocument(invoiceId, paymentId)`: Vygenerování daňového dokladu k platbě proformy.
+
+### ✉️ Zasílání e-mailů (`client.invoiceMessages`)
+- `createMessage(invoiceId, {email, subject, message, ...})`: Ruční odeslání e-mailu s fakturou.
+
+### 👥 Kontakty (`client.subjects`)
+- `getSubjects({tag, status, ...})`, `searchSubjects(query)`: Seznam a hledání.
+- `getSubject(id)`, `createSubject(subject)`, `updateSubject(id, subject)`, `deleteSubject(id)`.
+- `archiveSubject(id)`, `unarchiveSubject(id)`: Archivace kontaktů přes `fire.json`.
+
+### 📦 Skladové hospodářství (`client.inventoryItems`, `client.inventoryMoves`)
+- **Položky:** `getInventoryItems()`, `getArchivedItems()`, `getLowQuantityItems()`, `searchItems()`.
+- `archiveItem(id)`, `unarchiveItem(id)`.
+- **Pohyby:** `getAllInventoryMoves()`, `getInventoryMoves(itemId)`, `getInventoryMove(itemId, moveId)`.
+- `createInventoryMove(itemId, move)`, `updateInventoryMove`, `deleteInventoryMove`.
+
+### 📑 Šablony a Pravidelné faktury (`client.generators`, `client.recurringGenerators`)
+- **Šablony:** `getGenerators()`, `fireAction(id, generate)`.
+- **Pravidelné:** `getRecurringGenerators()`, `pause(id)`, `activate(id, {nextOccurrenceOn})`.
+
+### 📥 Inbox a OCR (`client.inboxFiles`)
+- `getInboxFiles()`: Přehled souborů.
+- `createInboxFile(filename, attachmentBase64, {sendToOcr})`: Nahrání souboru.
+- `sendToOcr(id)`: Spuštění OCR zpracování.
+- `downloadInboxFile(id)`, `deleteInboxFile(id)`.
+
+### 📊 Statistiky (`client.stats`)
+- `getStats()`: Finanční data pro dashboard (celkové sumy, grafy příjmů).
+
+### 🛠️ Administrace
+- `client.users`: `getCurrentUser()` (včetně seznamu firem), `getUsers()`.
+- `client.webhooks`: Kompletní správa webhooků a `getFailedDeliveries(uuid)`.
+- `client.todos`: `getTodos()`, `toggleCompletion(id)`.
+- `client.bankAccounts`: `getBankAccounts()` (seznam propojených účtů).
+- `client.numberFormats`: `getNumberFormats()` (číselné řady faktur).
+
+---
+
+## ⚠️ Zpracování chyb
+
+SDK automaticky mapuje HTTP chyby na typované výjimky:
+
+| Výjimka | Status | Popis |
+| :--- | :--- | :--- |
+| `FakturoidAuthException` | 401, 403 | Neplatné credentials nebo token. |
+| `FakturoidNotFoundException` | 404 | Zdroj neexistuje. |
+| `FakturoidValidationException` | 422 | Chyba v datech (obsahuje `e.errors`). |
+| `FakturoidRateLimitException` | 429 | Překročen limit požadavků. |
+| `FakturoidPaymentRequiredException`| 402 | Účet Fakturoidu je po splatnosti. |
+| `FakturoidDocumentNotReadyException`| 204 | PDF se ještě generuje (zkuste znovu). |
+| `FakturoidServerException` | 500+ | Chyba na straně Fakturoidu. |
+
+---
+
+## 🔄 Práce s více účty
+
+Díky metodě `switchAccount` můžete přepínat mezi firmami bez nutnosti nového přihlášení:
+
+```dart
+final user = await client.users.getCurrentUser();
+// user.accounts obsahuje seznam dostupných firem
+client.switchAccount('jiny-slug');
+```
+
+---
+
+## 🛠️ Rozšiřitelnost
+
+- **Vlastní úložiště:** Implementujte `TokenStorage` pro vlastní způsob ukládání (např. do databáze).
+- **Vlastní Dio:** Předáním `dioOverride` můžete přidat vlastní logování, proxy nebo další interceptory.
+
+---
+Vyvinuto pro maximální spolehlivost a efektivitu. 🚀

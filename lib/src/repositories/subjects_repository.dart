@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../core/responses/paginated_response.dart';
 import '../core/utils/api_utils.dart';
 import '../models/subject.dart';
+import '../models/enums/subject_enums.dart';
 
 class SubjectsRepository {
   final Dio _dio;
@@ -14,11 +15,15 @@ class SubjectsRepository {
   /// * [updatedSince] - Kontaktní údaje vytvořené nebo upravené po tomto datu.
   /// * [page] - Číslo stránky (Fakturoid vrací 40 záznamů na stránku).
   /// * [customId] - Filtrování podle vlastního ID.
+  /// * [tag] - Filtrování podle štítku.
+  /// * [status] - Filtrování podle stavu (např. SubjectStatus.archived).
   Future<PaginatedResponse<Subject>> getSubjects({
     DateTime? since,
     DateTime? updatedSince,
     int? page,
     String? customId,
+    String? tag,
+    SubjectStatus? status,
   }) async {
     final response = await _dio.get(
       '/subjects.json',
@@ -27,6 +32,8 @@ class SubjectsRepository {
         'updated_since': updatedSince?.toIso8601String(),
         'page': page,
         'custom_id': customId,
+        'tag': tag,
+        'status': status?.name,
       }),
     );
 
@@ -89,5 +96,23 @@ class SubjectsRepository {
   /// (vyhodí se [FakturoidValidationException]).
   Future<void> deleteSubject(int id) async {
     await _dio.delete('/subjects/$id.json');
+  }
+
+  /// Provede akci s kontaktem (např. archivace, obnovení).
+  Future<void> fireAction(int id, SubjectFireAction action) async {
+    await _dio.post(
+      '/subjects/$id/fire.json',
+      data: {'event': action.value},
+    );
+  }
+
+  /// Archivuje kontakt.
+  Future<void> archiveSubject(int id) async {
+    await fireAction(id, SubjectFireAction.archive);
+  }
+
+  /// Obnoví kontakt z archivu.
+  Future<void> unarchiveSubject(int id) async {
+    await fireAction(id, SubjectFireAction.unarchive);
   }
 }

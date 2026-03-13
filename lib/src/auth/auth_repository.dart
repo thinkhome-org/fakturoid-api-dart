@@ -31,7 +31,7 @@ class AuthRepository {
        _userAgent = userAgent;
 
   Map<String, String> _createAuthHeaders() {
-    final credentials = base64UrlEncode(
+    final credentials = base64Encode(
       utf8.encode('$_clientId:$_clientSecret'),
     );
 
