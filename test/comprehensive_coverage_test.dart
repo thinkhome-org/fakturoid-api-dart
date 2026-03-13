@@ -28,15 +28,6 @@ void main() {
             });
           }
 
-          // Stats endpoint
-          if (options.path == 'stats.json') {
-            return jsonResponseBody({
-              'totals': {
-                'all_time': {'paid': '100.0'},
-              },
-            });
-          }
-
           // List endpoints (must return List)
           final isListPath = options.path.endsWith('bank_accounts.json') ||
               options.path.endsWith('number_formats.json') ||
@@ -173,11 +164,6 @@ void main() {
       );
     });
 
-    test('Stats coverage', () async {
-      await client.stats.getStats();
-      expect(adapter.lastRequestOptions?.path, 'stats.json');
-    });
-
     test('Todos toggle coverage', () async {
       await client.todos.toggleCompletion(1);
       expect(
@@ -216,13 +202,14 @@ void main() {
 
     test('Estimates coverage', () async {
       await client.estimates.getEstimates();
-      expect(adapter.lastRequestOptions?.path, 'estimates.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices.json');
+      expect(adapter.lastRequestOptions?.queryParameters['document_type'], 'estimate');
 
       await client.estimates.getEstimate(1);
-      expect(adapter.lastRequestOptions?.path, 'estimates/1.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/1.json');
 
       await client.estimates.createMessage(1, email: 'test@example.com');
-      expect(adapter.lastRequestOptions?.path, 'estimates/1/message.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/message.json');
     });
 
     test('InventoryMoves coverage', () async {

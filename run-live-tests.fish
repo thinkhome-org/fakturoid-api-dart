@@ -32,8 +32,7 @@ else
     test/live_recurring_generators_test.dart \
     test/live_todos_test.dart \
     test/live_events_test.dart \
-    test/live_webhooks_test.dart \
-    test/live_stats_test.dart
+    test/live_webhooks_test.dart
 
   for t in $tests
     echo "Running $t..."

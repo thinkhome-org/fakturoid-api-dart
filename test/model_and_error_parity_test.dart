@@ -165,22 +165,6 @@ void main() {
       expect(estimate.rejectedAt, DateTime.parse('2026-03-02T12:00:00.000Z'));
     });
 
-    test('stats parses totals and graphs', () {
-      final stats = Stats.fromJson({
-        'totals': {
-          'all_time': {'paid': '1000.0'},
-        },
-        'graphs': {
-          'revenue': [
-            {'date': '2026-01-01', 'amount': '500.0'},
-          ],
-        },
-      });
-
-      expect(stats.totals?.allTime?.paid, '1000.0');
-      expect(stats.graphs?.revenue?.first.amount, '500.0');
-    });
-
     test('event user parses avatar field from event payload', () {
       final event = Event.fromJson({
         'name': 'invoice_paid',

@@ -11,17 +11,7 @@ class EstimatesRepository {
 
   EstimatesRepository(this._dio);
 
-  /// Vrací seznam nabídek.
-  ///
-  /// * [since] - Nabídky vytvořené po tomto datu.
-  /// * [until] - Nabídky vytvořené před tímto datem.
-  /// * [updatedSince] - Nabídky vytvořené nebo upravené po tomto datu.
-  /// * [updatedUntil] - Nabídky vytvořené nebo upravené před tímto datem.
-  /// * [page] - Číslo stránky (Fakturoid vrací 40 záznamů na stránku).
-  /// * [subjectId] - Filtrování nabídek podle ID kontaktu.
-  /// * [customId] - Filtrování podle vlastního ID.
-  /// * [number] - Hledání přesného čísla nabídky.
-  /// * [status] - Filtrování podle stavu (např. EstimateStatus.sent).
+  /// Seznam všech nabídek.
   Future<PaginatedResponse<Estimate>> getEstimates({
     DateTime? since,
     DateTime? until,
@@ -34,8 +24,9 @@ class EstimatesRepository {
     EstimateStatus? status,
   }) async {
     final response = await _dio.get(
-      'estimates.json',
+      'invoices.json',
       queryParameters: ApiUtils.removeNulls({
+        'document_type': 'estimate',
         'since': since?.toIso8601String(),
         'until': until?.toIso8601String(),
         'updated_since': updatedSince?.toIso8601String(),
@@ -62,8 +53,9 @@ class EstimatesRepository {
     List<String>? tags,
   }) async {
     final response = await _dio.get(
-      'estimates/search.json',
+      'invoices/search.json',
       queryParameters: ApiUtils.removeNulls({
+        'document_type': 'estimate',
         'query': query,
         'page': page,
         'tags[]': tags,
@@ -79,23 +71,23 @@ class EstimatesRepository {
 
   /// Získá detail jedné nabídky podle ID.
   Future<Estimate> getEstimate(int id) async {
-    final response = await _dio.get('estimates/$id.json');
+    final response = await _dio.get('invoices/$id.json');
     return Estimate.fromJson(response.data);
   }
 
   /// Vytvoří novou nabídku.
   Future<Estimate> createEstimate(Estimate estimate) async {
     final data = ApiUtils.removeNulls(estimate.toJson());
-    // document_type is not needed for /estimates.json
-    
-    final response = await _dio.post('estimates.json', data: data);
+    data['document_type'] = 'estimate';
+
+    final response = await _dio.post('invoices.json', data: data);
     return Estimate.fromJson(response.data);
   }
 
   /// Upraví existující nabídku.
   Future<Estimate> updateEstimate(int id, Estimate estimate) async {
     final response = await _dio.patch(
-      'estimates/$id.json',
+      'invoices/$id.json',
       data: ApiUtils.removeNulls(estimate.toJson()),
     );
     return Estimate.fromJson(response.data);
@@ -103,18 +95,18 @@ class EstimatesRepository {
 
   /// Smaže nabídku podle ID.
   Future<void> deleteEstimate(int id) async {
-    await _dio.delete('estimates/$id.json');
+    await _dio.delete('invoices/$id.json');
   }
 
   /// Provede akci s nabídkou (např. označí jako odeslanou, přijme atd.).
   Future<void> fireAction(int id, EstimateFireAction action) async {
-    await _dio.post('estimates/$id/fire.json', data: {'event': action.value});
+    await _dio.post('invoices/$id/fire.json', data: {'event': action.value});
   }
 
   /// Stáhne PDF nabídky jako pole bajtů.
   Future<Uint8List> downloadEstimatePdf(int id) async {
     final response = await _dio.get(
-      'estimates/$id/download.pdf',
+      'invoices/$id/download.pdf',
       options: Options(responseType: ResponseType.bytes),
     );
 
@@ -143,7 +135,7 @@ class EstimatesRepository {
     });
 
     await _dio.post(
-      'estimates/$estimateId/message.json',
+      'invoices/$estimateId/message.json',
       data: data.isEmpty ? null : data,
     );
   }

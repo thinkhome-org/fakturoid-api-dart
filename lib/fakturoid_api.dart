@@ -50,7 +50,6 @@ export 'src/models/inbox_file.dart';
 export 'src/models/todo.dart';
 export 'src/models/event.dart';
 export 'src/models/webhook.dart';
-export 'src/models/stats.dart';
 
 // Repositories
 export 'src/repositories/account_repository.dart';
@@ -72,4 +71,3 @@ export 'src/repositories/inbox_files_repository.dart';
 export 'src/repositories/todos_repository.dart';
 export 'src/repositories/events_repository.dart';
 export 'src/repositories/webhooks_repository.dart';
-export 'src/repositories/stats_repository.dart';

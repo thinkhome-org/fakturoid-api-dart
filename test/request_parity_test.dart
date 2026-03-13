@@ -1053,17 +1053,17 @@ void main() {
     test('estimates cover index, search, CRUD and actions', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path == 'estimates.json' && options.method == 'GET') {
+          if (options.path == 'invoices.json' && options.method == 'GET') {
             return jsonResponseBody([
               {'id': 1, 'number': '2026-001', 'subject_id': 1},
             ]);
           }
-          if (options.path == 'estimates/search.json') {
+          if (options.path == 'invoices/search.json') {
             return jsonResponseBody([
               {'id': 1, 'number': '2026-001', 'subject_id': 1},
             ]);
           }
-          if (options.path == 'estimates.json' && options.method == 'POST') {
+          if (options.path == 'invoices.json' && options.method == 'POST') {
             return jsonResponseBody({
               'id': 2,
               'number': '2026-002',
@@ -1084,48 +1084,39 @@ void main() {
       final repository = EstimatesRepository(createTestDio(adapter));
 
       await repository.getEstimates(page: 2, status: EstimateStatus.sent);
-      expect(adapter.lastRequestOptions?.path, 'estimates.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'page': 2,
         'status': 'sent',
+        'document_type': 'estimate',
       });
 
       await repository.searchEstimates(query: 'test', tags: ['urgent']);
-      expect(adapter.lastRequestOptions?.path, 'estimates/search.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/search.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'query': 'test',
         'tags[]': ['urgent'],
+        'document_type': 'estimate',
       });
 
       await repository.createEstimate(const Estimate(subjectId: 1));
       expect(adapter.lastRequestOptions?.method, 'POST');
-      expect(adapter.lastRequestOptions?.path, 'estimates.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices.json');
+      expect(adapter.lastRequestOptions?.data, {
+        'subject_id': 1,
+        'document_type': 'estimate',
+      });
 
       await repository.fireAction(1, EstimateFireAction.accept);
-      expect(adapter.lastRequestOptions?.path, 'estimates/1/fire.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
       expect(adapter.lastRequestOptions?.data, {'event': 'accept'});
 
       await repository.createMessage(1, email: 'test@example.com');
-      expect(adapter.lastRequestOptions?.path, 'estimates/1/message.json');
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/message.json');
       expect(adapter.lastRequestOptions?.data, {'email': 'test@example.com'});
 
       await repository.downloadEstimatePdf(1);
-      expect(adapter.lastRequestOptions?.path, 'estimates/1/download.pdf');
-    });
-
-    test('stats repository coverage', () async {
-      final adapter = RecordingAdapter(
-        onFetch: (options) => jsonResponseBody({
-          'totals': {
-            'all_time': {'paid': '100.0'},
-          },
-        }),
-      );
-      final repository = StatsRepository(createTestDio(adapter));
-      final stats = await repository.getStats();
-
-      expect(adapter.lastRequestOptions?.path, 'stats.json');
-      expect(stats.totals?.allTime?.paid, '100.0');
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/download.pdf');
     });
 
     test('bank accounts repository coverage', () async {

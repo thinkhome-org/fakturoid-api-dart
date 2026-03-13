@@ -23,7 +23,6 @@ import 'repositories/generators_repository.dart';
 import 'repositories/recurring_generators_repository.dart';
 import 'repositories/inventory_moves_repository.dart';
 import 'repositories/estimates_repository.dart';
-import 'repositories/stats_repository.dart';
 
 class FakturoidClient {
   late final Dio _accountDio;
@@ -50,7 +49,6 @@ class FakturoidClient {
   late final TodosRepository todos;
   late final EventsRepository events;
   late final WebhooksRepository webhooks;
-  late final StatsRepository stats;
 
   /// Vytvoří klienta pro Fakturoid API.
   ///
@@ -141,7 +139,6 @@ class FakturoidClient {
     todos = TodosRepository(_accountDio);
     events = EventsRepository(_accountDio);
     webhooks = WebhooksRepository(_accountDio);
-    stats = StatsRepository(_accountDio);
   }
 
   /// Přepne klienta na jiný účet (změní slug v URL).

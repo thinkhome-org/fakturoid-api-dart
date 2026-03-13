@@ -523,7 +523,7 @@ void main() {
           () => _collectPages(
             (page) =>
                 client.estimates.getEstimates(subjectId: subjectId, page: page),
-          ).then((remainingEstimates) => expect(remainingEstimates, isEmpty)),
+          ).then((rem) => expect(rem, isEmpty)),
         );
         await _throttle();
         final remainingGenerators = await _collectPages(

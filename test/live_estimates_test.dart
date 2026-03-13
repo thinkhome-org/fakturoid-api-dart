@@ -74,6 +74,6 @@ void main() {
       final afterDelete = await context.client.estimates.getEstimates();
       expect(afterDelete.items.any((e) => e.id == created.id), isFalse);
     },
-    skip: true, // Skipping due to 404 on test tenant, though implemented per docs
+    skip: true,
   );
 }
