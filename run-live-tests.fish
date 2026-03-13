@@ -16,6 +16,7 @@ flutter test \
   test/live_number_formats_test.dart \
   test/live_subjects_test.dart \
   test/live_invoices_test.dart \
+  test/live_estimates_test.dart \
   test/live_invoice_payments_test.dart \
   test/live_invoice_messages_test.dart \
   test/live_expenses_test.dart \

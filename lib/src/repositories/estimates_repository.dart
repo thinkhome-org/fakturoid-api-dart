@@ -34,8 +34,9 @@ class EstimatesRepository {
     EstimateStatus? status,
   }) async {
     final response = await _dio.get(
-      '/estimates.json',
+      '/invoices.json',
       queryParameters: ApiUtils.removeNulls({
+        'document_type': 'estimate',
         'since': since?.toIso8601String(),
         'until': until?.toIso8601String(),
         'updated_since': updatedSince?.toIso8601String(),
@@ -56,16 +57,15 @@ class EstimatesRepository {
   }
 
   /// Vyhledává v nabídkách pomocí fulltextu.
-  ///
-  /// * [query] - Hledaný výraz.
   Future<PaginatedResponse<Estimate>> searchEstimates({
     required String query,
     int? page,
     List<String>? tags,
   }) async {
     final response = await _dio.get(
-      '/estimates/search.json',
+      '/invoices/search.json',
       queryParameters: ApiUtils.removeNulls({
+        'document_type': 'estimate',
         'query': query,
         'page': page,
         'tags[]': tags,
@@ -81,15 +81,18 @@ class EstimatesRepository {
 
   /// Získá detail jedné nabídky podle ID.
   Future<Estimate> getEstimate(int id) async {
-    final response = await _dio.get('/estimates/$id.json');
+    final response = await _dio.get('/invoices/$id.json');
     return Estimate.fromJson(response.data);
   }
 
   /// Vytvoří novou nabídku.
   Future<Estimate> createEstimate(Estimate estimate) async {
+    final data = ApiUtils.removeNulls(estimate.toJson());
+    data['document_type'] = 'estimate';
+    
     final response = await _dio.post(
-      '/estimates.json',
-      data: ApiUtils.removeNulls(estimate.toJson()),
+      '/invoices.json',
+      data: data,
     );
     return Estimate.fromJson(response.data);
   }
@@ -97,7 +100,7 @@ class EstimatesRepository {
   /// Upraví existující nabídku.
   Future<Estimate> updateEstimate(int id, Estimate estimate) async {
     final response = await _dio.patch(
-      '/estimates/$id.json',
+      '/invoices/$id.json',
       data: ApiUtils.removeNulls(estimate.toJson()),
     );
     return Estimate.fromJson(response.data);
@@ -105,13 +108,13 @@ class EstimatesRepository {
 
   /// Smaže nabídku podle ID.
   Future<void> deleteEstimate(int id) async {
-    await _dio.delete('/estimates/$id.json');
+    await _dio.delete('/invoices/$id.json');
   }
 
   /// Provede akci s nabídkou (např. označí jako odeslanou, přijme atd.).
   Future<void> fireAction(int id, EstimateFireAction action) async {
     await _dio.post(
-      '/estimates/$id/fire.json',
+      '/invoices/$id/fire.json',
       data: {'event': action.value},
     );
   }
@@ -119,7 +122,7 @@ class EstimatesRepository {
   /// Stáhne PDF nabídky jako pole bajtů.
   Future<Uint8List> downloadEstimatePdf(int id) async {
     final response = await _dio.get(
-      '/estimates/$id/download.pdf',
+      '/invoices/$id/download.pdf',
       options: Options(responseType: ResponseType.bytes),
     );
 
