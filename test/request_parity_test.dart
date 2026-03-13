@@ -419,9 +419,9 @@ void main() {
       expect(adapter.lastRequestOptions?.path, 'invoices/10.json');
       expect(adapter.lastRequestOptions?.method, 'DELETE');
 
-      await repository.fireAction(10, InvoiceFireAction.markAsSent);
-      expect(adapter.lastRequestOptions?.path, 'invoices/10/fire.json');
-      expect(adapter.lastRequestOptions?.data, {'event': 'mark_as_sent'});
+      await repository.fireAction(1, InvoiceFireAction.markAsSent);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'mark_as_sent'});
 
       final pdf = await repository.downloadInvoicePdf(10);
       expect(pdf, Uint8List.fromList([1, 2, 3]));
@@ -947,7 +947,7 @@ void main() {
       await repository.toggleCompletion(1);
       expect(
         adapter.lastRequestOptions?.path,
-        'todos/1/toggle_completion.json',
+        'todos/1/toggle.json',
       );
     });
 
@@ -1149,16 +1149,11 @@ void main() {
       // Handled above in 'inventory moves cover global list and nested CRUD'
     });
 
-    test('generators and recurring generators extra actions', () async {
+    test('recurring generators extra actions', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) =>
             jsonResponseBody({'id': 1, 'name': 'Test', 'subject_id': 1}),
       );
-
-      final genRepo = GeneratorsRepository(createTestDio(adapter));
-      await genRepo.fireAction(1, GeneratorFireAction.generate);
-      expect(adapter.lastRequestOptions?.path, 'generators/1/fire.json');
-      expect(adapter.lastRequestOptions?.data, {'event': 'generate'});
 
       final recRepo = RecurringGeneratorsRepository(createTestDio(adapter));
       await recRepo.pause(1);
@@ -1207,8 +1202,9 @@ void main() {
       await todoRepo.toggleCompletion(1);
       expect(
         adapter.lastRequestOptions?.path,
-        'todos/1/toggle_completion.json',
+        'todos/1/toggle.json',
       );
+      expect(adapter.lastRequestOptions?.method, 'PATCH');
 
       final eventRepo = EventsRepository(dio);
       await eventRepo.getEventsPaid();
@@ -1221,6 +1217,26 @@ void main() {
         'invoices/10/payments/20/create_tax_document.json',
       );
       expect(adapter.lastRequestOptions?.data, {'custom': 'value'});
+
+      final invRepo = InvoicesRepository(dio);
+      await invRepo.bulkDelete([1, 2]);
+      expect(adapter.lastRequestOptions?.path, 'invoices.json');
+      expect(adapter.lastRequestOptions?.method, 'DELETE');
+      expect(adapter.lastRequestOptions?.data, {'ids': [1, 2]});
+
+      await invRepo.bulkFireAction([1, 2], InvoiceFireAction.markAsSent);
+      expect(adapter.lastRequestOptions?.path, 'invoices/fire.json');
+      expect(adapter.lastRequestOptions?.method, 'POST');
+      expect(adapter.lastRequestOptions?.data, {
+        'ids': [1, 2],
+        'event': 'mark_as_sent',
+      });
+
+      final expRepo = ExpensesRepository(dio);
+      await expRepo.bulkDelete([3, 4]);
+      expect(adapter.lastRequestOptions?.path, 'expenses.json');
+      expect(adapter.lastRequestOptions?.method, 'DELETE');
+      expect(adapter.lastRequestOptions?.data, {'ids': [3, 4]});
     });
   });
 }

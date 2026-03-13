@@ -19,7 +19,6 @@ export 'src/models/enums/expense_enums.dart';
 export 'src/models/enums/inventory_enums.dart';
 export 'src/models/enums/inventory_move_enums.dart';
 export 'src/models/enums/todo_enums.dart';
-export 'src/models/enums/generator_enums.dart';
 export 'src/models/enums/event_enums.dart';
 export 'src/models/enums/inbox_file_enums.dart';
 export 'src/models/enums/estimate_enums.dart';
