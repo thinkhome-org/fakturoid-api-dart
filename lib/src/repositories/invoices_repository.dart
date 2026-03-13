@@ -88,9 +88,10 @@ class InvoicesRepository {
   }
 
   /// Vytvoří novou fakturu (nebo jiný dokument na základě atributu `document_type`).
-  Future<Invoice> createInvoice(Invoice invoice) async {
+  Future<Invoice> createInvoice(Invoice invoice, {int? relatedId}) async {
     final response = await _dio.post(
       '/invoices.json',
+      queryParameters: ApiUtils.removeNulls({'related_id': relatedId}),
       data: ApiUtils.removeNulls(invoice.toJson()),
     );
     return Invoice.fromJson(response.data);

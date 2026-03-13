@@ -352,8 +352,12 @@ void main() {
       await repository.getInvoice(10);
       expect(adapter.lastRequestOptions?.path, '/invoices/10.json');
 
-      await repository.createInvoice(const Invoice(subjectId: 1));
+      await repository.createInvoice(
+        const Invoice(subjectId: 1),
+        relatedId: 99,
+      );
       expect(adapter.lastRequestOptions?.path, '/invoices.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {'related_id': 99});
       expect(adapter.lastRequestOptions?.data, {'subject_id': 1});
 
       await repository.updateInvoice(10, const Invoice(subjectId: 2));

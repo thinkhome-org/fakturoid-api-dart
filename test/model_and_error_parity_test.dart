@@ -61,6 +61,19 @@ void main() {
       expect(invoice.roundingAdjustment, '0.50');
     });
 
+    test(
+      'invoice keeps legacy partial proforma document type round-trippable',
+      () {
+        final invoice = Invoice.fromJson({
+          'subject_id': 1,
+          'document_type': 'partial_proforma',
+        });
+
+        expect(invoice.documentType, DocumentType.partialProforma);
+        expect(invoice.toJson()['document_type'], 'partial_proforma');
+      },
+    );
+
     test('expense parses attachments, vat summary and new fields', () {
       final expense = Expense.fromJson({
         'id': 2,

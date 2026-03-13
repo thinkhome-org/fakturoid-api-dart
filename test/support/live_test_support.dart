@@ -204,17 +204,35 @@ void reportPreservedFixture(String type, int? id) {
   debugPrint('Preserved $type: $id');
 }
 
-Invoice buildInvoice(LiveTestContext context, String suffix) {
+Invoice buildInvoice(
+  LiveTestContext context,
+  String suffix, {
+  DocumentType documentType = DocumentType.proforma,
+  ProformaFollowupDocument? proformaFollowupDocument,
+  int? relatedId,
+  int? correctionId,
+  List<int>? taxDocumentIds,
+  List<InvoiceLine>? lines,
+  List<DocumentAttachment>? attachments,
+}) {
+  final effectiveFollowup = documentType == DocumentType.proforma
+      ? (proformaFollowupDocument ?? ProformaFollowupDocument.none)
+      : null;
+
   return Invoice(
     subjectId: context.baseSubject.id!,
-    documentType: DocumentType.proforma,
-    proformaFollowupDocument: ProformaFollowupDocument.none,
+    documentType: documentType,
+    proformaFollowupDocument: effectiveFollowup,
     numberFormatId: context.numberFormatId,
     variableSymbol: variableSymbol('I', context.runId),
+    note: 'OpenCode invoice note $suffix',
     privateNote: 'OpenCode invoice $suffix',
     tags: ['opencode-live', suffix],
-    lines: [lineItem('Invoice line', suffix)],
-    attachments: [attachment('invoice-$suffix')],
+    relatedId: relatedId,
+    correctionId: correctionId,
+    taxDocumentIds: taxDocumentIds,
+    lines: lines ?? [lineItem('Invoice line', suffix)],
+    attachments: attachments ?? [attachment('invoice-$suffix')],
   );
 }
 

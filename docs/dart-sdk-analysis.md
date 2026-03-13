@@ -38,7 +38,7 @@ Obsah je záměrně v pořadí:
 | `docs/invoices.md` | `GET` | `/accounts/{slug}/invoices.json` | `client.invoices.getInvoices(...)` | List + filters |
 | `docs/invoices.md` | `GET` | `/accounts/{slug}/invoices/search.json` | `client.invoices.searchInvoices(...)` | Search + `tags` |
 | `docs/invoices.md` | `GET` | `/accounts/{slug}/invoices/{id}.json` | `client.invoices.getInvoice(id)` | Detail |
-| `docs/invoices.md` | `POST` | `/accounts/{slug}/invoices.json` | `client.invoices.createInvoice(invoice)` | Create |
+| `docs/invoices.md` | `POST` | `/accounts/{slug}/invoices.json` | `client.invoices.createInvoice(invoice, relatedId: ...)` | Create + manual navázání na proformu přes `related_id` |
 | `docs/invoices.md` | `PATCH` | `/accounts/{slug}/invoices/{id}.json` | `client.invoices.updateInvoice(id, invoice)` | Update |
 | `docs/invoices.md` | `DELETE` | `/accounts/{slug}/invoices/{id}.json` | `client.invoices.deleteInvoice(id)` | Delete |
 | `docs/invoices.md` | `POST` | `/accounts/{slug}/invoices/{id}/fire.json?event=...` | `client.invoices.fireAction(id, action)` | Stavové akce |
@@ -109,7 +109,7 @@ Obsah je záměrně v pořadí:
 | `docs/webhooks.md` | `POST` | `/accounts/{slug}/webhooks.json` | `client.webhooks.createWebhook(webhook)` | Create |
 | `docs/webhooks.md` | `PATCH` | `/accounts/{slug}/webhooks/{id}.json` | `client.webhooks.updateWebhook(id, webhook)` | Update |
 | `docs/webhooks.md` | `DELETE` | `/accounts/{slug}/webhooks/{id}.json` | `client.webhooks.deleteWebhook(id)` | Delete |
-| `docs/webhooks.md` | `GET` | `/accounts/{slug}/webhooks/{failed_deliveries_uuid}/failed_deliveries.json` | `client.webhooks.getFailedDeliveries(uuid, page: ...)` | Vrací `List<WebhookFailedDelivery>` |
+| `docs/webhooks.md` | `GET` | `/accounts/{slug}/webhooks/{failed_deliveries_uuid}/failed_deliveries.json` | `client.webhooks.getFailedDeliveries(uuid, page: ...)` | Vrací `PaginatedResponse<WebhookFailedDelivery>` |
 
 ### Poznámky k mapování
 
@@ -117,9 +117,9 @@ Obsah je záměrně v pořadí:
 - Slabší místa nejsou v coverage, ale v ergonomii:
   - `client.users.getCurrentUser()` je globální endpoint a interně obchází account-scoped base URL.
   - `client.recurringGenerators.activate(...)` bere `nextOccurrenceOn` jako `String`, ne `DateTime`.
-  - `client.webhooks.getFailedDeliveries(...)` vrací `List`, ne `PaginatedResponse`, i když endpoint podporuje `page`.
   - `client.inboxFiles.createInboxFile(...)` očekává Data URI, ne jen raw base64.
   - `client.inventoryMoves.getAllInventoryMoves(...)` listuje globálně, zatímco detail a mutace jsou nested pod itemem.
+- Live ověření z `2026-03-13` ukázalo, že `document_type=partial_proforma` šlo v `testcompany1` vytvořit i přesto, že `docs/invoices.md` tvrdí „cannot be set for new documents“. SDK proto tento enum i live coverage záměrně zachovává.
 
 ## 2. Praktický integrační cheat-sheet pro Dart
 
@@ -187,6 +187,14 @@ final invoices = await client.invoices.getInvoices(
 
 final invoice = await client.invoices.getInvoice(123);
 
+await client.invoices.createInvoice(
+  Invoice(
+    subjectId: 1,
+    documentType: DocumentType.invoice,
+  ),
+  relatedId: 456,
+);
+
 await client.invoices.fireAction(123, InvoiceFireAction.lock);
 final pdf = await client.invoices.downloadInvoicePdf(123);
 ```
@@ -196,6 +204,8 @@ Mysli na to:
 - PDF může krátce vracet `204` na úrovni API; je dobré mít retry.
 - Platby nejsou součást CRUD faktury, ale jdou přes `client.invoicePayments`.
 - Odesílání emailu je přes `client.invoiceMessages`.
+- Manuálně navázaná invoice z proformy používá při create `relatedId`.
+- Live API aktuálně akceptovalo i `DocumentType.partialProforma`, i když to veřejná dokumentace popisuje jako legacy-only variantu.
 
 ### Platby faktur
 

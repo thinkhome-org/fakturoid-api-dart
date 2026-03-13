@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fakturoid_api/fakturoid_api.dart';
 
@@ -77,4 +78,203 @@ void main() {
       }
     },
   );
+
+  runLiveTest('invoices section supports additional document variants', (
+    context,
+  ) async {
+    final suffix = '${context.runId}-invoice-variants';
+    Invoice? regularInvoice;
+    Invoice? proformaForInvoice;
+    InvoicePayment? linkedProformaPayment;
+    Invoice? linkedInvoice;
+    Invoice? correctionInvoice;
+    Invoice? proformaForFinalInvoice;
+    InvoicePayment? proformaPayment;
+    Invoice? taxDocument;
+    Invoice? finalInvoice;
+    Invoice? partialProforma;
+    Object? partialProformaError;
+
+    try {
+      regularInvoice = await context.client.invoices.createInvoice(
+        buildInvoice(
+          context,
+          '$suffix-regular',
+          documentType: DocumentType.invoice,
+        ),
+      );
+      reportPreservedFixture('invoice', regularInvoice.id);
+
+      correctionInvoice = await context.client.invoices.createInvoice(
+        buildInvoice(
+          context,
+          '$suffix-correction',
+          documentType: DocumentType.correction,
+          correctionId: regularInvoice.id,
+        ),
+      );
+      reportPreservedFixture('invoice-correction', correctionInvoice.id);
+
+      proformaForInvoice = await context.client.invoices.createInvoice(
+        buildInvoice(
+          context,
+          '$suffix-proforma-linked',
+          documentType: DocumentType.proforma,
+          proformaFollowupDocument: ProformaFollowupDocument.finalInvoice,
+        ),
+      );
+      reportPreservedFixture('proforma', proformaForInvoice.id);
+
+      linkedProformaPayment = await context.client.invoicePayments
+          .createPayment(
+            proformaForInvoice.id!,
+            InvoicePayment(
+              paidOn: isoDate(DateTime.now().toUtc()),
+              bankAccountId: context.bankAccountId,
+              markDocumentAsPaid: true,
+              proformaFollowupDocument: ProformaFollowupDocument.none,
+            ),
+          );
+      reportPreservedFixture('invoice-payment', linkedProformaPayment.id);
+
+      linkedInvoice = await context.client.invoices.createInvoice(
+        buildInvoice(
+          context,
+          '$suffix-linked-invoice',
+          documentType: DocumentType.invoice,
+          relatedId: proformaForInvoice.id,
+        ),
+        relatedId: proformaForInvoice.id,
+      );
+      reportPreservedFixture('linked-invoice', linkedInvoice.id);
+
+      proformaForFinalInvoice = await context.client.invoices.createInvoice(
+        buildInvoice(
+          context,
+          '$suffix-proforma-final',
+          documentType: DocumentType.proforma,
+          proformaFollowupDocument: ProformaFollowupDocument.none,
+        ),
+      );
+      reportPreservedFixture('proforma', proformaForFinalInvoice.id);
+
+      proformaPayment = await context.client.invoicePayments.createPayment(
+        proformaForFinalInvoice.id!,
+        InvoicePayment(
+          paidOn: isoDate(DateTime.now().toUtc()),
+          bankAccountId: context.bankAccountId,
+          markDocumentAsPaid: true,
+          proformaFollowupDocument: ProformaFollowupDocument.none,
+        ),
+      );
+      reportPreservedFixture('invoice-payment', proformaPayment.id);
+
+      final taxDocumentPayment = await context.client.invoicePayments
+          .createTaxDocument(proformaForFinalInvoice.id!, proformaPayment.id!);
+
+      taxDocument = await context.client.invoices.getInvoice(
+        taxDocumentPayment.taxDocumentId!,
+      );
+      reportPreservedFixture('tax-document', taxDocument.id);
+
+      finalInvoice = await context.client.invoices.createInvoice(
+        buildInvoice(
+          context,
+          '$suffix-final-invoice',
+          documentType: DocumentType.finalInvoice,
+          taxDocumentIds: [taxDocument.id!],
+        ),
+      );
+      reportPreservedFixture('final-invoice', finalInvoice.id);
+
+      try {
+        partialProforma = await context.client.invoices.createInvoice(
+          buildInvoice(
+            context,
+            '$suffix-partial-proforma',
+            documentType: DocumentType.partialProforma,
+          ),
+        );
+        reportPreservedFixture('partial-proforma', partialProforma.id);
+      } catch (error) {
+        partialProformaError = error;
+      }
+
+      expect(regularInvoice.documentType, DocumentType.invoice);
+      expect(correctionInvoice.documentType, DocumentType.correction);
+      expect(correctionInvoice.correctionId, regularInvoice.id);
+      expect(proformaForInvoice.documentType, DocumentType.proforma);
+      expect(linkedInvoice.documentType, DocumentType.invoice);
+      expect(linkedInvoice.relatedId, proformaForInvoice.id);
+      expect(taxDocument.documentType, DocumentType.taxDocument);
+      expect(finalInvoice.documentType, DocumentType.finalInvoice);
+      expect(finalInvoice.paidAdvances, isNotNull);
+      expect(finalInvoice.paidAdvances, isNotEmpty);
+      expect(partialProforma != null || partialProformaError != null, isTrue);
+      if (partialProforma != null) {
+        expect(partialProforma.documentType, DocumentType.partialProforma);
+      } else {
+        expect(
+          partialProformaError,
+          anyOf(
+            isA<FakturoidValidationException>(),
+            isA<FakturoidApiErrorException>(),
+            isA<DioException>().having(
+              (error) => error.error,
+              'error',
+              anyOf(
+                isA<FakturoidValidationException>(),
+                isA<FakturoidApiErrorException>(),
+              ),
+            ),
+          ),
+        );
+      }
+    } finally {
+      final invoiceIds = [
+        partialProforma?.id,
+        finalInvoice?.id,
+        taxDocument?.id,
+        proformaForFinalInvoice?.id,
+        linkedInvoice?.id,
+        proformaForInvoice?.id,
+        correctionInvoice?.id,
+        regularInvoice?.id,
+      ];
+
+      if (!shouldPreserveFixtures) {
+        final linkedPaymentId = linkedProformaPayment?.id;
+        final linkedProformaId = proformaForInvoice?.id;
+        if (linkedPaymentId != null && linkedProformaId != null) {
+          await ignoreErrors(
+            () => context.client.invoicePayments.deletePayment(
+              linkedProformaId,
+              linkedPaymentId,
+            ),
+          );
+        }
+
+        final paymentId = proformaPayment?.id;
+        final proformaId = proformaForFinalInvoice?.id;
+        if (paymentId != null && proformaId != null) {
+          await ignoreErrors(
+            () => context.client.invoicePayments.deletePayment(
+              proformaId,
+              paymentId,
+            ),
+          );
+        }
+
+        for (final invoiceId in invoiceIds) {
+          if (invoiceId == null) {
+            continue;
+          }
+
+          await ignoreErrors(
+            () => context.client.invoices.deleteInvoice(invoiceId),
+          );
+        }
+      }
+    }
+  });
 }
