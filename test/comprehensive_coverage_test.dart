@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fakturoid_api/fakturoid_api.dart';
+import 'package:fakturoid_api_dart/fakturoid_api.dart';
 
 import 'support/test_helpers.dart';
 
@@ -29,7 +29,8 @@ void main() {
           }
 
           // List endpoints (must return List)
-          final isListPath = options.path.endsWith('bank_accounts.json') ||
+          final isListPath =
+              options.path.endsWith('bank_accounts.json') ||
               options.path.endsWith('number_formats.json') ||
               options.path.endsWith('users.json') ||
               options.path.endsWith('events.json') ||
@@ -144,10 +145,7 @@ void main() {
 
     test('InventoryItems specialized lists coverage', () async {
       await client.inventoryItems.getArchivedItems();
-      expect(
-        adapter.lastRequestOptions?.path,
-        'inventory_items/archived.json',
-      );
+      expect(adapter.lastRequestOptions?.path, 'inventory_items/archived.json');
 
       await client.inventoryItems.getLowQuantityItems();
       expect(
@@ -203,7 +201,10 @@ void main() {
     test('Estimates coverage', () async {
       await client.estimates.getEstimates();
       expect(adapter.lastRequestOptions?.path, 'invoices.json');
-      expect(adapter.lastRequestOptions?.queryParameters['document_type'], 'estimate');
+      expect(
+        adapter.lastRequestOptions?.queryParameters['document_type'],
+        'estimate',
+      );
 
       await client.estimates.getEstimate(1);
       expect(adapter.lastRequestOptions?.path, 'invoices/1.json');

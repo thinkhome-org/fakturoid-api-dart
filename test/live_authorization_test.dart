@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fakturoid_api/fakturoid_api.dart';
+import 'package:fakturoid_api_dart/fakturoid_api.dart';
 
 import 'support/live_test_support.dart';
 import 'support/test_helpers.dart';

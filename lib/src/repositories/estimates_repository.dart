@@ -100,7 +100,10 @@ class EstimatesRepository {
 
   /// Provede akci s nabídkou (např. označí jako odeslanou, přijme atd.).
   Future<void> fireAction(int id, EstimateFireAction action) async {
-    await _dio.post('invoices/$id/fire.json', data: {'event': action.value});
+    await _dio.post(
+      'invoices/$id/fire.json',
+      queryParameters: {'event': action.value},
+    );
   }
 
   /// Stáhne PDF nabídky jako pole bajtů.

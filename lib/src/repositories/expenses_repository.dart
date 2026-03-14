@@ -114,14 +114,12 @@ class ExpensesRepository {
     await _dio.delete('expenses/$id.json');
   }
 
-  /// Hromadně smaže náklady podle seznamu ID.
-  Future<void> bulkDelete(List<int> ids) async {
-    await _dio.delete('expenses.json', data: {'ids': ids});
-  }
-
   /// Provede akci s nákladem (např. uzamčení).
   Future<void> fireAction(int id, ExpenseFireAction action) async {
-    await _dio.post('expenses/$id/fire.json', data: {'event': action.value});
+    await _dio.post(
+      'expenses/$id/fire.json',
+      queryParameters: {'event': action.value},
+    );
   }
 
   /// Stáhne konkrétní přílohu z nákladu jako pole bajtů.

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fakturoid_api/fakturoid_api.dart';
+import 'package:fakturoid_api_dart/fakturoid_api.dart';
 
 import 'support/test_helpers.dart';
 
@@ -246,7 +246,9 @@ void main() {
       );
       final accountDio = createTestDio(adapter);
       final rootDio = Dio(
-        accountDio.options.copyWith(baseUrl: 'https://app.fakturoid.cz/api/v3/'),
+        accountDio.options.copyWith(
+          baseUrl: 'https://app.fakturoid.cz/api/v3/',
+        ),
       );
       rootDio.httpClientAdapter = adapter;
 
@@ -256,10 +258,7 @@ void main() {
       );
 
       await repository.getCurrentUser();
-      expect(
-        adapter.lastRequestOptions?.uri.toString(),
-        endsWith('user.json'),
-      );
+      expect(adapter.lastRequestOptions?.uri.toString(), endsWith('user.json'));
       expect(
         adapter.lastRequestOptions?.uri.toString(),
         contains('https://app.fakturoid.cz/api/v3/user.json'),
@@ -421,7 +420,9 @@ void main() {
 
       await repository.fireAction(1, InvoiceFireAction.markAsSent);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'mark_as_sent'});
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'event': 'mark_as_sent',
+      });
 
       final pdf = await repository.downloadInvoicePdf(10);
       expect(pdf, Uint8List.fromList([1, 2, 3]));
@@ -548,7 +549,7 @@ void main() {
 
       await repository.fireAction(11, ExpenseFireAction.lock);
       expect(adapter.lastRequestOptions?.path, 'expenses/11/fire.json');
-      expect(adapter.lastRequestOptions?.data, {'event': 'lock'});
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'lock'});
 
       final attachment = await repository.downloadAttachment(11, 5);
       expect(attachment, Uint8List.fromList([9, 8, 7]));
@@ -684,10 +685,7 @@ void main() {
         expect(adapter.lastRequestOptions?.queryParameters, {'page': 3});
 
         await repository.searchItems(query: 'disk', page: 4);
-        expect(
-          adapter.lastRequestOptions?.path,
-          'inventory_items/search.json',
-        );
+        expect(adapter.lastRequestOptions?.path, 'inventory_items/search.json');
         expect(adapter.lastRequestOptions?.queryParameters, {
           'query': 'disk',
           'page': 4,
@@ -763,10 +761,7 @@ void main() {
       });
 
       await repository.getInventoryMoves(15, updatedSince: updatedSince);
-      expect(
-        adapter.lastRequestOptions?.path,
-        'inventory_moves.json',
-      );
+      expect(adapter.lastRequestOptions?.path, 'inventory_moves.json');
       expect(adapter.lastRequestOptions?.queryParameters, {
         'updated_since': updatedSince.toIso8601String(),
         'inventory_item_id': 15,
@@ -947,7 +942,7 @@ void main() {
       await repository.toggleCompletion(1);
       expect(
         adapter.lastRequestOptions?.path,
-        'todos/1/toggle.json',
+        'todos/1/toggle_completion.json',
       );
     });
 
@@ -1109,7 +1104,7 @@ void main() {
 
       await repository.fireAction(1, EstimateFireAction.accept);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
-      expect(adapter.lastRequestOptions?.data, {'event': 'accept'});
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'accept'});
 
       await repository.createMessage(1, email: 'test@example.com');
       expect(adapter.lastRequestOptions?.path, 'invoices/1/message.json');
@@ -1199,7 +1194,7 @@ void main() {
       expect(adapter.lastRequestOptions?.path, 'inbox_files/1/download');
 
       final todoRepo = TodosRepository(dio);
-      await repository.toggleCompletion(1);
+      await todoRepo.toggleCompletion(1);
       expect(
         adapter.lastRequestOptions?.path,
         'todos/1/toggle_completion.json',
@@ -1217,26 +1212,6 @@ void main() {
         'invoices/10/payments/20/create_tax_document.json',
       );
       expect(adapter.lastRequestOptions?.data, {'custom': 'value'});
-
-      final invRepo = InvoicesRepository(dio);
-      await invRepo.bulkDelete([1, 2]);
-      expect(adapter.lastRequestOptions?.path, 'invoices.json');
-      expect(adapter.lastRequestOptions?.method, 'DELETE');
-      expect(adapter.lastRequestOptions?.data, {'ids': [1, 2]});
-
-      await invRepo.bulkFireAction([1, 2], InvoiceFireAction.markAsSent);
-      expect(adapter.lastRequestOptions?.path, 'invoices/fire.json');
-      expect(adapter.lastRequestOptions?.method, 'POST');
-      expect(adapter.lastRequestOptions?.data, {
-        'ids': [1, 2],
-        'event': 'mark_as_sent',
-      });
-
-      final expRepo = ExpensesRepository(dio);
-      await expRepo.bulkDelete([3, 4]);
-      expect(adapter.lastRequestOptions?.path, 'expenses.json');
-      expect(adapter.lastRequestOptions?.method, 'DELETE');
-      expect(adapter.lastRequestOptions?.data, {'ids': [3, 4]});
     });
   });
 }

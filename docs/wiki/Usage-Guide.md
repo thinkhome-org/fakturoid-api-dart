@@ -8,9 +8,9 @@ SDK můžete přidat do `pubspec.yaml` skrze Git:
 
 ```yaml
 dependencies:
-  fakturoid_api:
+  fakturoid_api_dart:
     git:
-      url: https://github.com/vase-repo/fakturoid_api.git
+      url: https://github.com/thinkhome-org/fakturoid-api-dart.git
       ref: master
 ```
 
@@ -19,7 +19,7 @@ dependencies:
 Pro komunikaci s API potřebujete `slug` a údaje o aplikaci.
 
 ```dart
-import 'package:fakturoid_api/fakturoid_api.dart';
+import 'package:fakturoid_api_dart/fakturoid_api.dart';
 
 void main() {
   final client = FakturoidClient(
