@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
-
-import 'test_helpers.dart';
 
 const requiredLiveEnvironmentKeys = <String>[
   'FAKTUROID_CLIENT_ID',
@@ -201,7 +199,7 @@ void reportPreservedFixture(String type, int? id) {
     return;
   }
 
-  debugPrint('Preserved $type: $id');
+  print('Preserved $type: $id');
 }
 
 Invoice buildInvoice(

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 import 'package:fakturoid_api_dart/src/core/exceptions/fakturoid_error_interceptor.dart';
 

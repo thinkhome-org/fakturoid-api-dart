@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 Dio createTestDio(HttpClientAdapter adapter) {
   final dio = Dio(
@@ -61,79 +60,4 @@ ResponseBody bytesResponseBody(List<int> data, [int statusCode = 200]) {
 
 ResponseBody emptyResponseBody([int statusCode = 204]) {
   return ResponseBody.fromString('', statusCode);
-}
-
-final class InMemoryTokenStorage implements TokenStorage {
-  String? _accessToken;
-  String? _refreshToken;
-  String? _tokenType;
-  DateTime? _expiresAt;
-  String? _pkceVerifier;
-  String? _authState;
-
-  @override
-  Future<void> clearAll() async {
-    _accessToken = null;
-    _refreshToken = null;
-    _tokenType = null;
-    _expiresAt = null;
-    _pkceVerifier = null;
-    _authState = null;
-  }
-
-  @override
-  Future<void> clearAuthState() async {
-    _authState = null;
-  }
-
-  @override
-  Future<void> clearPkceVerifier() async {
-    _pkceVerifier = null;
-  }
-
-  @override
-  Future<String?> getAccessToken() async => _accessToken;
-
-  @override
-  Future<String?> getAuthState() async => _authState;
-
-  @override
-  Future<DateTime?> getExpiresAt() async => _expiresAt;
-
-  @override
-  Future<String?> getPkceVerifier() async => _pkceVerifier;
-
-  @override
-  Future<String?> getRefreshToken() async => _refreshToken;
-
-  @override
-  Future<String?> getTokenType() async => _tokenType;
-
-  @override
-  Future<bool> hasValidToken() async {
-    return _accessToken != null && _expiresAt?.isAfter(DateTime.now()) == true;
-  }
-
-  @override
-  Future<void> saveAuthState(String state) async {
-    _authState = state;
-  }
-
-  @override
-  Future<void> savePkceVerifier(String verifier) async {
-    _pkceVerifier = verifier;
-  }
-
-  @override
-  Future<void> saveTokens({
-    required String accessToken,
-    String? refreshToken,
-    required String tokenType,
-    required DateTime expiresAt,
-  }) async {
-    _accessToken = accessToken;
-    _refreshToken = refreshToken;
-    _tokenType = tokenType;
-    _expiresAt = expiresAt;
-  }
 }

@@ -3,7 +3,7 @@ export 'src/fakturoid_client.dart';
 // Auth
 export 'src/auth/auth_repository.dart';
 export 'src/auth/token_storage.dart';
-export 'src/auth/secure_storage_service.dart';
+export 'src/auth/in_memory_token_storage.dart';
 export 'src/auth/token_model.dart';
 export 'src/auth/pkce/pkce_utils.dart';
 

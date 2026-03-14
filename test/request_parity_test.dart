@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 import 'support/test_helpers.dart';
@@ -424,6 +424,18 @@ void main() {
         'event': 'mark_as_sent',
       });
 
+      await repository.fireAction(1, InvoiceFireAction.deliver);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'event': 'deliver',
+      });
+
+      await repository.fireAction(1, InvoiceFireAction.pay);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'event': 'pay',
+      });
+
       final pdf = await repository.downloadInvoicePdf(10);
       expect(pdf, Uint8List.fromList([1, 2, 3]));
       expect(adapter.lastRequestOptions?.path, 'invoices/10/download.pdf');
@@ -550,6 +562,10 @@ void main() {
       await repository.fireAction(11, ExpenseFireAction.lock);
       expect(adapter.lastRequestOptions?.path, 'expenses/11/fire.json');
       expect(adapter.lastRequestOptions?.queryParameters, {'event': 'lock'});
+
+      await repository.fireAction(11, ExpenseFireAction.pay);
+      expect(adapter.lastRequestOptions?.path, 'expenses/11/fire.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'pay'});
 
       final attachment = await repository.downloadAttachment(11, 5);
       expect(attachment, Uint8List.fromList([9, 8, 7]));

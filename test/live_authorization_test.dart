@@ -1,10 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 import 'support/live_test_support.dart';
-import 'support/test_helpers.dart';
 
 void main() {
   test(

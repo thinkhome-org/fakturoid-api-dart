@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/thinkhome-org/fakturoid-api-dart)](LICENSE)
 [![Wiki](https://img.shields.io/badge/docs-GitHub%20Wiki-blue)](https://github.com/thinkhome-org/fakturoid-api-dart/wiki)
 
-`fakturoid_api_dart` je Dart/Flutter SDK pro Fakturoid API v3. Zaměřuje se na typované modely, OAuth 2.0 s PKCE, pohodlné repository API a ověřenou request parity vůči dokumentovaným endpointům.
+`fakturoid_api_dart` je Dart SDK pro Fakturoid API v3. Zaměřuje se na typované modely, OAuth 2.0 s PKCE, pohodlné repository API a ověřenou request parity vůči dokumentovaným endpointům. Plně kompatibilní s Flutterem.
 
 ## Proč použít tenhle balíček
 
@@ -12,7 +12,7 @@
 - OAuth 2.0 včetně PKCE, refresh tokenů a secure storage
 - Repository API pro faktury, náklady, sklad, kontakty, webhooky a další agendy
 - Live testy proti izolovanému Fakturoid tenantovi a parity testy pro requesty
-- Připravené pro Dart i Flutter aplikace
+- Připravené pro libovolné Dart i Flutter aplikace
 
 ## Instalace
 
@@ -91,7 +91,7 @@ Lokální ověření repa:
 ```bash
 dart format .
 dart analyze
-flutter test
+dart test
 ```
 
 ---

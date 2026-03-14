@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'auth/auth_repository.dart';
 import 'auth/fakturoid_auth_interceptor.dart';
-import 'auth/secure_storage_service.dart';
+import 'auth/in_memory_token_storage.dart';
 import 'auth/token_storage.dart';
 import 'core/exceptions/fakturoid_error_interceptor.dart';
 import 'repositories/subjects_repository.dart';
@@ -63,10 +63,9 @@ class FakturoidClient {
     Dio? dioOverride,
     TokenStorage? customTokenStorage,
   }) {
-    // Výchozí TokenStorage je globální (nepoužívá slug jako namespace),
-    // protože jeden OAuth token obvykle platí pro všechny účty uživatele.
-    tokenStorage =
-        customTokenStorage ?? SecureStorageService(namespace: 'global');
+    // Výchozí TokenStorage je nyní InMemoryTokenStorage, protože jde o čistou Dart knihovnu.
+    // Uživatel si může implementovat vlastní TokenStorage pro perzistentní ukládání.
+    tokenStorage = customTokenStorage ?? InMemoryTokenStorage();
 
     _rootDio =
         dioOverride ??

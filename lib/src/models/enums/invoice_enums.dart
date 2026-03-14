@@ -119,6 +119,8 @@ enum IbanVisibility {
 
 enum InvoiceFireAction {
   markAsSent('mark_as_sent'),
+  deliver('deliver'),
+  pay('pay'),
   cancel('cancel'),
   undoCancel('undo_cancel'),
   lock('lock'),
