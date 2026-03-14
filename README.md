@@ -6,7 +6,18 @@
 
 Kompletní a moderní Dart SDK pro **Fakturoid API v3**. Navrženo pro čistý Dart (backend, CLI) i Flutter aplikace.
 
-## 📖 Kompletní dokumentace najdete na [GitHub Wiki](https://github.com/thinkhome-org/fakturoid-api-dart/wiki)
+## ✨ Klíčové vlastnosti
+
+- **100% Parita:** Podpora všech endpointů a agend Fakturoid API v3.
+- **Moderní Auth:** OAuth 2.0 s PKCE a automatickou správou tokenů.
+- **Typová bezpečnost:** Robustní modely generované pomocí `freezed`.
+- **Developer Friendly:** Podrobné ukázky pro každou funkci a automatické stránkování.
+
+---
+
+## 📖 Dokumentace
+
+Kompletní technickou příručku najdete na naší **[GitHub Wiki](https://github.com/thinkhome-org/fakturoid-api-dart/wiki)**.
 
 ---
 
@@ -20,31 +31,24 @@ final client = FakturoidClient(
   clientId: '...',
   clientSecret: '...',
   redirectUri: 'https://example.com/callback',
-  userAgent: 'MojeApp (admin@mojefirma.cz)',
+  userAgent: 'MyFakturoidApp (admin@mojefirma.cz)',
 );
 
-// Přihlášení (Client Credentials)
+// Přihlášení pomocí Client Credentials
 await client.auth.loginWithClientCredentials();
 
-// Práce s fakturami
-final invoice = await client.invoices.getInvoice(123);
-print('Faktura č.: ${invoice.number}');
+// Načtení detailu účtu
+final account = await client.account.getAccount();
+print('Přihlášen k účtu: ${account.name}');
 ```
 
-## Proč použít tento balíček?
+## Příklady použití
 
-- **100% Parita:** Podporuje všechny endpointy a agendy z Fakturoid API v3.
-- **Bezpečnost:** OAuth 2.0 s PKCE a automatickým refreshem tokenů.
-- **Typová bezpečnost:** Všechny modely jsou generovány pomocí `freezed`.
-- **Čistý Dart:** Žádná závislost na Flutteru, vhodné i pro server-side.
-
-## Příklady
-
-Kompletní ukázky pro každý jednotlivý repozitář najdete ve složce [examples/](./examples).
-
-## Vývoj a přispívání
-
-Podrobnosti o testování a publikaci najdete v [Wiki - Development](https://github.com/thinkhome-org/fakturoid-api-dart/wiki/Development).
+Všechny agendy mají své samostatné ukázky v adresáři [examples/](./examples):
+- [Faktury](./examples/invoices.dart)
+- [Kontakty](./examples/subjects.dart)
+- [Sklad](./examples/inventory_items.dart)
+- [A mnoho dalších...](./examples/main.dart)
 
 ---
 Vytvořeno pro Dart komunitu kolem Fakturoidu.
