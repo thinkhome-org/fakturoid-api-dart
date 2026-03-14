@@ -16,7 +16,14 @@
 
 ## Instalace
 
-Dokud balíček není publikovaný na pub.dev, přidejte ho do `pubspec.yaml` přes Git:
+Po publikaci na pub.dev přidejte balíček standardně:
+
+```yaml
+dependencies:
+  fakturoid_api_dart: ^0.0.1
+```
+
+Dokud ještě není nová verze dostupná na pub.dev, můžete použít Git fallback:
 
 ```yaml
 dependencies:
@@ -51,6 +58,25 @@ print(account.name);
 - [Releases](https://github.com/thinkhome-org/fakturoid-api-dart/releases)
 - [Issues](https://github.com/thinkhome-org/fakturoid-api-dart/issues)
 - [Oficiální Fakturoid API v3](https://www.fakturoid.cz/api/v3)
+
+## Publikace na pub.dev
+
+Repo už obsahuje GitHub Actions workflow pro publikaci přes tagy:
+
+- workflow: `.github/workflows/publish.yml`
+- trigger: push tagu ve formátu `vX.Y.Z`
+- expected pub.dev tag pattern: `v{{version}}`
+- GitHub Actions environment: `pub.dev`
+
+První vydání balíčku na pub.dev ale podle oficiálních Dart docs musíte udělat ručně přes `dart pub publish`. Až bude balíček jednou založený, další releasy můžou jít automaticky přes GitHub Actions.
+
+Pro zapnutí automatického publish flow na pub.dev:
+
+1. Otevřete `https://pub.dev/packages/fakturoid_api_dart/admin`.
+2. V sekci Automated publishing zapněte GitHub Actions pro repo `thinkhome-org/fakturoid-api-dart`.
+3. Nastavte tag pattern na `v{{version}}`.
+4. Volitelně, ale doporučeně vytvořte na GitHubu environment `pub.dev` a nastavte pro něj required reviewers.
+5. Pro další release zvyšte `version` v `pubspec.yaml`, commitněte změny a pushněte tag `v<verze>`.
 
 ## Testování
 
