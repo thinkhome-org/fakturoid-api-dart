@@ -4,7 +4,7 @@ Tento návod vás provede instalací a prvním voláním API.
 
 ## 📦 Instalace
 
-SDK zatím není na pub.dev, můžete jej ale přidat do `pubspec.yaml` skrze Git:
+SDK můžete přidat do `pubspec.yaml` skrze Git:
 
 ```yaml
 dependencies:
@@ -16,25 +16,27 @@ dependencies:
 
 ## 🚀 První inicializace
 
-Pro komunikaci s API potřebujete `slug` (subdoména vašeho účtu) a údaje o aplikaci z nastavení Fakturoidu.
+Pro komunikaci s API potřebujete `slug` a údaje o aplikaci.
 
 ```dart
 import 'package:fakturoid_api/fakturoid_api.dart';
 
-final client = FakturoidClient(
-  slug: 'mojefirma',
-  clientId: 'CLIENT_ID',
-  clientSecret: 'CLIENT_SECRET',
-  redirectUri: 'https://example.com/callback',
-  userAgent: 'MojeApp (jan@novak.cz)',
-);
+void main() {
+  final client = FakturoidClient(
+    slug: 'mojefirma',
+    clientId: 'CLIENT_ID',
+    clientSecret: 'CLIENT_SECRET',
+    redirectUri: 'https://example.com/callback',
+    userAgent: 'MojeApp (jan@novak.cz)',
+  );
+}
 ```
 
 ## 📋 Základní příklady volání
 
 ### Načtení detailu účtu
 ```dart
-Future<void> showAccountName(FakturoidClient client) async {
+Future<void> run(FakturoidClient client) async {
   final account = await client.account.getAccount();
   print('Název firmy: ${account.name}');
 }
@@ -45,29 +47,10 @@ Future<void> showAccountName(FakturoidClient client) async {
 Future<void> listInvoices(FakturoidClient client) async {
   final response = await client.invoices.getInvoices(page: 1);
   for (final invoice in response.items) {
-    print('Faktura č. ${invoice.number} pro ${invoice.subjectName}');
+    print('Faktura č. ${invoice.number}');
   }
 }
 ```
-
-### Vytvoření nového kontaktu
-```dart
-Future<void> createSubject(FakturoidClient client) async {
-  final newSubject = Subject(
-    name: 'Bruce Wayne',
-    email: 'bruce@wayne.com',
-  );
-
-  final created = await client.subjects.createSubject(newSubject);
-  print('Vytvořen subjekt s ID: ${created.id}');
-}
-```
-
-## 🛠 Doporučené postupy
-
-1.  **Isolace Tokenu:** Pro produkční aplikace doporučujeme implementovat vlastní `TokenStorage` (SDK obsahuje výchozí `SecureStorageService` pro mobilní zařízení).
-2.  **Handling chyb:** Vždy balte volání do `try-catch` bloků a odchytávejte `FakturoidException`.
-3.  **User-Agent:** Vždy uvádějte validní název aplikace a kontaktní e-mail dle doporučení Fakturoidu.
 
 ---
 [Zpět na domovskou stránku](Home.md) | [Pokračovat na Autentizaci](Authentication.md)

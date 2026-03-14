@@ -1,70 +1,48 @@
 # Fakturoid API v3 Dart SDK
 
-[![Flutter](https://img.shields.io/badge/Flutter-SDK-blue.svg)](https://flutter.dev)
-[![Fakturoid API v3](https://img.shields.io/badge/API-v3-orange.svg)](https://www.fakturoid.cz/api/v3)
+Dart/Flutter SDK pro Fakturoid API v3. Tato knihovna umožňuje snadnou integraci fakturačního systému Fakturoid do vašich Dart aplikací.
 
-Oficiální neoficiální Dart/Flutter SDK pro integraci se systémem Fakturoid pomocí nejnovějšího API v3. Tato knihovna je navržena pro maximální stabilitu, bezpečnost (OAuth 2.0 + PKCE) a snadné použití.
+## Hlavní vlastnosti
 
-## 🚀 Hlavní vlastnosti
+*   Kompletní podpora Fakturoid API v3.
+*   OAuth 2.0 s PKCE pro bezpečnou autentizaci.
+*   Správa tokenů (Secure Storage).
+*   Automatická obnova (refresh) tokenů.
+*   Podpora pro Faktury, Náklady, Sklad, Kontakty a další.
+*   Typované modely pomocí Freezed.
 
-*   **Kompletní agendy:** Faktury, Náklady, Nabídky, Subjekty, Sklad, Šablony a další.
-*   **Bezpečná autentizace:** Plná podpora OAuth 2.0 (Client Credentials i Authorization Code s PKCE).
-*   **Automatizace:** Podpora pro pravidelné faktury, generátory a webhooky.
-*   **Robustní modely:** Neměnné (immutable) modely generované pomocí Freezed.
-*   **Zpracování příloh:** Nahrávání přes Data URL a stahování PDF i ostatních souborů.
-*   **Rate Limiting:** Zabudované ošetření limitů API a throttlengu.
+## Začínáme
 
-## 📖 Dokumentace a Návody
+Podrobný návod najdete v naší **[Wiki](docs/wiki/Home.md)**.
 
-Kompletní dokumentaci, průvodce nastavením a příklady naleznete v naší **[WIKI](docs/wiki/Home.md)**.
-
-### Rychlé odkazy z Wiki:
-1.  **[Začínáme](docs/wiki/Usage-Guide.md)**
-2.  **[Autentizace (přihlášení)](docs/wiki/Authentication.md)**
-3.  **[Přehled modulů a repozitářů](docs/wiki/Repositories.md)**
-4.  **[Limity a chyby](docs/wiki/Rate-Limiting.md)**
-
-## 💻 Rychlá ukázka
+### Rychlá ukázka
 
 ```dart
-import 'package:fakturoid_api/fakturoid_api.dart';
+final client = FakturoidClient(
+  slug: 'mojefirma',
+  clientId: '...',
+  clientSecret: '...',
+  redirectUri: '...',
+  userAgent: 'MojeApp (jan@novak.cz)',
+);
 
-void main() async {
-  final client = FakturoidClient(
-    slug: 'mojefirma',
-    clientId: 'CLIENT_ID',
-    clientSecret: 'CLIENT_SECRET',
-    redirectUri: 'https://example.com/callback',
-    userAgent: 'MojeApp (jan@novak.cz)',
-  );
-
-  // Přihlášení (např. server-to-server)
-  await client.auth.loginWithClientCredentials();
-
-  // Vytvoření faktury
-  final invoice = await client.invoices.createInvoice(const Invoice(
-    subjectId: 12345,
-    lines: [
-      InvoiceLine(
-        name: 'Služby',
-        quantity: '1',
-        unitPrice: '1000',
-        vatRate: 21,
-      ),
-    ],
-  ));
-
-  print('Vystavena faktura č. ${invoice.number}');
-}
+// Načtení účtu
+final account = await client.account.getAccount();
+print(account.name);
 ```
 
-## 🧪 Testování
+## Dokumentace
 
-SDK obsahuje rozsáhlou sadu testů (mock i live). Pro spuštění live testů proti vašemu testovacímu účtu:
+*   **[Wiki (SDK Návody)](docs/wiki/Home.md)**
+*   **[API Reference (Fakturoid)](docs/fakturoid/introduction.md)**
+
+## Testování
+
+SDK obsahuje rozsáhlou sadu testů. Pro spuštění live testů:
 
 1.  Zkopírujte `.env.fakturoid.local.example` do `.env.fakturoid.local`.
 2.  Vyplňte své údaje.
 3.  Spusťte `./run-live-tests.fish`.
 
 ---
-*Vytvořeno s ❤️ pro Dart & Flutter komunitu.*
+*Vytvořeno pro Dart & Flutter komunitu.*

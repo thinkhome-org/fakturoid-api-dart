@@ -18,7 +18,6 @@ Future<void> main() async {
   );
 
   await client.auth.loginWithClientCredentials();
-  // SDK nyní automaticky spravuje accessToken
 }
 ```
 
@@ -27,11 +26,9 @@ Standardní tok pro webové a mobilní aplikace, kde se uživatel přihlašuje p
 
 ```dart
 Future<void> login(FakturoidClient client) async {
-  // A) Získání URL pro prohlížeč
   final authUrl = await client.auth.getAuthorizationUrl();
-  // Otevřete authUrl v in-app browseru
+  // Otevřete authUrl v prohlížeči
 
-  // B) Po přesměrování zpět do aplikace získáte callback URI
   final callbackUri = Uri.parse('mojeapp://callback?code=CODE&state=STATE');
   await client.auth.exchangeAuthorizationCode(callbackUri);
 }
@@ -40,37 +37,26 @@ Future<void> login(FakturoidClient client) async {
 ## 💾 Správa tokenů (TokenStorage)
 
 SDK automaticky ukládá a obnovuje tokeny. Výchozí implementace je:
-*   **SecureStorageService:** Používá `flutter_secure_storage` (iOS Keychain / Android Keystore).
-*   **InMemoryTokenStorage:** Používá se v testech nebo tam, kde není potřeba perzistence.
+*   **SecureStorageService:** Používá `flutter_secure_storage`.
+*   **InMemoryTokenStorage:** Používá se v testech.
 
 Můžete implementovat vlastní úložiště pomocí rozhraní `TokenStorage`:
 
 ```dart
-class MyDatabaseTokenStorage implements TokenStorage {
+class MyTokenStorage implements TokenStorage {
   @override
   Future<void> saveTokens({
     required String accessToken,
     String? refreshToken,
     required String tokenType,
     required DateTime expiresAt,
-  }) async {
-    // Uložit do vaší DB
-  }
+  }) async {}
 
   @override
-  Future<Map<String, String?>> getTokens() async {
-    return {
-      'accessToken': '...',
-      'refreshToken': '...',
-      'tokenType': 'Bearer',
-      'expiresAt': '...',
-    };
-  }
+  Future<Map<String, String?>> getTokens() async => {};
 
   @override
-  Future<void> clearAll() async {
-    // Smazat z DB
-  }
+  Future<void> clearAll() async {}
 
   @override
   Future<void> saveAuthState(String state) async {}
@@ -88,11 +74,7 @@ class MyDatabaseTokenStorage implements TokenStorage {
 
 ## 🔄 Automatická obnova (Refresh)
 
-SDK obsahuje `FakturoidAuthInterceptor`, který:
-1.  Před každým požadavkem kontroluje platnost tokenu.
-2.  Pokud token vypršel, automaticky zavolá refresh endpoint.
-3.  Uloží nové tokeny a pokračuje v původním požadavku.
-4.  Vše probíhá transparentně, nemusíte volat refresh ručně.
+SDK obsahuje `FakturoidAuthInterceptor`, který automaticky obnovuje tokeny před vypršením platnosti.
 
 ---
 [Předchozí: Začínáme](Usage-Guide.md) | [Zpět na Home](Home.md) | [Pokračovat na Repozitáře](Repositories.md)
