@@ -1,4 +1,4 @@
-# Fakturoid API v3 Dart SDK Wiki
+# Fakturoid API v3 Dart SDK Dokumentace
 
 Vítejte v oficiální dokumentaci pro Dart/Flutter SDK služby Fakturoid (API v3). Tato knihovna umožňuje snadnou integraci fakturačního systému Fakturoid do vašich Dart aplikací.
 

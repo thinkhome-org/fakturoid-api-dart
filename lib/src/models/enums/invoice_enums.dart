@@ -13,6 +13,8 @@ enum DocumentType {
   taxDocument,
   @JsonValue('final_invoice')
   finalInvoice,
+  @JsonValue('estimate')
+  estimate,
 }
 
 enum InvoiceListDocumentType {

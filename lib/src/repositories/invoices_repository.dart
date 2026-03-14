@@ -105,30 +105,20 @@ class InvoicesRepository {
     );
     return Invoice.fromJson(response.data);
   }
-/// Smaže fakturu podle ID.
-Future<void> deleteInvoice(int id) async {
-  await _dio.delete('invoices/$id.json');
-}
 
-/// Hromadně smaže faktury podle seznamu ID.
-Future<void> bulkDelete(List<int> ids) async {
-  await _dio.delete('invoices.json', data: {'ids': ids});
-}
+  /// Smaže fakturu podle ID.
+  Future<void> deleteInvoice(int id) async {
+    await _dio.delete('invoices/$id.json');
+  }
 
-/// Provede akci s fakturou (např. označí jako odeslanou).
-Future<void> fireAction(int id, InvoiceFireAction action) async {
-  await _dio.post('invoices/$id/fire.json', queryParameters: {
-    'event': action.value,
-  });
-}
+  /// Provede akci s fakturou (např. označí jako odeslanou).
+  Future<void> fireAction(int id, InvoiceFireAction action) async {
+    await _dio.post(
+      'invoices/$id/fire.json',
+      queryParameters: {'event': action.value},
+    );
+  }
 
-/// Provede hromadnou akci s fakturami.
-Future<void> bulkFireAction(List<int> ids, InvoiceFireAction action) async {
-  await _dio.post('invoices/fire.json', data: {
-    'ids': ids,
-    'event': action.value,
-  });
-}
   /// Stáhne PDF faktury jako pole bajtů (Uint8List), které můžete následně uložit do souboru nebo zobrazit.
   Future<Uint8List> downloadInvoicePdf(int id) async {
     final response = await _dio.get(

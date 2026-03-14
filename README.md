@@ -13,7 +13,7 @@ Dart/Flutter SDK pro Fakturoid API v3. Tato knihovna umožňuje snadnou integrac
 
 ## Začínáme
 
-Podrobný návod najdete v naší **[Wiki](doc/wiki/Home.md)**.
+Podrobný návod najdete v interní **[SDK dokumentaci](doc/Home.md)**.
 
 ### Rychlá ukázka
 
@@ -35,8 +35,7 @@ print(account.name);
 
 ## Dokumentace
 
-*   **[Wiki (SDK Návody)](doc/wiki/Home.md)**
-*   **[API Reference (Fakturoid)](doc/fakturoid/introduction.md)**
+*   **[SDK dokumentace](doc/Home.md)**
 
 ## Testování
 
