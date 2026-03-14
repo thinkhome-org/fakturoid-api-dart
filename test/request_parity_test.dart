@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fakturoid_api_dart/fakturoid_api.dart';
+import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 import 'support/test_helpers.dart';
 

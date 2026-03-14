@@ -1,7 +1,9 @@
 name: fakturoid_api_dart
-description: "A new Flutter package project."
+description: Dart/Flutter SDK for Fakturoid API v3 with OAuth 2.0, PKCE, typed models, and live-tested repositories.
 version: 0.0.1
-homepage:
+homepage: https://github.com/thinkhome-org/fakturoid-api-dart
+repository: https://github.com/thinkhome-org/fakturoid-api-dart
+issue_tracker: https://github.com/thinkhome-org/fakturoid-api-dart/issues
 
 environment:
   sdk: ^3.11.1

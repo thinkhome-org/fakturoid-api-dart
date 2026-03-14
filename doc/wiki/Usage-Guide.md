@@ -19,7 +19,7 @@ dependencies:
 Pro komunikaci s API potřebujete `slug` a údaje o aplikaci.
 
 ```dart
-import 'package:fakturoid_api_dart/fakturoid_api.dart';
+import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 void main() {
   final client = FakturoidClient(

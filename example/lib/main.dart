@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 
-import 'package:fakturoid_api_dart/fakturoid_api.dart';
+import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 void main() async {
   // 1. Vytvoříme instanci klienta Fakturoid API.

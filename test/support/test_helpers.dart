@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:fakturoid_api_dart/fakturoid_api.dart';
+import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 Dio createTestDio(HttpClientAdapter adapter) {
   final dio = Dio(
