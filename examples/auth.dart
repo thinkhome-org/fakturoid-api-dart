@@ -17,7 +17,7 @@ Future<void> runAuthExample() async {
     // Přihlášení pomocí Client Credentials
     await clientCredentialsClient.auth.loginWithClientCredentials();
     print('✅ Client Credentials login úspěšný.');
-    
+
     final account = await clientCredentialsClient.account.getAccount();
     print('Přihlášen k účtu: ${account.name}');
   } catch (e) {
@@ -40,9 +40,11 @@ Future<void> runAuthExample() async {
   // B) Poté, co uživatel potvrdí přístup, Fakturoid ho přesměruje zpět
   // na vaši redirectUri s parametry 'code' a 'state'.
   // final callbackUri = Uri.parse('mojeapp://callback?code=ZISKANY_KOD&state=ULOZENY_STATE');
-  
-  print('ℹ️ Po získání callbacku zavolejte: client.auth.exchangeAuthorizationCode(callbackUri)');
-  
+
+  print(
+    'ℹ️ Po získání callbacku zavolejte: client.auth.exchangeAuthorizationCode(callbackUri)',
+  );
+
   // C) Obnova tokenu (pokud je dostupný refresh_token)
   // await oauthClient.auth.refreshToken();
 

@@ -15,7 +15,9 @@ Future<void> runTodosExample(FakturoidClient client) async {
 
       // 2. Přepnutí stavu splnění
       final updated = await client.todos.toggleCompletion(id);
-      print('📝 Úkol $id byl přepnut (splněno: ${updated.completedAt != null}).');
+      print(
+        '📝 Úkol $id byl přepnut (splněno: ${updated.completedAt != null}).',
+      );
     }
   } catch (e) {
     print('❌ Chyba při práci s úkoly: $e');

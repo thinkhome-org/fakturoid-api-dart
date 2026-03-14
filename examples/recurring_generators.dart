@@ -6,7 +6,8 @@ Future<void> runRecurringGeneratorsExample(FakturoidClient client) async {
 
   try {
     // 1. Seznam pravidelných faktur
-    final generators = await client.recurringGenerators.getRecurringGenerators();
+    final generators = await client.recurringGenerators
+        .getRecurringGenerators();
     print('✅ Získáno ${generators.items.length} pravidelných faktur.');
 
     if (generators.items.isNotEmpty) {

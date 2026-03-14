@@ -10,8 +10,12 @@ Future<void> runEstimatesExample(FakturoidClient client) async {
     print('✅ Získáno ${estimates.items.length} nabídek.');
 
     // 2. Vyhledávání v nabídkách
-    final searchResults = await client.estimates.searchEstimates(query: 'Projekt');
-    print('🔍 Nalezeno ${searchResults.items.length} nabídek pro dotaz "Projekt".');
+    final searchResults = await client.estimates.searchEstimates(
+      query: 'Projekt',
+    );
+    print(
+      '🔍 Nalezeno ${searchResults.items.length} nabídek pro dotaz "Projekt".',
+    );
 
     if (estimates.items.isNotEmpty) {
       final firstEstimate = estimates.items.first;

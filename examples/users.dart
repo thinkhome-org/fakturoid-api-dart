@@ -7,11 +7,15 @@ Future<void> runUsersExample(FakturoidClient client) async {
   try {
     // 1. Detail aktuálního uživatele (globální endpoint)
     final currentUser = await client.users.getCurrentUser();
-    print('✅ Aktuální uživatel: ${currentUser.fullName} (${currentUser.email})');
+    print(
+      '✅ Aktuální uživatel: ${currentUser.fullName} (${currentUser.email})',
+    );
 
     // 2. Seznam uživatelů u daného účtu
     final accountUsers = await client.users.getUsers();
-    print('✅ Získáno ${accountUsers.items.length} uživatelů u aktuálního účtu.');
+    print(
+      '✅ Získáno ${accountUsers.items.length} uživatelů u aktuálního účtu.',
+    );
     for (var user in accountUsers.items) {
       print('- ${user.fullName} (${user.email})');
     }

@@ -11,7 +11,9 @@ Future<void> runExpensesExample(FakturoidClient client) async {
 
     // 2. Vyhledávání v nákladech
     final searchResults = await client.expenses.searchExpenses(query: 'Server');
-    print('🔍 Nalezeno ${searchResults.items.length} nákladů pro dotaz "Server".');
+    print(
+      '🔍 Nalezeno ${searchResults.items.length} nákladů pro dotaz "Server".',
+    );
 
     if (expenses.items.isNotEmpty) {
       final firstExpense = expenses.items.first;

@@ -426,15 +426,11 @@ void main() {
 
       await repository.fireAction(1, InvoiceFireAction.deliver);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {
-        'event': 'deliver',
-      });
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'deliver'});
 
       await repository.fireAction(1, InvoiceFireAction.pay);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {
-        'event': 'pay',
-      });
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'pay'});
 
       final pdf = await repository.downloadInvoicePdf(10);
       expect(pdf, Uint8List.fromList([1, 2, 3]));
