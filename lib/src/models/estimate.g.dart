@@ -88,6 +88,7 @@ _Estimate _$EstimateFromJson(Map<String, dynamic> json) => _Estimate(
   total: json['total'] as String?,
   nativeSubtotal: json['native_subtotal'] as String?,
   nativeTotal: json['native_total'] as String?,
+  roundingAdjustment: json['rounding_adjustment'] as String?,
   lines: (json['lines'] as List<dynamic>?)
       ?.map((e) => InvoiceLine.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -173,6 +174,7 @@ Map<String, dynamic> _$EstimateToJson(_Estimate instance) => <String, dynamic>{
   'total': instance.total,
   'native_subtotal': instance.nativeSubtotal,
   'native_total': instance.nativeTotal,
+  'rounding_adjustment': instance.roundingAdjustment,
   'lines': instance.lines,
   'vat_rates_summary': instance.vatRatesSummary,
   'attachments': instance.attachments,
