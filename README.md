@@ -32,7 +32,7 @@ Nebo ji přidejte ručně do souboru `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  fakturoid_api_dart: ^0.0.1
+  fakturoid_api_dart: ^0.0.2
 ```
 
 ---
