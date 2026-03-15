@@ -6,30 +6,31 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
-| `full_name` | `String` | User full name |
-| `email` | `String` | User email |
-| `avatar_url` | `String` | User avatar URL |
-| `default_account` | `String` | Default account slug *(Only on the `/user.json` endpoint)* |
-| `permission` | `String` | User permission for the current account |
-| `allowed_scope` | `Array[String]` | List of allowed scopes. Values: `reports`, `expenses`, `invoices` |
-| `accounts` | `Array[Object]` | List of accounts the user has access to *(Only on the `/user.json` endpoint)* |
+| `id` | `Integer` | Unique identifier in Fakturoid *(read-only)* |
+| `full_name` | `String` | User full name *(read-only)* |
+| `email` | `String` | User email *(read-only)* |
+| `avatar_url` | `String` | User avatar URL *(read-only)* |
+| `default_account` | `String` | Default account slug *(Only on the `/user.json` endpoint)* *(read-only)* |
+| `permission` | `String` | User permission for the current account *(read-only)* |
+| `allowed_scope` | `Array[String]` | List of allowed scopes. Values: `reports`, `expenses`, `invoices` *(read-only)* |
+| `accounts` | `Array[Object]` | List of accounts the user has access to *(Only on the `/user.json` endpoint)* *(read-only)* |
 
-- Required attribute = must always be present.
-- Read-only attribute = cannot be changed.
-- Write-only attribute = will not be returned.
+- **(required)** = must always be present.
+- *(read-only)* = cannot be changed.
+- *(write-only)* = will not be returned.
+- *(editable)* = can be changed on the web.
 - Unmarked attributes are optional and can be omitted during request.
 
 ### Accounts
 
 | Attribute | Type | Description |
 |---|---|---|
-| `slug` | `String` | Account URL slug. Goes to `https://app.fakturoid.cz/api/v3/accounts/{slug}/…` |
-| `logo` | `String` | Account logo URL |
-| `name` | `String` | Account name |
-| `registration_no` | `String` | Account registration number |
-| `permission` | `String` | Current user account permission |
-| `allowed_scope` | `Array[String]` | List of allowed scopes for current user. Values: `reports`, `expenses`, `invoices` |
+| `slug` | `String` | Account URL slug. Goes to `account.md` *(read-only)* |
+| `logo` | `String` | Account logo URL *(read-only)* |
+| `name` | `String` | Account name *(read-only)* |
+| `registration_no` | `String` | Account registration number *(read-only)* |
+| `permission` | `String` | Current user account permission *(read-only)* |
+| `allowed_scope` | `Array[String]` | List of allowed scopes for current user. Values: `reports`, `expenses`, `invoices` *(read-only)* |
 
 ## Current User
 
@@ -128,4 +129,3 @@
   …
 ]
 ```
-

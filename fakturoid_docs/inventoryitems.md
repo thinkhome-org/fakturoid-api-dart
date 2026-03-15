@@ -6,40 +6,40 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
-| `name` | `String` | Item name |
-| `sku` | `String` | Stock Keeping Unit (SKU) |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `name` **(required)** | `String` | Item name |
+| `sku` **(required)** | `String` | Stock Keeping Unit (SKU) |
 | `article_number_type` | `String` | Article number type. Values: `ian`, `ean`, `isbn`. Default: `ian` |
 | `article_number` | `String` | Article number |
 | `unit_name` | `String` | Unit of measure |
 | `track_quantity` | `Boolean` | Track quantity via inventory moves? Default: `false` |
-| `quantity` | `Decimal` | Quantity in stock. Becomes read-only after item creation and can be changed only via inventory moves. |
+| `quantity` | `Decimal` | Quantity in stock. Becomes *(read-only)* after item creation and can be changed only via inventory moves. |
 | `min_quantity` | `Decimal` | Minimum stock quantity |
 | `max_quantity` | `Decimal` | Maximum stock quantity |
 | `allow_below_zero` | `Boolean` | Allow quantity below zero. Default: `false` |
-| `low_quantity_date` | `DateTime` | Date when item quantity dropped below `min_quantity` |
+| `low_quantity_date` *(read-only)* | `DateTime` | Date when item quantity dropped below `min_quantity` |
 | `native_purchase_price` | `Decimal` | Unit purchase price without VAT in account currency |
 | `native_retail_price` | `Decimal` | Unit retail price without VAT in account currency |
 | `vat_rate` | `String` | VAT rate. Values: `standard` (21%), `reduced` (12%), `reduced2` (10%), `zero` (0%) |
-| `average_native_purchase_price` | `Decimal` | Average purchase price in account currency |
+| `average_native_purchase_price` *(read-only)* | `Decimal` | Average purchase price in account currency |
 | `supply_type` | `String` | Item type. Values: `goods`, `service`. Default: `goods` |
 | `archived` | `Boolean` | If item is archived |
 | `private_note` | `Text` | Private note |
 | `suggest_for` | `String` | Suggest item for documents. Values: `invoices`, `expenses`, `both`. Default: `both` |
 | `retail_prices` | `Array[Object]` | List of retail prices for specific currencies |
-| `created_at` | `DateTime` | Date and time of item creation |
-| `updated_at` | `DateTime` | Date and time of last item update |
+| `created_at` *(read-only)* | `DateTime` | Date and time of item creation |
+| `updated_at` *(read-only)* | `DateTime` | Date and time of last item update |
 
-- Required attribute
-- Read-only attribute
-- Write-only attribute
+- **(required)**: Required attribute
+- *(read-only)*: Read-only attribute
+- *(write-only)*: Write-only attribute
 - Unmarked attributes are optional and can be omitted during request.
 
-Required notes from the page:
-- `sku` is required.
-- `article_number_type` is required if `track_quantity` is enabled.
-- `quantity` is required if `track_quantity` is enabled.
-- `native_purchase_price` is required if `track_quantity` is enabled.
+Required notes:
+- `sku` is **(required)**.
+- `article_number_type` is **(required)** if `track_quantity` is enabled.
+- `quantity` is **(required)** if `track_quantity` is enabled.
+- `native_purchase_price` is **(required)** if `track_quantity` is enabled.
 
 ### Retail Prices
 
@@ -49,11 +49,11 @@ Predefined retail prices for specific currencies to avoid calculations through e
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
-| `amount` | `Decimal` | Amount in currency |
-| `currency` | `String` | Currency |
-| `created_at` | `DateTime` | Date and time of retail price creation |
-| `updated_at` | `DateTime` | Date and time of last retail price update |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `amount` **(required)** | `Decimal` | Amount in currency |
+| `currency` **(required)** | `String` | Currency |
+| `created_at` *(read-only)* | `DateTime` | Date and time of retail price creation |
+| `updated_at` *(read-only)* | `DateTime` | Date and time of last retail price update |
 
 #### Retail Price Example
 
@@ -88,11 +88,11 @@ Archived items are not returned.
 
 If query parameters `since`, `until`, `updated_since` and `updated_until` are not valid date time format (ISO 8601) the server will respond with `400 Bad Request`.
 
-`GET` `/accounts/{slug}/inventory_items.json`
+`GET /accounts/{slug}/inventory_items.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items.json`
+`GET /accounts/{slug}/inventory_items.json`
 
 #### Headers
 
@@ -120,7 +120,7 @@ If query parameters `since`, `until`, `updated_since` and `updated_until` are no
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -156,11 +156,11 @@ If query parameters `since`, `until`, `updated_since` and `updated_until` are no
 
 ## Archived Items
 
-`GET` `/accounts/{slug}/inventory_items/archived.json`
+`GET /accounts/{slug}/inventory_items/archived.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items/archived.json`
+`GET /accounts/{slug}/inventory_items/archived.json`
 
 #### Headers
 
@@ -188,7 +188,7 @@ If query parameters `since`, `until`, `updated_since` and `updated_until` are no
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -226,11 +226,11 @@ If query parameters `since`, `until`, `updated_since` and `updated_until` are no
 
 Returns only items having quantity below minimum.
 
-`GET` `/accounts/{slug}/inventory_items/low_quantity.json`
+`GET /accounts/{slug}/inventory_items/low_quantity.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items/low_quantity.json`
+`GET /accounts/{slug}/inventory_items/low_quantity.json`
 
 #### Headers
 
@@ -247,7 +247,7 @@ Returns only items having quantity below minimum.
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -285,11 +285,11 @@ Returns only items having quantity below minimum.
 
 Following fields are being searched: `name`, `article_number` and `sku`.
 
-`GET` `/accounts/{slug}/inventory_items/search.json`
+`GET /accounts/{slug}/inventory_items/search.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items/search.json`
+`GET /accounts/{slug}/inventory_items/search.json`
 
 #### Headers
 
@@ -312,7 +312,7 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -348,11 +348,11 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ## Item Detail
 
-`GET` `/accounts/{slug}/inventory_items/{id}.json`
+`GET /accounts/{slug}/inventory_items/{id}.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items/{id}.json`
+`GET /accounts/{slug}/inventory_items/{id}.json`
 
 #### Headers
 
@@ -369,7 +369,7 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -405,11 +405,11 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 - If inventory item is successfully created the server will respond with `201 Created` and a JSON body with its data. A `Location` header will also be returned which contains a link to the newly created item.
 - Request with invalid data will result in response `422 Unprocessable Content` with a JSON body describing errors found in the request.
 
-`POST` `/accounts/{slug}/inventory_items.json`
+`POST /accounts/{slug}/inventory_items.json`
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items.json`
+`POST /accounts/{slug}/inventory_items.json`
 
 #### Headers
 
@@ -439,13 +439,13 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response
 
-`Status` `201 Created`
+`Status 201 Created`
 
 #### Headers
 
 | Name | Value |
 |---|---|
-| `Location` | `https://app.fakturoid.cz/api/v3/accounts/applecorp/inventory_items/27.json` |
+| `Location` | "/accounts/applecorp/inventory_items/27.json" |
 
 #### Body
 
@@ -491,7 +491,7 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -514,11 +514,11 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 - If item is successfully updated the server will respond with `200 OK` and a JSON body with its data.
 - Request with invalid data will result in response `422 Unprocessable Content` with a JSON body describing errors found in the request.
 
-`PATCH` `/accounts/{slug}/inventory_items/{id}.json`
+`PATCH /accounts/{slug}/inventory_items/{id}.json`
 
 ### Request
 
-`PATCH` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items/{id}.json`
+`PATCH /accounts/{slug}/inventory_items/{id}.json`
 
 #### Headers
 
@@ -544,7 +544,7 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -587,7 +587,7 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -606,11 +606,11 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 - After deleting an item the server will respond with `204 No Content`.
 - If item cannot be deleted (contains inventory moves) server will respond with `403 Forbidden`.
 
-`DELETE` `/accounts/{slug}/inventory_items/{id}.json`
+`DELETE /accounts/{slug}/inventory_items/{id}.json`
 
 ### Request
 
-`DELETE` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items/{id}.json`
+`DELETE /accounts/{slug}/inventory_items/{id}.json`
 
 #### Headers
 
@@ -627,11 +627,11 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response
 
-`Status` `204 No Content`
+`Status 204 No Content`
 
 ### Response if item cannot be deleted
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -650,11 +650,11 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 - After archiving an item the server will respond with `200 OK` and a JSON body with its data.
 - If item cannot be archived (does not contain inventory moves) server will respond with `403 Forbidden`.
 
-`POST` `/accounts/{slug}/inventory_items/{id}/archive.json`
+`POST /accounts/{slug}/inventory_items/{id}/archive.json`
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items/{id}/archive.json`
+`POST /accounts/{slug}/inventory_items/{id}/archive.json`
 
 #### Headers
 
@@ -671,7 +671,7 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -704,7 +704,7 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 ### Response if item cannot be archived
 
-`Status` `403 Forbidden`
+`Status 403 Forbidden`
 
 #### Body
 
@@ -722,11 +722,11 @@ Following fields are being searched: `name`, `article_number` and `sku`.
 
 After unarchiving an item the server will respond with `200 OK` and a JSON body with its data.
 
-`POST` `/accounts/{slug}/inventory_items/{id}/unarchive.json`
+`POST /accounts/{slug}/inventory_items/{id}/unarchive.json`
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inventory_items/{id}/unarchive.json`
+`POST /accounts/{slug}/inventory_items/{id}/unarchive.json`
 
 #### Headers
 
@@ -739,11 +739,11 @@ After unarchiving an item the server will respond with `200 OK` and a JSON body 
 | Name | Description | Type | Example |
 |---|---|---|---|
 | `slug` | Account name | `String` | `applecorp` |
-| `id` | Inventory item ID | `Integer` | `11` |
+| `id` | Inventory item ID | `Integer" | `11` |
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 

@@ -7,42 +7,42 @@
   -----------------------------------------------------------------------
   Attribute               Type                    Description
   ----------------------- ----------------------- -----------------------
-  `id`                    `Integer`               Unique identifier in
+  `id` *(read-only)*      `Integer`               Unique identifier in
                                                   Fakturoid
 
-  `name`                  `String`                Account name
+  `name` *(read-only)*    `String`                Account name
 
-  `currency`              `String`                Currency
+  `currency` *(read-only)* `String`               Currency
 
-  `number`                `String`                Account number
+  `number` *(read-only)*  `String`                Account number
 
-  `iban`                  `String`                IBAN code
+  `iban` *(read-only)*    `String`                IBAN code
 
-  `swift_bic`             `String`                BIC (for SWIFT
+  `swift_bic` *(read-only)* `String`              BIC (for SWIFT
                                                   payments)
 
-  `pairing`               `Boolean`               Pairing of incoming
+  `pairing` *(read-only)* `Boolean`               Pairing of incoming
                                                   payments
 
-  `expense_pairing`       `Boolean`               Pairing of outgoing
+  `expense_pairing` *(read-only)* `Boolean`       Pairing of outgoing
                                                   payments
 
-  `payment_adjustment`    `Boolean`               Small amount settlement
+  `payment_adjustment` *(read-only)* `Boolean`    Small amount settlement
                                                   when matching payments
 
-  `default`               `Boolean`               Default bank account
+  `default` *(read-only)* `Boolean`               Default bank account
 
-  `created_at`            `DateTime`              Date and time of bank
+  `created_at` *(read-only)* `DateTime`           Date and time of bank
                                                   account creation
 
-  `updated_at`            `DateTime`              Date and time of last
+  `updated_at` *(read-only)* `DateTime`           Date and time of last
                                                   bank account update
   -----------------------------------------------------------------------
 
--   Read-only attribute (cannot be changed).
+-   *(read-only)* Read-only attribute (cannot be changed).
 -   Unmarked attributes are optional and can be omitted during request.
--   Required attribute (must always be present).
--   Write-only attribute (will not be returned).
+-   **(required)** Required attribute (must always be present).
+-   *(write-only)* Write-only attribute (will not be returned).
 
 ## Banks Accounts Index
 
@@ -54,7 +54,7 @@ changes.
 ### Request
 
 `GET`
-`https://app.fakturoid.cz/api/v3/accounts/{slug}/bank_accounts.json`
+`/accounts/{slug}/bank_accounts.json`
 
 #### Headers
 

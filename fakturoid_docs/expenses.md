@@ -1,8 +1,31 @@
-# Fakturoid API v3 --- Expenses
+# Expenses
 
-Source: https://www.fakturoid.cz/api/v3/expenses
+---
 
-------------------------------------------------------------------------
+## Attributes
+
+| Attribute | Type | Description |
+|---|---|---|
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `number` *(read-only)* | `String` | Expense number in Fakturoid |
+| `original_number` | `String` | Document number from supplier |
+| `variable_symbol` | `String` | Variable symbol |
+| `supplier_name` | `String` | Supplier name |
+| `supplier_registration_no` | `String` | Supplier registration number |
+| `supplier_vat_no` | `String` | Supplier VAT number |
+| `subject_id` | `Integer` | ID of the subject (supplier) in the directory |
+| `lines` | `Array` | Expense items (name, quantity, price, VAT) |
+| `status` *(read-only)* | `String` | Status (`open`, `overdue`, `paid`) |
+| `total_price` *(read-only)* | `Decimal` | Total price including VAT |
+| `native_total_price` *(read-only)* | `Decimal` | Total price including VAT in account currency |
+| `rounding_adjustment` *(read-only)* | `Decimal` | Rounding adjustment |
+| `attachments` | `Array` | Attachments (e.g. PDF invoice) |
+| `created_at` *(read-only)* | `DateTime` | Date and time of expense creation |
+| `updated_at` *(read-only)* | `DateTime` | Date and time of last expense update |
+
+- *(read-only)*: Read-only attribute (cannot be changed).
+- **(required)**: Required attribute (must always be present).
+- *(write-only)*: Write-only attribute (will not be returned).
 
 ## Expenses Index
 
@@ -10,53 +33,59 @@ Source: https://www.fakturoid.cz/api/v3/expenses
 
 ### Request
 
-GET https://app.fakturoid.cz/api/v3/accounts/{slug}/expenses.json
+`GET /accounts/{slug}/expenses.json`
 
-Headers
+Headers:
 
+```text
 User-Agent: YourApp (yourname@example.com)
+```
 
 ### Query parameters
 
-  name              description
-  ----------------- ---------------------------------------------
-  since             expenses created after this date
-  updated_since     expenses created or updated after this date
-  page              page number (40 records per page)
-  subject_id        filter by subject
-  custom_id         filter by custom id
-  number            filter by expense number
-  variable_symbol   filter by variable symbol
-  status            open / overdue / paid
+| Name | Description |
+|---|---|
+| `since` | expenses created after this date |
+| `updated_since` | expenses created or updated after this date |
+| `page` | page number (40 records per page) |
+| `subject_id` | filter by subject |
+| `custom_id` | filter by custom id |
+| `number` | filter by expense number |
+| `variable_symbol` | filter by variable symbol |
+| `status` | open / overdue / paid |
 
-------------------------------------------------------------------------
+---
 
 ## Expense Detail
 
 `GET /accounts/{slug}/expenses/{id}.json`
 
-GET https://app.fakturoid.cz/api/v3/accounts/{slug}/expenses/{id}.json
+`GET /accounts/{slug}/expenses/{id}.json`
 
-Headers
+Headers:
 
+```text
 User-Agent: YourApp (yourname@example.com)
+```
 
-------------------------------------------------------------------------
+---
 
 ## Create Expense
 
 `POST /accounts/{slug}/expenses.json`
 
-POST https://app.fakturoid.cz/api/v3/accounts/{slug}/expenses.json
+`POST /accounts/{slug}/expenses.json`
 
-Headers
+Headers:
 
-User-Agent: YourApp (yourname@example.com)\
+```text
+User-Agent: YourApp (yourname@example.com)
 Content-Type: application/json
+```
 
 Example request:
 
-``` json
+```json
 {
   "custom_id": "ORD87968",
   "subject_id": 16,
@@ -72,50 +101,49 @@ Example request:
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Update Expense
 
 `PATCH /accounts/{slug}/expenses/{id}.json`
 
-PATCH https://app.fakturoid.cz/api/v3/accounts/{slug}/expenses/{id}.json
+`PATCH /accounts/{slug}/expenses/{id}.json`
 
 Example:
 
-``` json
+```json
 {
   "custom_id": "ORD111132"
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Delete Expense
 
 `DELETE /accounts/{slug}/expenses/{id}.json`
 
-DELETE
-https://app.fakturoid.cz/api/v3/accounts/{slug}/expenses/{id}.json
+`DELETE /accounts/{slug}/expenses/{id}.json`
 
-Response
+Response:
 
-204 No Content
+`204 No Content`
 
-------------------------------------------------------------------------
+---
 
 ## Expense Status
 
-  status    description
-  --------- -----------------------
-  open      received but not paid
-  overdue   overdue
-  paid      paid
+| Status | Description |
+|---|---|
+| `open` | received but not paid |
+| `overdue` | overdue |
+| `paid` | paid |
 
-------------------------------------------------------------------------
+---
 
 ## Expense Line Example
 
-``` json
+```json
 {
   "id": 1304,
   "name": "Disk 2TB",
@@ -130,13 +158,13 @@ Response
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Attachments
 
 Example request:
 
-``` json
+```json
 {
   "attachments": [
     {
@@ -149,20 +177,20 @@ Example request:
 
 Example response:
 
-``` json
+```json
 {
   "attachments": [
     {
       "id": 3,
       "filename": "receipt.pdf",
       "content_type": "application/pdf",
-      "download_url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/expenses/9/attachments/1/download"
+      "download_url": "/accounts/applecorp/expenses/9/attachments/1/download"
     }
   ]
 }
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Expense Actions
 
@@ -170,12 +198,11 @@ Example response:
 
 Events:
 
-  event    description
-  -------- ----------------
-  lock     lock expense
-  unlock   unlock expense
+| Event | Description |
+|---|---|
+| `lock` | lock expense |
+| `unlock` | unlock expense |
 
 Example:
 
-POST
-https://app.fakturoid.cz/api/v3/accounts/{slug}/expenses/{id}/fire.json?event=lock
+`POST /accounts/{slug}/expenses/{id}/fire.json?event=lock`

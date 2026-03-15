@@ -4,53 +4,18 @@
 
 ## Attributes
 
-  ------------------------------------------------------------------------
-  Attribute                    Type                Description
-  ---------------------------- ------------------- -----------------------
-  `subject`                    `String`            Email subject
+| Attribute | Type | Description |
+| :--- | :--- | :--- |
+| `subject` | `String` | Email subject. Default: Inherit from account settings. |
+| `email` | `String` | Email address. Default: Inherit from invoice subject. |
+| `email_copy` | `String` | Email copy address. Default: Inherit from invoice subject. |
+| `message` | `String` | Email message. Default: Inherit from account settings. |
+| `deliver_now` | `Boolean` | Deliver e-mail immediately if you are outside of the delivery times set in settings. Default: `false`. This option has effect only if you have set e-mail delivery window in Fakturoid settings and you are outside of the given times. If the delivery times are not set or you are in the given window e-mail are always sent immediately. |
 
-                                                   Default: Inherit from
-                                                   account settings
-
-  `email`                      `String`            Email address
-
-                                                   Default: Inherit from
-                                                   invoice subject
-
-  `email_copy`                 `String`            Email copy address
-
-                                                   Default: Inherit from
-                                                   invoice subject
-
-  `message`                    `String`            Email message
-
-                                                   Default: Inherit from
-                                                   account settings
-
-  `deliver_now`                `Boolean`           Deliver e-mail
-                                                   immediately if you are
-                                                   outside of the delivery
-                                                   times set in settings
-
-                                                   Default: `false`
-
-                                                   This option has effect
-                                                   only if you have set
-                                                   e-mail delivery window
-                                                   in Fakturoid settings
-                                                   and you are outside of
-                                                   the given times. If the
-                                                   delivery times are not
-                                                   set or you are in the
-                                                   given window e-mail are
-                                                   always sent
-                                                   immediately.
-  ------------------------------------------------------------------------
-
--   **Required attribute** --- must always be present.
--   **Read-only attribute** --- cannot be changed.
--   **Write-only attribute** --- will not be returned.
--   Unmarked attributes are optional and can be omitted during request.
+- **(required)**: Required attribute
+- *(read-only)*: Read-only attribute
+- *(write-only)*: Write-only attribute
+- Unmarked attributes are optional and can be omitted during request.
 
 ## Create Message
 
@@ -58,46 +23,45 @@ Messages are available only for paid plans.
 
 ### Default values
 
-If you don't specify any of the attributes default values will be used
-from account email settings.
+If you don't specify any of the attributes default values will be used from account email settings.
 
-  Invoice status   Description
-  ---------------- -------------------------------------------------
-  Overdue          Default values for overdue invoice will be used
-  Other            Default values for invoice will be used
+| Invoice status | Description |
+| :--- | :--- |
+| Overdue | Default values for overdue invoice will be used |
+| Other | Default values for invoice will be used |
 
 Variables you can use in the email message:
 
-  Variable      Description
-  ------------- ------------------------------------------
-  `#no#`        Invoice number
-  `#link#`      Link to the webinvoice preview and print
-  `#vs#`        Invoice variable symbol
-  `#price#`     Total amount to pay
-  `#due#`       Due date
-  `#overdue#`   Number of days overdue
-  `#bank#`      Bank account number
-  `#note#`      Note
+| Variable | Description |
+| :--- | :--- |
+| `#no#` | Invoice number |
+| `#link#` | Link to the webinvoice preview and print |
+| `#vs#` | Invoice variable symbol |
+| `#price#` | Total amount to pay |
+| `#due#` | Due date |
+| `#overdue#` | Number of days overdue |
+| `#bank#` | Bank account number |
+| `#note#` | Note |
 
 `POST /accounts/{slug}/invoices/{invoice_id}/message.json`
 
 ### Request
 
-`POST https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{invoice_id}/message.json`
+`POST /accounts/{slug}/invoices/{invoice_id}/message.json`
 
 #### Headers
 
-  Name             Value
-  ---------------- ----------------------------------
-  `User-Agent`     `YourApp (yourname@example.com)`
-  `Content-Type`   `application/json`
+| Name | Value |
+| :--- | :--- |
+| `User-Agent` | `YourApp (yourname@example.com)` |
+| `Content-Type` | `application/json` |
 
 #### URL Parameters
 
-  Name           Description    Type        Example
-  -------------- -------------- ----------- -------------
-  `slug`         Account name   `String`    `applecorp`
-  `invoice_id`   Invoice ID     `Integer`   `1`
+| Name | Description | Type | Example |
+| :--- | :--- | :--- | :--- |
+| `slug` | Account name | `String` | `applecorp` |
+| `invoice_id` | Invoice ID | `Integer` | `1` |
 
 #### Body
 

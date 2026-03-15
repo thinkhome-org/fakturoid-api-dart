@@ -6,35 +6,35 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
-| `name` | `String` | Todo name |
-| `created_at` | `DateTime` | Date and time of todo creation |
-| `completed_at` | `DateTime` | Date and time of todo completion |
-| `text` | `String` | Todo text |
-| `related_objects` | `Object` | Attributes of objects related to the todo |
-| `params` | `Object` | Parameters with details about todo, specific for each type of todo |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `name` *(read-only)* | `String` | Todo name |
+| `created_at` *(read-only)* | `DateTime` | Date and time of todo creation |
+| `completed_at` *(read-only)* | `DateTime` | Date and time of todo completion |
+| `text` *(read-only)* | `String` | Todo text |
+| `related_objects` *(read-only)* | `Array[Object]` | Attributes of objects related to the todo |
+| `params` *(read-only)* | `Object` | Parameters with details about todo, specific for each type of todo |
 
 ### Related objects
 
 | Attribute | Type | Description |
 |---|---|---|
-| `type` | `String` | Type of the object related to the todo. Values: `Invoice`, `Subject`, `Expense`, `Generator`, `RecurringGenerator`, `ExpenseGenerator` |
-| `id` | `Integer` | ID of the object related to todo |
+| `type` *(read-only)* | `String` | Type of the object related to the todo. Values: `Invoice`, `Subject`, `Expense`, `Generator`, `RecurringGenerator`, `ExpenseGenerator` |
+| `id` *(read-only)* | `Integer` | ID of the object related to todo |
 
-- Required attribute (must always be present).
-- Read-only attribute (cannot be changed).
-- Write-only attribute (will not be returned).
+- **(required)**: Required attribute
+- *(read-only)*: Read-only attribute
+- *(write-only)*: Write-only attribute
 - Unmarked attributes are optional and can be omitted during request.
 
 ## Todos Index
 
 If query parameter `since` is not valid date time format ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)) the server will respond with `400 Bad Request`.
 
-`GET` `/accounts/{slug}/todos.json`
+`GET /accounts/{slug}/todos.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/todos.json`
+`GET /accounts/{slug}/todos.json`
 
 #### Headers
 
@@ -57,7 +57,7 @@ If query parameter `since` is not valid date time format ([ISO 8601](https://en.
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -131,11 +131,11 @@ If query parameter `since` is not valid date time format ([ISO 8601](https://en.
 
 ## Todo Toggle Completion
 
-`POST` `/accounts/{slug}/todos/{id}/toggle_completion.json`
+`POST /accounts/{slug}/todos/{id}/toggle_completion.json`
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/todos/{id}/toggle_completion.json`
+`POST /accounts/{slug}/todos/{id}/toggle_completion.json`
 
 #### Headers
 
@@ -152,7 +152,7 @@ If query parameter `since` is not valid date time format ([ISO 8601](https://en.
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 

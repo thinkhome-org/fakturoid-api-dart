@@ -4,64 +4,31 @@
 
 ## Attributes
 
-  -------------------------------------------------------------------------
-  Attribute                 Type                    Description
-  ------------------------- ----------------------- -----------------------
-  `id`                      `Integer`               Unique identifier in
-                                                    Fakturoid
-
-  `direction`               `String`                Move direction (`in`,
-                                                    `out`)
-
-  `moved_on`                `Datetime`              Move date
-
-  `quantity_change`         `Decimal`               Item quantity in move
-
-  `purchase_price`          `Decimal`               Purchase price per unit
-                                                    (without VAT)
-
-  `purchase_currency`       `String`                Purchase currency
-                                                    (3‑letter code)
-
-  `native_purchase_price`   `Decimal`               Unit purchase price in
-                                                    account currency
-
-  `retail_price`            `Decimal`               Retail price per unit
-
-  `retail_currency`         `String`                Retail currency
-                                                    (3‑letter code)
-
-  `native_retail_price`     `Decimal`               Retail price in account
-                                                    currency
-
-  `private_note`            `Text`                  Private note
-
-  `inventory_item_id`       `Integer`               Inventory item ID
-
-  `document`                `Object`                Document and line the
-                                                    move is tied to
-
-  `created_at`              `DateTime`              Date and time of
-                                                    creation
-
-  `updated_at`              `DateTime`              Date and time of last
-                                                    update
-  -------------------------------------------------------------------------
+| Attribute | Type | Description |
+| :--- | :--- | :--- |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `direction` **(required)** | `String` | Move direction (`in`, `out`) |
+| `moved_on` | `Datetime` | Move date |
+| `quantity_change` **(required)** | `Decimal` | Item quantity in move (positive for "in", negative for "out") |
+| `purchase_price` | `Decimal` | Purchase price per unit (without VAT) |
+| `purchase_currency` | `String` | Purchase currency (3‑letter code) |
+| `native_purchase_price` *(read-only)* | `Decimal` | Unit purchase price in account currency |
+| `retail_price` | `Decimal` | Retail price per unit |
+| `retail_currency` | `String` | Retail currency (3‑letter code) |
+| `native_retail_price` *(read-only)* | `Decimal` | Retail price in account currency |
+| `private_note` | `Text` | Private note |
+| `inventory_item_id` **(required)** | `Integer` | Inventory item ID |
+| `document` *(read-only)* | `Object` | Document and line the move is tied to |
+| `created_at` *(read-only)* | `DateTime` | Date and time of creation |
+| `updated_at` *(read-only)* | `DateTime` | Date and time of last update |
 
 ### Document object
 
-  -----------------------------------------------------------------------
-  Attribute               Type                    Description
-  ----------------------- ----------------------- -----------------------
-  `id`                    `Integer`               Document ID
-
-  `type`                  `String`                Document type
-                                                  (`Estimate`, `Expense`,
-                                                  `Generator`, `Invoice`
-                                                  ...)
-
-  `line_id`               `Integer`               Document line ID
-  -----------------------------------------------------------------------
+| Attribute | Type | Description |
+| :--- | :--- | :--- |
+| `id` *(read-only)* | `Integer` | Document ID |
+| `type` *(read-only)* | `String` | Document type (`Estimate`, `Expense`, `Generator`, `Invoice` ...) |
+| `line_id` *(read-only)* | `Integer` | Document line ID |
 
 ------------------------------------------------------------------------
 
@@ -78,14 +45,14 @@ User-Agent: YourApp (your@email.com)
 
 ### Query parameters
 
-  Name                  Description
-  --------------------- ------------------------------------
-  `since`               Moves created after datetime
-  `until`               Moves created before datetime
-  `updated_since`       Created or updated after datetime
-  `updated_until`       Created or updated before datetime
-  `page`                Pagination (40 records/page)
-  `inventory_item_id`   Filter by inventory item
+| Name | Description |
+| :--- | :--- |
+| `since` | Moves created after datetime |
+| `until` | Moves created before datetime |
+| `updated_since` | Created or updated after datetime |
+| `updated_until` | Created or updated before datetime |
+| `page` | Pagination (40 records/page) |
+| `inventory_item_id` | Filter by inventory item |
 
 ### Example response
 

@@ -7,31 +7,29 @@
   -----------------------------------------------------------------------
   Attribute               Type                    Description
   ----------------------- ----------------------- -----------------------
-  `name`                  `String`                Event name
+  `name` *(read-only)*    `String`                Event name
 
-  `created_at`            `DateTime`              Date and time of event
+  `created_at` *(read-only)* `DateTime`           Date and time of event
                                                   creation
 
-  `text`                  `String`                Text of the event
+  `text` *(read-only)*    `String`                Text of the event
 
-  `related_objects`       `Object`                Attributes of objects
+  `related_objects` *(read-only)* `Object`        Attributes of objects
                                                   related to the event
 
-  `user`                  `Object`                User details
+  `user` *(read-only)*    `Object`                User details
 
-  `params`                `Object`                Parameters with details
+  `params` *(read-only)*  `Object`                Parameters with details
                                                   about event, specific
                                                   for each type of event
   -----------------------------------------------------------------------
-
-All attributes above are read-only.
 
 ### Related objects
 
   Attribute   Type        Description
   ----------- ----------- -----------------------------------------
-  `type`      `String`    Type of the object related to the event
-  `id`        `Integer`   ID of the object related to event
+  `type` *(read-only)* `String` Type of the object related to the event
+  `id` *(read-only)* `Integer` ID of the object related to event
 
 Values for `type`: - Invoice - Subject - Expense - Generator -
 RecurringGenerator - ExpenseGenerator - Estimate
@@ -40,9 +38,9 @@ RecurringGenerator - ExpenseGenerator - Estimate
 
   Attribute     Type        Description
   ------------- ----------- ----------------
-  `id`          `Integer`   User ID
-  `full_name`   `String`    Full user name
-  `avatar`      `String`    Avatar URL
+  `id` *(read-only)* `Integer` User ID
+  `full_name` *(read-only)* `String` Full user name
+  `avatar` *(read-only)* `String` Avatar URL
 
 ------------------------------------------------------------------------
 
@@ -52,7 +50,7 @@ RecurringGenerator - ExpenseGenerator - Estimate
 
 ### Request
 
-    GET https://app.fakturoid.cz/api/v3/accounts/{slug}/events.json
+    GET /accounts/{slug}/events.json
 
 ### Headers
 

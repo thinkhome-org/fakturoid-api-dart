@@ -6,31 +6,21 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
 | `filename` | `String` | File name (with extension) |
-| `bytesize` | `Integer` | File size in bytes |
+| `attachment` *(write-only)* **(required)** | `String` | Base64 encoded file content |
+| `bytesize` *(read-only)* | `Integer` | File size in bytes |
 | `send_to_ocr` | `Boolean` | The file will be sent to OCR |
-| `sent_to_ocr_at` | `DateTime` | The date and time the file was sent to OCR |
-| `ocr_status` | `String` | OCR file processing status |
-| `ocr_completed_at` | `DateTime` | The date and time the OCR file was completed |
-| `download_url` | `String` | URL to download the file |
-| `created_at` | `DateTime` | The date and time of file creation |
-| `updated_at` | `DateTime` | The date and time of last file update |
+| `sent_to_ocr_at` *(read-only)* | `DateTime` | The date and time the file was sent to OCR |
+| `ocr_status` *(read-only)* | `String` | OCR file processing status |
+| `ocr_completed_at` *(read-only)* | `DateTime` | The date and time the OCR file was completed |
+| `download_url` *(read-only)* | `String` | URL to download the file |
+| `created_at` *(read-only)* | `DateTime` | The date and time of file creation |
+| `updated_at` *(read-only)* | `DateTime` | The date and time of last file update |
 
-Read-only attributes:
-- `id`
-- `bytesize`
-- `sent_to_ocr_at`
-- `ocr_status`
-- `ocr_completed_at`
-- `download_url`
-- `created_at`
-- `updated_at`
-
-Required / read-only / write-only markers:
-- Required attribute = must always be present.
-- Read-only attribute = cannot be changed.
-- Write-only attribute = will not be returned.
+- *(read-only)*: Read-only attribute (cannot be changed).
+- **(required)**: Required attribute (must always be present).
+- *(write-only)*: Write-only attribute (will not be returned).
 - Unmarked attributes are optional and can be omitted during request.
 
 ### OCR Status Table
@@ -49,7 +39,7 @@ Required / read-only / write-only markers:
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inbox_files.json`
+`GET` `/accounts/{slug}/inbox_files.json`
 
 #### Headers
 
@@ -85,7 +75,7 @@ Required / read-only / write-only markers:
     "sent_to_ocr_at": null,
     "ocr_status": null,
     "ocr_completed_at": null,
-    "download_url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/inbox_files/51/download",
+    "download_url": "/accounts/applecorp/inbox_files/51/download",
     "created_at": "2023-12-04T09:49:58.188+01:00",
     "updated_at": "2023-12-04T09:49:58.237+01:00"
   },
@@ -104,7 +94,7 @@ Required / read-only / write-only markers:
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inbox_files.json`
+`POST` `/accounts/{slug}/inbox_files.json`
 
 #### Headers
 
@@ -153,7 +143,7 @@ Required / read-only / write-only markers:
   "sent_to_ocr_at": null,
   "ocr_status": "created",
   "ocr_completed_at": null,
-  "download_url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/inbox_files/53/download",
+  "download_url": "/accounts/applecorp/inbox_files/53/download",
   "created_at": "2023-12-20T16:34:19.704+01:00",
   "updated_at": "2023-12-20T16:34:19.736+01:00"
 }
@@ -181,7 +171,7 @@ Required / read-only / write-only markers:
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inbox_files/{id}/send_to_ocr.json`
+`POST` `/accounts/{slug}/inbox_files/{id}/send_to_ocr.json`
 
 #### Headers
 
@@ -219,7 +209,7 @@ Required / read-only / write-only markers:
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inbox_files/{id}/download`
+`GET` `/accounts/{slug}/inbox_files/{id}/download`
 
 #### Headers
 
@@ -259,7 +249,7 @@ Required / read-only / write-only markers:
 
 ### Request
 
-`DELETE` `https://app.fakturoid.cz/api/v3/accounts/{slug}/inbox_files/{id}.json`
+`DELETE` `/accounts/{slug}/inbox_files/{id}.json`
 
 #### Headers
 

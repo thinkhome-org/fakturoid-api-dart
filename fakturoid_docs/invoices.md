@@ -6,7 +6,7 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid *(read-only)* |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
 | `custom_id` | `String` | Identifier in your application |
 | `document_type` | `String` | Type of document. Values: `partial_proforma`, `proforma`, `correction`, `tax_document`, `final_invoice`, `invoice` |
 | `proforma_followup_document` | `String` | What to issue after a proforma is paid. Values: `final_invoice_paid` (Invoice paid), `final_invoice` (Invoice with edit), `tax_document` (Document to payment), `none`. Default if document type is `proforma`: `final_invoice_paid`, otherwise `null` |
@@ -15,14 +15,14 @@
 | `number` | `String` | Document number. Default: calculate automatically. |
 | `number_format_id` | `Integer` | ID of a number format; can only be specified on create and is forbidden on update. Default: inherit from account settings. |
 | `variable_symbol` | `String` | Variable symbol. Default: calculate from document number automatically. |
-| `your_name` | `String` | Name of your company *(read-only)* |
-| `your_street` | `String` | Your address street *(read-only)* |
-| `your_city` | `String` | Your address city *(read-only)* |
-| `your_zip` | `String` | Your address postal code *(read-only)* |
-| `your_country` | `String` | Your address country (ISO code) *(read-only)* |
-| `your_registration_no` | `String` | Your registration number (IČO) *(read-only)* |
-| `your_vat_no` | `String` | Your VAT number (DIČ) *(read-only)* |
-| `your_local_vat_no` | `String` | Your SK DIČ (only for Slovakia, does not start with country code) *(read-only)* |
+| `your_name` *(read-only)* | `String` | Name of your company |
+| `your_street` *(read-only)* | `String` | Your address street |
+| `your_city` *(read-only)* | `String` | Your address city |
+| `your_zip` *(read-only)* | `String` | Your address postal code |
+| `your_country` *(read-only)* | `String` | Your address country (ISO code) |
+| `your_registration_no` *(read-only)* | `String` | Your registration number (IČO) |
+| `your_vat_no` *(read-only)* | `String` | Your VAT number (DIČ) |
+| `your_local_vat_no` *(read-only)* | `String` | Your SK DIČ (only for Slovakia, does not start with country code) |
 | `client_name` | `String` | Subject company name |
 | `client_street` | `String` | Subject address street |
 | `client_city` | `String` | Subject address city |
@@ -37,27 +37,27 @@
 | `client_registration_no` | `String` | Subject registration number |
 | `client_vat_no` | `String` | Subject VAT number |
 | `client_local_vat_no` | `String` | Subject SK DIČ (only for Slovakia, does not start with country code) |
-| `subject_id` | `Integer` | Subject ID **(required)** |
+| `subject_id` **(required)** | `Integer` | Subject ID |
 | `subject_custom_id` | `String` | Subject identifier in your application |
-| `generator_id` | `Integer` | Generator ID from which the document was generated *(read-only)* |
+| `generator_id` *(read-only)* | `Integer` | Generator ID from which the document was generated |
 | `related_id` | `Integer` | When proforma: ID of related invoice. When invoice: ID of related proforma (works both on read and write). When tax document: ID of related final invoice. |
 | `paypal` | `Boolean` | Enable PayPal payment button on invoice. Default: `false` |
 | `gopay` | `Boolean` | Enable GoPay payment button on invoice. Default: `false` |
-| `token` | `String` | Token string for the webinvoice URL *(read-only)* |
-| `status` | `String` | Current state of the document. Values: `open`, `sent`, `overdue`, `paid`, `cancelled`, `uncollectible` *(read-only)* |
+| `token` *(read-only)* | `String` | Token string for the webinvoice URL |
+| `status` *(read-only)* | `String` | Current state of the document. Values: `open`, `sent`, `overdue`, `paid`, `cancelled`, `uncollectible` |
 | `order_number` | `String` | Order number in your application |
 | `issued_on` | `Date` | Date of issue |
 | `taxable_fulfillment_due` | `String` | Chargeable event date |
 | `due` | `Integer` | Number of days until the invoice becomes overdue. Default: inherit from account settings. |
-| `due_on` | `Date` | Date when the invoice becomes overdue (depends on `due`) *(read-only)* |
-| `sent_at` | `DateTime` | Date and time of sending the document via email *(read-only)* |
-| `paid_on` | `Date` | Date when the document was marked as paid *(read-only)* |
-| `reminder_sent_at` | `DateTime` | Date and time of the first sent reminder *(read-only)* |
-| `last_reminder_sent_at` | `DateTime` | Date and time of the last sent reminder *(read-only)* |
-| `cancelled_at` | `DateTime` | Date and time when the invoice was cancelled (only for non-VAT-payers) *(read-only)* |
-| `uncollectible_at` | `DateTime` | Date and time when an invoice was marked as uncollectible *(read-only)* |
-| `locked_at` | `DateTime` | Date and time when the document was locked *(read-only)* |
-| `webinvoice_seen_on` | `Date` | Date when the client visited the webinvoice *(read-only)* |
+| `due_on` *(read-only)* | `Date` | Date when the invoice becomes overdue (depends on `due`) |
+| `sent_at` *(read-only)* | `DateTime` | Date and time of sending the document via email |
+| `paid_on` *(read-only)* | `Date` | Date when the document was marked as paid |
+| `reminder_sent_at` *(read-only)* | `DateTime` | Date and time of the first sent reminder |
+| `last_reminder_sent_at` *(read-only)* | `DateTime` | Date and time of the last sent reminder |
+| `cancelled_at` *(read-only)* | `DateTime` | Date and time when the invoice was cancelled (only for non-VAT-payers) |
+| `uncollectible_at` *(read-only)* | `DateTime` | Date and time when an invoice was marked as uncollectible |
+| `locked_at` *(read-only)* | `DateTime` | Date and time when the document was locked |
+| `webinvoice_seen_on` *(read-only)* | `Date` | Date when the client visited the webinvoice |
 | `note` | `String` | Text before lines. Default: inherit from account settings. |
 | `footer_note` | `String` | Invoice footer. Default: inherit from account settings. |
 | `private_note` | `String` | Private note |
@@ -78,31 +78,31 @@
 | `supply_code` | `String` | Supply code for statement about invoices in reverse charge |
 | `oss` | `String` | Use OSS mode. Values: `disabled`, `service`, `goods`. Default: `disabled`. |
 | `vat_price_mode` | `String` | Calculate VAT from base or final amount. Values: `without_vat`, `from_total_with_vat`. |
-| `round_total` | `Boolean` | Round total amount (VAT included) *(write-only)*. Default: `false`. |
-| `subtotal` | `Decimal` | Total without VAT *(read-only)* |
-| `total` | `Decimal` | Total with VAT *(read-only)* |
-| `native_subtotal` | `Decimal` | Total without VAT in the account currency *(read-only)* |
-| `native_total` | `Decimal` | Total with VAT in the account currency *(read-only)* |
-| `rounding_adjustment` | `Decimal` | Rounding adjustment resulting from total amount not subject to VAT. Default: `0.0` *(read-only)* |
-| `remaining_amount` | `Decimal` | Remaining invoice amount after deducting proformas and/or tax documents, VAT included *(read-only)* |
-| `remaining_native_amount` | `Decimal` | Remaining invoice amount in account currency *(read-only)* |
+| `round_total` *(write-only)* | `Boolean` | Round total amount (VAT included). Default: `false`. |
+| `subtotal` *(read-only)* | `Decimal` | Total without VAT |
+| `total` *(read-only)* | `Decimal` | Total with VAT |
+| `native_subtotal` *(read-only)* | `Decimal` | Total without VAT in the account currency |
+| `native_total` *(read-only)* | `Decimal` | Total with VAT in the account currency |
+| `rounding_adjustment` *(read-only)* | `Decimal` | Rounding adjustment resulting from total amount not subject to VAT. Default: `0.0` |
+| `remaining_amount` *(read-only)* | `Decimal` | Remaining invoice amount after deducting proformas and/or tax documents, VAT included |
+| `remaining_native_amount` *(read-only)* | `Decimal` | Remaining invoice amount in account currency |
 | `eet_records` | `Array[Object]` | EET records |
 | `lines` | `Array[Object]` | List of lines to invoice |
-| `vat_rates_summary` | `Array[Object]` | VAT rates summary *(read-only)* |
-| `paid_advances` | `Array[Object]` | List of paid advances (if final invoice) *(read-only)* |
-| `payments` | `Array[Object]` | List of payments *(read-only)* |
+| `vat_rates_summary` *(read-only)* | `Array[Object]` | VAT rates summary |
+| `paid_advances` *(read-only)* | `Array[Object]` | List of paid advances (if final invoice) |
+| `payments` *(read-only)* | `Array[Object]` | List of payments |
 | `attachments` | `Array[Object]` | List of attachments |
-| `html_url` | `String` | Document HTML web address *(read-only)* |
-| `public_html_url` | `String` | Webinvoice web address *(read-only)* |
-| `url` | `String` | Document API address *(read-only)* |
-| `pdf_url` | `String` | PDF download address *(read-only)* |
-| `subject_url` | `String` | Subject API address *(read-only)* |
-| `created_at` | `String` | Date and time of document creation *(read-only)* |
-| `updated_at` | `String` | Date and time of last document update *(read-only)* |
+| `html_url` *(read-only)* | `String` | Document HTML web address |
+| `public_html_url` *(read-only)* | `String` | Webinvoice web address |
+| `url` *(read-only)* | `String` | Document API address |
+| `pdf_url` *(read-only)* | `String` | PDF download address |
+| `subject_url` *(read-only)* | `String` | Subject API address |
+| `created_at` *(read-only)* | `String` | Date and time of document creation |
+| `updated_at` *(read-only)* | `String` | Date and time of last document update |
 
-- **Required attribute** = must always be present.
-- **Read-only attribute** = cannot be changed.
-- **Write-only attribute** = will not be returned.
+- **(required)**: Required attribute
+- *(read-only)*: Read-only attribute
+- *(write-only)*: Write-only attribute
 - Unmarked attributes are optional and can be omitted during request.
 
 ### Invoice Status Table
@@ -189,25 +189,25 @@ For legacy purpose of invoices issued with EET records. Cannot be used on new in
 
 | Attribute | Type | Description |
 |---|---|---|
-| `vat_rate` | `Integer` / `Decimal` | VAT rate *(read-only)* |
-| `base` | `Decimal` | Base total *(read-only)* |
-| `vat` | `Decimal` | VAT total *(read-only)* |
-| `currency` | `String` | Currency *(read-only)* |
-| `native_base` | `Decimal` | Base total in account currency *(read-only)* |
-| `native_vat` | `Decimal` | VAT total in account currency *(read-only)* |
-| `native_currency` | `String` | Account currency *(read-only)* |
+| `vat_rate` *(read-only)* | `Integer` / `Decimal` | VAT rate |
+| `base` *(read-only)* | `Decimal` | Base total |
+| `vat` *(read-only)* | `Decimal` | VAT total |
+| `currency` *(read-only)* | `String` | Currency |
+| `native_base` *(read-only)* | `Decimal` | Base total in account currency |
+| `native_vat` *(read-only)* | `Decimal` | VAT total in account currency |
+| `native_currency` *(read-only)* | `String` | Account currency |
 
 ### Paid Advances
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Tax document ID *(read-only)* |
-| `number` | `String` | Document number *(read-only)* |
-| `variable_symbol` | `String` | Variable symbol *(read-only)* |
-| `paid_on` | `Date` | Date of payment *(read-only)* |
-| `vat_rate` | `Integer` / `Decimal` | VAT rate *(read-only)* |
-| `price` | `Decimal` | Price for given VAT rate *(read-only)* |
-| `vat` | `Decimal` | VAT for given VAT rate *(read-only)* |
+| `id` *(read-only)* | `Integer` | Tax document ID |
+| `number` *(read-only)* | `String` | Document number |
+| `variable_symbol` *(read-only)* | `String` | Variable symbol |
+| `paid_on` *(read-only)* | `Date` | Date of payment |
+| `vat_rate` *(read-only)* | `Integer` / `Decimal` | VAT rate |
+| `price` *(read-only)* | `Decimal` | Price for given VAT rate |
+| `vat` *(read-only)* | `Decimal` | VAT for given VAT rate |
 
 ### Attachments
 
@@ -224,7 +224,7 @@ Attachment object:
 | Attribute | Type | Description |
 |---|---|---|
 | `filename` | `String` | Attachment file name. Default: `attachment.{extension}` |
-| `data_url` | `String` | Attachment contents in the form of a Data URI **(required)** |
+| `data_url` **(required)** | `String` | Attachment contents in the form of a Data URI |
 
 Example:
 
@@ -246,9 +246,9 @@ Example:
 
 | Attribute | Type | Description |
 |---|---|---|
-| `filename` | `String` | Attachment file name *(read-only)* |
-| `content_type` | `String` | Attachment file MIME type *(read-only)* |
-| `download_url` | `String` | API URL for file download *(read-only)* |
+| `filename` *(read-only)* | `String` | Attachment file name |
+| `content_type` *(read-only)* | `String` | Attachment file MIME type |
+| `download_url` *(read-only)* | `String` | API URL for file download |
 
 ```json
 {
@@ -277,31 +277,31 @@ Example:
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid *(read-only)* |
-| `name` | `String` | Line name **(required)** |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `name` **(required)** | `String` | Line name |
 | `quantity` | `Decimal` | Quantity. Default: `1` |
 | `unit_name` | `String` | Unit name |
-| `unit_price` | `Decimal` | Unit price **(required)** |
+| `unit_price` **(required)** | `Decimal` | Unit price |
 | `vat_rate` | `Integer` / `Decimal` | VAT rate. Default: `0` |
-| `unit_price_without_vat` | `Decimal` | Unit price without VAT *(read-only)* |
-| `unit_price_with_vat` | `Decimal` | Unit price including VAT *(read-only)* |
-| `total_price_without_vat` | `Decimal` | Total price without VAT *(read-only)* |
-| `total_vat` | `Decimal` | Total VAT *(read-only)* |
-| `native_total_price_without_vat` | `Decimal` | Total price without VAT in account currency *(read-only)* |
-| `native_total_vat` | `Decimal` | Total VAT in account currency *(read-only)* |
-| `inventory_item_id` | `Integer` | ID of the related inventory item; use to set an ID during document creation *(write-only)* |
-| `sku` | `String` | Stock Keeping Unit; use to load data from matching inventory item. Other writable attributes can override loaded values. *(write-only)* |
-| `inventory` | `Object` | Inventory information *(read-only)* |
+| `unit_price_without_vat` *(read-only)* | `Decimal` | Unit price without VAT |
+| `unit_price_with_vat` *(read-only)* | `Decimal` | Unit price including VAT |
+| `total_price_without_vat` *(read-only)* | `Decimal` | Total price without VAT |
+| `total_vat` *(read-only)* | `Decimal` | Total VAT |
+| `native_total_price_without_vat` *(read-only)* | `Decimal` | Total price without VAT in account currency |
+| `native_total_vat` *(read-only)* | `Decimal` | Total VAT in account currency |
+| `inventory_item_id` *(write-only)* | `Integer` | ID of the related inventory item; use to set an ID during document creation |
+| `sku` *(write-only)* | `String` | Stock Keeping Unit; use to load data from matching inventory item. Other writable attributes can override loaded values. |
+| `inventory` *(read-only)* | `Object` | Inventory information |
 
 #### Inventory
 
 | Attribute | Type | Description |
 |---|---|---|
-| `item_id` | `Integer` | ID of the related inventory item *(read-only)* |
-| `sku` | `String` | Stock Keeping Unit (SKU) *(read-only)* |
-| `article_number_type` | `String` | Article number type. Values: `ian`, `ean`, `isbn` *(read-only)* |
-| `article_number` | `String` | Article number, if present *(read-only)* |
-| `move_id` | `Integer` | ID of the related inventory move *(read-only)* |
+| `item_id` *(read-only)* | `Integer` | ID of the related inventory item |
+| `sku` *(read-only)* | `String` | Stock Keeping Unit (SKU) |
+| `article_number_type` *(read-only)* | `String` | Article number type. Values: `ian`, `ean`, `isbn` |
+| `article_number` *(read-only)* | `String` | Article number, if present |
+| `move_id` *(read-only)* | `Integer` | ID of the related inventory move |
 
 #### Line Example
 
@@ -426,11 +426,11 @@ For deleting the line, include `_destroy: true`:
 
 Includes all documents like invoices, proformas, corrections and tax documents.
 
-`GET` `/accounts/{slug}/invoices.json`
+`GET /accounts/{slug}/invoices.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices.json`
+`GET /accounts/{slug}/invoices.json`
 
 #### Headers
 
@@ -470,7 +470,7 @@ Includes all documents like invoices, proformas, corrections and tax documents.
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -630,11 +630,11 @@ Includes all documents like invoices, proformas, corrections and tax documents.
 
 Following fields are searched: `number`, `variable_symbol`, `client_name`, `note`, `private_note`, `footer_note`, and `lines`. Search by tags is done via `tags` query parameter.
 
-`GET` `/accounts/{slug}/invoices/search.json`
+`GET /accounts/{slug}/invoices/search.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/search.json`
+`GET /accounts/{slug}/invoices/search.json`
 
 #### Headers
 
@@ -658,7 +658,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -676,11 +676,11 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ## Invoice Detail
 
-`GET` `/accounts/{slug}/invoices/{id}.json`
+`GET /accounts/{slug}/invoices/{id}.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{id}.json`
+`GET /accounts/{slug}/invoices/{id}.json`
 
 #### Headers
 
@@ -697,7 +697,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -715,11 +715,11 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 - If PDF is ready, you will receive `200 OK` with PDF contents in the response body.
 - After invoice create or update, wait a second or two again before requesting the PDF.
 
-`GET` `/accounts/{slug}/invoices/{id}/download.pdf`
+`GET /accounts/{slug}/invoices/{id}/download.pdf`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{id}/download.pdf`
+`GET /accounts/{slug}/invoices/{id}/download.pdf`
 
 #### Headers
 
@@ -736,7 +736,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Headers
 
@@ -753,15 +753,15 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response if PDF cannot be downloaded yet
 
-`Status` `204 No Content`
+`Status 204 No Content`
 
 ## Download Attachment
 
-`GET` `/accounts/{slug}/invoices/{invoice_id}/attachments/{id}/download`
+`GET /accounts/{slug}/invoices/{invoice_id}/attachments/{id}/download`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{invoice_id}/attachments/{id}/download`
+`GET /accounts/{slug}/invoices/{invoice_id}/attachments/{id}/download`
 
 #### Headers
 
@@ -779,7 +779,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Headers
 
@@ -797,7 +797,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response if file cannot be downloaded
 
-`Status` `204 No Content`
+`Status 204 No Content`
 
 ## Invoice Actions
 
@@ -811,11 +811,11 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 | `mark_as_uncollectible` | Mark invoice as uncollectible |
 | `undo_uncollectible` | Undo invoice marking as uncollectible |
 
-`POST` `/accounts/{slug}/invoices/{id}/fire.json`
+`POST /accounts/{slug}/invoices/{id}/fire.json`
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{id}/fire.json`
+`POST /accounts/{slug}/invoices/{id}/fire.json`
 
 #### Headers
 
@@ -838,11 +838,11 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `204 No Content`
+`Status 204 No Content`
 
 ### Response if action cannot be fired
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -862,11 +862,11 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 - If invalid data is sent, the server returns `422 Unprocessable Content` with JSON errors.
 - If no bank account is specified in the Fakturoid account, the API returns `403 Forbidden` and a link to bank account settings.
 
-`POST` `/accounts/{slug}/invoices.json`
+`POST /accounts/{slug}/invoices.json`
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices.json`
+`POST /accounts/{slug}/invoices.json`
 
 #### Headers
 
@@ -904,7 +904,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `201 Created`
+`Status 201 Created`
 
 #### Body
 
@@ -931,7 +931,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -954,7 +954,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response if no bank account is present
 
-`Status` `403 Forbidden`
+`Status 403 Forbidden`
 
 #### Body
 
@@ -974,11 +974,11 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 - Invalid data returns `422 Unprocessable Content` with JSON errors.
 - Updating a locked invoice returns `403 Forbidden`.
 
-`PATCH` `/accounts/{slug}/invoices/{id}.json`
+`PATCH /accounts/{slug}/invoices/{id}.json`
 
 ### Request
 
-`PATCH` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{id}.json`
+`PATCH /accounts/{slug}/invoices/{id}.json`
 
 #### Headers
 
@@ -1004,7 +1004,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -1029,7 +1029,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -1045,7 +1045,7 @@ Following fields are searched: `number`, `variable_symbol`, `client_name`, `note
 
 ### Response if document is locked
 
-`Status` `403 Forbidden`
+`Status 403 Forbidden`
 
 #### Body
 
@@ -1069,11 +1069,11 @@ Cases when invoice cannot be deleted:
 - Tax document which has invoice connected to it.
 - Document is locked.
 
-`DELETE` `/accounts/{slug}/invoices/{id}.json`
+`DELETE /accounts/{slug}/invoices/{id}.json`
 
 ### Request
 
-`DELETE` `https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{id}.json`
+`DELETE /accounts/{slug}/invoices/{id}.json`
 
 #### Headers
 
@@ -1090,11 +1090,11 @@ Cases when invoice cannot be deleted:
 
 ### Response
 
-`Status` `204 No Content`
+`Status 204 No Content`
 
 ### Response if invoice cannot be deleted
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 

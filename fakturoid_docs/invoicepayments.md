@@ -4,76 +4,45 @@
 
 ## Attributes
 
-  ------------------------------------------------------------------------------
-  Attribute                      Type                    Description
-  ------------------------------ ----------------------- -----------------------
-  `id`                           `Integer`               Unique identifier in
-                                                         Fakturoid
+| Attribute | Type | Description |
+| :--- | :--- | :--- |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `paid_on` | `Date` | Payment date. Default: Today |
+| `currency` *(read-only)* | `String` | Currency ISO 4217 code (same as invoice currency) |
+| `amount` | `Decimal` | Paid amount in document currency. Default: Remaining amount to pay |
+| `native_amount` | `Decimal` | Paid amount in account currency. Default: Remaining amount converted to account currency |
+| `mark_document_as_paid` | `Boolean` | Mark document as paid. Default: `true` (if amount is sufficient) |
+| `proforma_followup_document` | `String` | Issue followup document for proforma (`final_invoice_paid`, `tax_document`, `none`) |
+| `send_thank_you_email` | `Boolean` | Send thank‑you email. Requires `mark_document_as_paid: true` |
+| `variable_symbol` | `String` | Payment variable symbol. Default: Invoice variable symbol |
+| `bank_account_id` | `Integer` | Bank account ID |
+| `tax_document_id` *(read-only)* | `Integer` | Tax document ID |
+| `created_at` *(read-only)* | `DateTime` | Payment creation time |
+| `updated_at` *(read-only)* | `DateTime` | Last update time |
 
-  `paid_on`                      `Date`                  Payment date
-
-                                                         Default: Today
-
-  `currency`                     `String`                Currency ISO 4217 code
-                                                         (same as invoice
-                                                         currency)
-
-  `amount`                       `Decimal`               Paid amount in document
-                                                         currency
-
-                                                         Default: Remaining
-                                                         amount to pay
-
-  `native_amount`                `Decimal`               Paid amount in account
-                                                         currency
-
-                                                         Default: Remaining
-                                                         amount converted to
-                                                         account currency
-
-  `mark_document_as_paid`        `Boolean`               Mark document as paid
-
-  `proforma_followup_document`   `String`                Issue followup document
-                                                         for proforma
-
-  `send_thank_you_email`         `Boolean`               Send thank‑you email
-
-  `variable_symbol`              `String`                Payment variable symbol
-
-  `bank_account_id`              `Integer`               Bank account ID
-
-  `tax_document_id`              `Integer`               Tax document ID
-
-  `created_at`                   `DateTime`              Payment creation time
-
-  `updated_at`                   `DateTime`              Last update time
-  ------------------------------------------------------------------------------
-
-### Read‑only attributes
-
--   `id`
--   `currency`
--   `tax_document_id`
--   `created_at`
--   `updated_at`
+- **(required)**: Required attribute
+- *(read-only)*: Read-only attribute
+- *(write-only)*: Write-only attribute
+- Unmarked attributes are optional and can be omitted during request.
 
 ------------------------------------------------------------------------
 
 ## Create Payment
 
-POST `/accounts/{slug}/invoices/{invoice_id}/payments.json`
+`POST /accounts/{slug}/invoices/{invoice_id}/payments.json`
 
 ### Example Request
 
-POST
-https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{invoice_id}/payments.json
+`POST /accounts/{slug}/invoices/{invoice_id}/payments.json`
 
-Headers:
+#### Headers
 
-User-Agent: YourApp (your@email.com)\
-Content-Type: application/json
+| Name | Value |
+| :--- | :--- |
+| `User-Agent` | `YourApp (your@email.com)` |
+| `Content-Type` | `application/json` |
 
-Body:
+#### Body
 
 ``` json
 {
@@ -136,13 +105,11 @@ Status **403 Forbidden**
 
 ## Create Tax Document
 
-POST
-`/accounts/{slug}/invoices/{invoice_id}/payments/{id}/create_tax_document.json`
+`POST /accounts/{slug}/invoices/{invoice_id}/payments/{id}/create_tax_document.json`
 
 Example request:
 
-POST
-https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{invoice_id}/payments/{id}/create_tax_document.json
+`POST /accounts/{slug}/invoices/{invoice_id}/payments/{id}/create_tax_document.json`
 
 Response **201 Created**
 
@@ -163,7 +130,7 @@ Response **201 Created**
 
 If tax document cannot be created:
 
-Status **422**
+Status **422 Unprocessable Content**
 
 ``` json
 {
@@ -177,12 +144,11 @@ Status **422**
 
 ## Delete Invoice Payment
 
-DELETE `/accounts/{slug}/invoices/{invoice_id}/payments/{id}.json`
+`DELETE /accounts/{slug}/invoices/{invoice_id}/payments/{id}.json`
 
 Example:
 
-DELETE
-https://app.fakturoid.cz/api/v3/accounts/{slug}/invoices/{invoice_id}/payments/{id}.json
+`DELETE /accounts/{slug}/invoices/{invoice_id}/payments/{id}.json`
 
 Response:
 

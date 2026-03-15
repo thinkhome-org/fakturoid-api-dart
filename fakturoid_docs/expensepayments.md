@@ -6,22 +6,20 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
 | `paid_on` | `Date` | Payment date. Default: Today |
-| `currency` | `String` | Currency [ISO Code](https://en.wikipedia.org/wiki/ISO_4217) (same as expense currency) |
+| `currency` *(read-only)* | `String` | Currency [ISO Code](https://en.wikipedia.org/wiki/ISO_4217) (same as expense currency) |
 | `amount` | `Decimal` | Paid amount in document currency. Default: Remaining amount to pay |
 | `native_amount` | `Decimal` | Paid amount in account currency. Default: Remaining amount to pay converted to account currency |
-| `mark_document_as_paid` | `Boolean` | Mark document as paid? Default: `true` if the total paid amount becomes greater or equal to remaining amount to pay |
+| `mark_document_as_paid` *(write-only)* | `Boolean` | Mark document as paid? Default: `true` if the total paid amount becomes greater or equal to remaining amount to pay |
 | `variable_symbol` | `String` | Payment variable symbol. Default: Expense variable symbol |
 | `bank_account_id` | `Integer` | Bank account ID. Default: Expense bank account or default bank account |
-| `created_at` | `DateTime` | The date and time of payment creation |
-| `updated_at` | `DateTime` | The date and time of last payment update |
+| `created_at` *(read-only)* | `DateTime` | The date and time of payment creation |
+| `updated_at` *(read-only)* | `DateTime` | The date and time of last payment update |
 
-Read-only attributes:
-- `id`
-- `currency`
-- `created_at`
-- `updated_at`
+- *(read-only)*: Read-only attribute (cannot be changed).
+- **(required)**: Required attribute (must always be present).
+- *(write-only)*: Write-only attribute (will not be returned).
 
 ## Create Payment
 
@@ -29,7 +27,7 @@ Read-only attributes:
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/expenses/{expense_id}/payments.json`
+`POST` `/accounts/{slug}/expenses/{expense_id}/payments.json`
 
 #### Headers
 

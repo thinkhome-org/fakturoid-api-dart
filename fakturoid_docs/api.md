@@ -17,7 +17,7 @@
 
 <pre><code class="text">https://app.fakturoid.cz/api/v3/accounts/applecorp/invoices.json</code></pre>
 
-<p>List of all accounts for the current user can be obtained via <a href="https://www.fakturoid.cz/api/v3/users#current-user">current user endpoint</a>.</p>
+<p>List of all accounts for the current user can be obtained via <a href="users.md#current-user">current user endpoint</a>.</p>
 
 <h3 id="identification">Identification</h3>
 
@@ -35,7 +35,7 @@
 
 <h2 id="authorization">Authorization</h2>
 
-<p>Fakturoid supports <a href="https://www.fakturoid.cz/api/v3/authorization">OAuth 2 protocol</a> for authorization.</p>
+<p>Fakturoid supports <a href="authorization.md">OAuth 2 protocol</a> for authorization.</p>
 
 <h2 id="pagination">Pagination</h2>
 

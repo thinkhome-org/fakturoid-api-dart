@@ -4,107 +4,58 @@
 
 ## Attributes
 
-Attribute | Type | Description
----|---|---
-`id` | `Integer` | Unique identifier in Fakturoid
-`custom_id` | `String` | Identifier in your application
-`name` | `String` | Generator name
-`active` | `Boolean` | Generator is active or paused
-`proforma` | `Boolean` | Issue invoice as a proforma
-`paypal` | `Boolean` | Show PayPal pay button on invoice
-`gopay` | `Boolean` | Show GoPay pay button on invoice
-`start_date` | `Date` | Start date
-`end_date` | `Date` | End date
-`months_period` | `Integer` | Number of months until the next invoice
-`next_occurrence_on` | `Date` | Next invoice date
-`last_day_in_month` | `Boolean` | Issue an invoice on the last day of the month
-`tax_date_at_end_of_last_month` | `Boolean` | Set CED at the end of last month
-`due` | `Integer` | Number of days until the invoice is overdue
-`send_email` | `Boolean` | Send invoice by email
-`subject_id` | `Integer` | Subject ID
-`number_format_id` | `Integer` | Number format ID
-`note` | `String` | Text before invoice lines
-`footer_note` | `String` | Text in invoice footer
-`legacy_bank_details` | `Object` | Display IBAN, BIC (SWIFT) and bank account number for legacy generators set without bank account ID
-`bank_account_id` | `Integer` | Bank account ID
-`iban_visibility` | `String` | Controls IBAN visibility on the document webinvoice and PDF. IBAN must be valid to show
-`tags` | `Array[String]` | List of tags
-`order_number` | `String` | Order number
-`currency` | `String` | Currency ISO code
-`exchange_rate` | `Decimal` | Exchange rate
-`payment_method` | `String` | Payment method
-`custom_payment_method` | `String` | Custom payment method (`payment_method` attribute must be set to `custom`, otherwise the `custom_payment_method` value is ignored and set to `null`)
-`language` | `String` | Invoice language
-`vat_price_mode` | `String` | Calculate VAT from base or final amount
-`transferred_tax_liability` | `Boolean` | Use reverse charge
-`supply_code` | `Integer` | Supply code for reverse charge
-`oss` | `String` | Use OSS mode on invoice
-`round_total` | `Boolean` | Round total amount (VAT included)
-`subtotal` | `Decimal` | Total amount without VAT
-`total` | `Decimal` | Total amount with VAT
-`native_subtotal` | `Decimal` | Total amount without VAT in the account currency
-`native_total` | `Decimal` | Total amount with VAT in the account currency
-`rounding_adjustment` | `Decimal` | Rounding adjustment resulting from the total amount not subject to VAT
-`lines` | `Array[Object]` | List of lines to invoice. You can use variables for inserting dates to your text.
-`html_url` | `String` | Generator HTML web address
-`url` | `String` | Generator API address
-`subject_url` | `String` | API address of subject
-`created_at` | `DateTime` | Date and time of generator creation
-`updated_at` | `DateTime` | Date and time of last generator update
+| Attribute | Type | Description |
+|---|---|---|
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `custom_id` | `String` | Identifier in your application |
+| `name` **(required)** | `String` | Generator name |
+| `active` *(read-only)* | `Boolean` | Generator is active or paused |
+| `proforma` *(read-only)* | `Boolean` | Issue invoice as a proforma |
+| `paypal` *(read-only)* | `Boolean` | Show PayPal pay button on invoice |
+| `gopay` *(read-only)* | `Boolean` | Show GoPay pay button on invoice |
+| `start_date` **(required)** | `Date` | Start date |
+| `end_date` **(required)** | `Date` | End date |
+| `months_period` **(required)** | `Integer` | Number of months until the next invoice |
+| `next_occurrence_on` | `Date` | Next invoice date |
+| `last_day_in_month` | `Boolean` | Issue an invoice on the last day of the month. Default: `false` |
+| `tax_date_at_end_of_last_month` | `Boolean` | Set CED at the end of last month. Default: `false` |
+| `due` | `Integer` | Number of days until the invoice is overdue. Default: inherit from account settings |
+| `send_email` | `Boolean` | Send invoice by email. Default: `false` |
+| `subject_id` **(required)** | `Integer` | Subject ID |
+| `number_format_id` | `Integer` | Number format ID. Default: inherit from account settings |
+| `note` | `String` | Text before invoice lines. Default: inherit from account settings |
+| `footer_note` | `String` | Text in invoice footer. Default: inherit from account settings |
+| `legacy_bank_details` *(read-only)* | `Object` | Display IBAN, BIC (SWIFT) and bank account number for legacy generators set without bank account ID |
+| `bank_account_id` | `Integer` | Bank account ID. Default: inherit from account settings |
+| `iban_visibility` | `String` | Controls IBAN visibility on the document webinvoice and PDF. IBAN must be valid to show. Values: `automatically`, `always`. Default: `automatically` |
+| `tags` | `Array[String]` | List of tags |
+| `order_number` | `String` | Order number |
+| `currency` | `String` | Currency ISO code. Default: inherit from account settings |
+| `exchange_rate` | `Decimal` | Exchange rate |
+| `payment_method` | `String` | Payment method. Values: `bank`, `cash`, `cod`, `card`, `paypal`, `custom`. Default: inherit from account settings |
+| `custom_payment_method` | `String` | Custom payment method (`payment_method` attribute must be set to `custom`, otherwise the `custom_payment_method` value is ignored and set to `null`). String up to 20 characters |
+| `language` | `String` | Invoice language. Values: `cz`, `sk`, `en`, `de`, `fr`, `it`, `es`, `ru`, `pl`, `hu`, `ro`. Default: inherit from account settings |
+| `vat_price_mode` | `String` | Calculate VAT from base or final amount. Values: `without_vat`, `from_total_with_vat`. Default: inherit from account settings |
+| `transferred_tax_liability` | `Boolean` | Use reverse charge. Default: `false` |
+| `supply_code` | `Integer` | Supply code for reverse charge |
+| `oss` | `String` | Use OSS mode on invoice. Values: `disabled`, `service`, `goods`. Default: `disabled` |
+| `round_total` *(write-only)* | `Boolean` | Round total amount (VAT included). Default: `false` |
+| `subtotal` *(read-only)* | `Decimal` | Total amount without VAT |
+| `total` *(read-only)* | `Decimal` | Total amount with VAT |
+| `native_subtotal` *(read-only)* | `Decimal` | Total amount without VAT in the account currency |
+| `native_total` *(read-only)* | `Decimal` | Total amount with VAT in the account currency |
+| `rounding_adjustment` *(read-only)* | `Decimal` | Rounding adjustment resulting from the total amount not subject to VAT. Default: `0.0` |
+| `lines` | `Array[Object]` | List of lines to invoice. You can use variables for inserting dates to your text. |
+| `html_url` *(read-only)* | `String` | Generator HTML web address |
+| `url` *(read-only)* | `String` | Generator API address |
+| `subject_url` *(read-only)* | `String` | API address of subject |
+| `created_at` *(read-only)* | `DateTime` | Date and time of generator creation |
+| `updated_at` *(read-only)* | `DateTime` | Date and time of last generator update |
 
-### Attribute flags
-
-Read-only attributes:
-- `id`
-- `active`
-- `proforma`
-- `paypal`
-- `gopay`
-- `legacy_bank_details`
-- `subtotal`
-- `total`
-- `native_subtotal`
-- `native_total`
-- `rounding_adjustment`
-- `html_url`
-- `url`
-- `subject_url`
-- `created_at`
-- `updated_at`
-
-Required attributes:
-- `name`
-- `start_date`
-- `end_date`
-- `months_period`
-- `subject_id`
-
-Write-only attributes:
-- `round_total`
-
-### Defaults and allowed values
-
-- `active`: values `true` (active), `false` (paused), default `true`
-- `proforma`: default `false`
-- `paypal`: default `false`
-- `gopay`: default `false`
-- `last_day_in_month`: default `false`
-- `tax_date_at_end_of_last_month`: default `false`
-- `due`: inherit from account settings
-- `send_email`: default `false`
-- `number_format_id`: inherit from default account settings
-- `legacy_bank_details`: default `null`
-- `bank_account_id`: inherit from account settings
-- `iban_visibility`: values `automatically`, `always`, default `automatically`
-- `currency`: inherit from account settings
-- `payment_method`: values `bank`, `cash`, `cod`, `card`, `paypal`, `custom`, default inherit from account settings
-- `custom_payment_method`: string up to 20 characters
-- `language`: values `cz`, `sk`, `en`, `de`, `fr`, `it`, `es`, `ru`, `pl`, `hu`, `ro`, default inherit from account settings
-- `vat_price_mode`: values `without_vat`, `from_total_with_vat`, default inherit from account settings
-- `transferred_tax_liability`: default `false`
-- `oss`: values `disabled`, `service`, `goods`, default `disabled`
-- `round_total`: default `false`
-- `rounding_adjustment`: default `0.0`
+- **(required)**: Required attribute
+- *(read-only)*: Read-only attribute
+- *(write-only)*: Write-only attribute
+- Unmarked attributes are optional and can be omitted during request.
 
 ## VAT Price Mode
 
@@ -113,48 +64,43 @@ Write-only attributes:
 - Account is set as non VAT payer.
 - Reverse charge (`transferred_tax_liability`) is used.
 
-Attribute | Description
----|---
-`null` | Inherited automatically from the account settings
-`"without_vat"` | The price in the invoice line is entered without VAT and the VAT is calculated automatically as a percentage from the line
-`"from_total_with_vat"` | The price in the invoice line is inclusive of VAT and the VAT is calculated from it
+| Attribute | Description |
+|---|---|
+| `null` | Inherited automatically from the account settings |
+| `"without_vat"` | The price in the invoice line is entered without VAT and the VAT is calculated automatically as a percentage from the line |
+| `"from_total_with_vat"` | The price in the invoice line is inclusive of VAT and the VAT is calculated from it |
 
 ## Lines
 
 ### Attributes
 
-Attribute | Type | Description
----|---|---
-`id` | `Integer` | Unique identifier in Fakturoid
-`name` | `String` | Line name
-`quantity` | `Decimal` | Quantity
-`unit_name` | `String` | Unit name
-`unit_price` | `Decimal` | Unit price
-`vat_rate` | `Integer` / `Decimal` | VAT Rate
-`unit_price_without_vat` | `Decimal` | Unit price without VAT
-`unit_price_with_vat` | `Decimal` | Unit price including VAT
-`total_price_without_vat` | `Decimal` | Total price without VAT
-`total_vat` | `Decimal` | Total VAT
-`native_total_price_without_vat` | `Decimal` | Total price without VAT in account currency
-`native_total_vat` | `Decimal` | Total VAT in account currency
-`inventory_item_id` | `Integer` | ID of the related inventory item, use this to set an ID during document creation
-`sku` | `String` | Stock Keeping Unit (SKU), use this to load data from an inventory item with matching SKU code
-`inventory` | `Object` | Inventory information
-
-Defaults:
-- `quantity`: default `1`
-- `vat_rate`: default `0`
-- `inventory`: default `null`
+| Attribute | Type | Description |
+|---|---|---|
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `name` **(required)** | `String` | Line name |
+| `quantity` | `Decimal` | Quantity. Default: `1` |
+| `unit_name` | `String` | Unit name |
+| `unit_price` **(required)** | `Decimal` | Unit price |
+| `vat_rate` | `Integer` / `Decimal` | VAT Rate. Default: `0` |
+| `unit_price_without_vat` *(read-only)* | `Decimal` | Unit price without VAT |
+| `unit_price_with_vat` *(read-only)* | `Decimal` | Unit price including VAT |
+| `total_price_without_vat` *(read-only)* | `Decimal` | Total price without VAT |
+| `total_vat` *(read-only)* | `Decimal` | Total VAT |
+| `native_total_price_without_vat` *(read-only)* | `Decimal` | Total price without VAT in account currency |
+| `native_total_vat` *(read-only)* | `Decimal` | Total VAT in account currency |
+| `inventory_item_id` *(write-only)* | `Integer` | ID of the related inventory item, use this to set an ID during document creation |
+| `sku` *(write-only)* | `String` | Stock Keeping Unit (SKU), use this to load data from an inventory item with matching SKU code |
+| `inventory` *(read-only)* | `Object` | Inventory information |
 
 ### Inventory
 
-Attribute | Type | Description
----|---|---
-`item_id` | `Integer` | ID of the related inventory item
-`sku` | `String` | Stock Keeping Unit (SKU)
-`article_number_type` | `String` | Article number type (only if `article_number` is present)
-`article_number` | `String` | Article number (if present)
-`move_id` | `Integer` | ID of the related inventory move
+| Attribute | Type | Description |
+|---|---|---|
+| `item_id` *(read-only)* | `Integer` | ID of the related inventory item |
+| `sku` *(read-only)* | `String` | Stock Keeping Unit (SKU) |
+| `article_number_type` *(read-only)* | `String` | Article number type (only if `article_number` is present) |
+| `article_number` *(read-only)* | `String` | Article number (if present) |
+| `move_id` *(read-only)* | `Integer` | ID of the related inventory move |
 
 Allowed values for `article_number_type`:
 - `ian`
@@ -187,7 +133,7 @@ Allowed values for `article_number_type`:
 }
 ```
 
-When editing a document, it is important to send the line `ID` with the lines, without it the line will be added again.
+When editing a document, it is important to send the line `id` with the lines, without it the line will be added again.
 
 The `unit_price_without_vat` and `unit_price_with_vat` attributes are read-only and are set based on the amount entered in `unit_price`, the `vat_rate` and the `vat_price_mode` attribute.
 
@@ -282,53 +228,46 @@ For deleting the line the attribute `_destroy: true` must be included:
 
 ## Legacy Bank Details
 
-Attribute | Type | Description
----|---|---
-`bank_account` | `String` | Bank account number
-`iban` | `String` | IBAN
-`swift_bic` | `String` | BIC (for SWIFT payments)
-
-### Legend
-
-- **Required attribute** — must always be present.
-- **Read-only attribute** — cannot be changed.
-- **Write-only attribute** — will not be returned.
-- Unmarked attributes are optional and can be omitted during request.
+| Attribute | Type | Description |
+|---|---|---|
+| `bank_account` | `String` | Bank account number |
+| `iban` | `String` | IBAN |
+| `swift_bic` | `String` | BIC (for SWIFT payments) |
 
 ## Recurring Generators Index
 
 If query parameters `since` and `updated_since` are not valid date time format (ISO 8601) the server will respond with `400 Bad Request`.
 
-`GET` `/accounts/{slug}/recurring_generators.json`
+`GET /accounts/{slug}/recurring_generators.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators.json`
+`GET /accounts/{slug}/recurring_generators.json`
 
 #### Headers
 
-Name | Value
----|---
-`User-Agent` | `YourApp (yourname@example.com)`
+| Name | Value |
+|---|---|
+| `User-Agent` | `YourApp (yourname@example.com)` |
 
 #### URL Parameters
 
-Name | Description | Type | Example
----|---|---|---
-`slug` | Account name | `String` | `applecorp`
+| Name | Description | Type | Example |
+|---|---|---|---|
+| `slug` | Account name | `String` | `applecorp` |
 
 #### Query Parameters
 
-Name | Description | Type | Example
----|---|---|---
-`since` | Recurring generators created after this date | `DateTime` | `2023-08-25T10:55:14+02:00`
-`updated_since` | Recurring generators created or updated after this date | `DateTime` | `2023-08-25T10:55:14+02:00`
-`page` | Page number (40 records per page) | `Integer` | `2`
-`subject_id` | Recurring generators for subject | `Integer` | `24`
+| Name | Description | Type | Example |
+|---|---|---|---|
+| `since` | Recurring generators created after this date | `DateTime` | `2023-08-25T10:55:14+02:00` |
+| `updated_since` | Recurring generators created or updated after this date | `DateTime` | `2023-08-25T10:55:14+02:00` |
+| `page` | Page number (40 records per page) | `Integer` | `2` |
+| `subject_id` | Recurring generators for subject | `Integer` | `24` |
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -409,28 +348,28 @@ Name | Description | Type | Example
 
 ## Recurring Generator Detail
 
-`GET` `/accounts/{slug}/recurring_generators/{id}.json`
+`GET /accounts/{slug}/recurring_generators/{id}.json`
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}.json`
+`GET /accounts/{slug}/recurring_generators/{id}.json`
 
 #### Headers
 
-Name | Value
----|---
-`User-Agent` | `YourApp (yourname@example.com)`
+| Name | Value |
+|---|---|
+| `User-Agent` | `YourApp (yourname@example.com)` |
 
 #### URL Parameters
 
-Name | Description | Type | Example
----|---|---|---
-`slug` | Account name | `String` | `applecorp`
-`id` | Recurring generator ID | `Integer` | `24`
+| Name | Description | Type | Example |
+|---|---|---|---|
+| `slug` | Account name | `String` | `applecorp` |
+| `id` | Recurring generator ID | `Integer` | `24` |
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -514,24 +453,24 @@ Name | Description | Type | Example
 - In the case where no bank account is specified in Fakturoid account, the API returns a `403 Forbidden`. The body of the response will contain a description of the error with a link to the bank account settings.
 - Only one recurring generator is allowed on the Zdarma, Na lehko and Na každý den plans, if you try to add another, the server will return `403 Forbidden`.
 
-`POST` `/accounts/{slug}/recurring_generators.json`
+`POST /accounts/{slug}/recurring_generators.json`
 
 ### Request
 
-`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators.json`
+`POST /accounts/{slug}/recurring_generators.json`
 
 #### Headers
 
-Name | Value
----|---
-`User-Agent` | `YourApp (yourname@example.com)`
-`Content-Type` | `application/json`
+| Name | Value |
+|---|---|
+| `User-Agent` | `YourApp (yourname@example.com)` |
+| `Content-Type` | `application/json` |
 
 #### URL Parameters
 
-Name | Description | Type | Example
----|---|---|---
-`slug` | Account name | `String` | `applecorp`
+| Name | Description | Type | Example |
+|---|---|---|---|
+| `slug` | Account name | `String` | `applecorp` |
 
 #### Body
 
@@ -554,13 +493,13 @@ Name | Description | Type | Example
 
 ### Response
 
-`Status` `201 Created`
+`Status 201 Created`
 
 #### Headers
 
-Name | Value
----|---
-`Location` | `https://app.fakturoid.cz/api/v3/accounts/applecorp/generators/28.json`
+| Name | Value |
+|---|---|
+| `Location` | `https://app.fakturoid.cz/api/v3/accounts/applecorp/generators/28.json` |
 
 #### Body
 
@@ -636,7 +575,7 @@ Name | Value
 
 ### Response
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -652,7 +591,7 @@ Name | Value
 
 ### Response if missing bank account
 
-`Status` `403 Forbidden`
+`Status 403 Forbidden`
 
 #### Body
 
@@ -668,32 +607,32 @@ Name | Value
 
 ### Response if cannot add more generators (limit would be exceeded)
 
-`Status` `403 Forbidden`
+`Status 403 Forbidden`
 
 ## Update Recurring Generator
 
 - If generator is successfully updated the server will respond with `200 OK` and a JSON body with its data.
 - Request with invalid data will result in response `422 Unprocessable Content` with a JSON body describing errors found in the request.
 
-`PATCH` `/accounts/{slug}/recurring_generators/{id}.json`
+`PATCH /accounts/{slug}/recurring_generators/{id}.json`
 
 ### Request
 
-`PATCH` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}.json`
+`PATCH /accounts/{slug}/recurring_generators/{id}.json`
 
 #### Headers
 
-Name | Value
----|---
-`User-Agent` | `YourApp (yourname@example.com)`
-`Content-Type` | `application/json`
+| Name | Value |
+|---|---|
+| `User-Agent` | `YourApp (yourname@example.com)` |
+| `Content-Type` | `application/json` |
 
 #### URL Parameters
 
-Name | Description | Type | Example
----|---|---|---
-`slug` | Account name | `String` | `applecorp`
-`id` | Recurring generator ID | `Integer` | `24`
+| Name | Description | Type | Example |
+|---|---|---|---|
+| `slug` | Account name | `String` | `applecorp` |
+| `id` | Recurring generator ID | `Integer` | `24` |
 
 #### Body
 
@@ -705,7 +644,7 @@ Name | Description | Type | Example
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -781,7 +720,7 @@ Name | Description | Type | Example
 
 ### Response
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -800,28 +739,28 @@ Name | Description | Type | Example
 - If generator is successfully updated the server will respond with `200 OK` and a JSON body with its data.
 - Unsucessful request will result in response `422 Unprocessable Content` with a JSON body describing error or in response `404 Not Found` if generator is not recurring nor exists.
 
-`PATCH` `/accounts/{slug}/recurring_generators/{id}/pause.json`
+`PATCH /accounts/{slug}/recurring_generators/{id}/pause.json`
 
 ### Request
 
-`PATCH` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}/pause.json`
+`PATCH /accounts/{slug}/recurring_generators/{id}/pause.json`
 
 #### Headers
 
-Name | Value
----|---
-`User-Agent` | `YourApp (yourname@example.com)`
+| Name | Value |
+|---|---|
+| `User-Agent` | `YourApp (yourname@example.com)` |
 
 #### URL Parameters
 
-Name | Description | Type | Example
----|---|---|---
-`slug` | Account name | `String` | `applecorp`
-`id` | Generator ID | `Integer` | `28`
+| Name | Description | Type | Example |
+|---|---|---|---|
+| `slug` | Account name | `String` | `applecorp` |
+| `id` | Generator ID | `Integer` | `28` |
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -834,7 +773,7 @@ Name | Description | Type | Example
 
 ### Response if generator is already paused
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -850,7 +789,7 @@ Name | Description | Type | Example
 
 ### Response if generator is already finished
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -866,7 +805,7 @@ Name | Description | Type | Example
 
 ### Response if generator is not recurring or does not exist
 
-`Status` `404 Not Found`
+`Status 404 Not Found`
 
 ## Activate Recurring Generator
 
@@ -875,24 +814,24 @@ Name | Description | Type | Example
 - It is possible to specify the date of the next generator occurrence, it must be in the future.
 - If the generator has the `last_day_in_month` attribute set to `true`, the next occurrence will be the last day of the respective month.
 
-`PATCH` `/accounts/{slug}/recurring_generators/{id}/activate.json`
+`PATCH /accounts/{slug}/recurring_generators/{id}/activate.json`
 
 ### Request
 
-`PATCH` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}/activate.json`
+`PATCH /accounts/{slug}/recurring_generators/{id}/activate.json`
 
 #### Headers
 
-Name | Value
----|---
-`User-Agent` | `YourApp (yourname@example.com)`
+| Name | Value |
+|---|---|
+| `User-Agent` | `YourApp (yourname@example.com)` |
 
 #### URL Parameters
 
-Name | Description | Type | Example
----|---|---|---
-`slug` | Account name | `String` | `applecorp`
-`id` | Generator ID | `Integer` | `28`
+| Name | Description | Type | Example |
+|---|---|---|---|
+| `slug` | Account name | `String` | `applecorp` |
+| `id` | Generator ID | `Integer` | `28` |
 
 #### Body
 
@@ -904,7 +843,7 @@ Name | Description | Type | Example
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -919,7 +858,7 @@ Name | Description | Type | Example
 
 ### Response if generator is already active
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -935,7 +874,7 @@ Name | Description | Type | Example
 
 ### Response if generator is already finished
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -951,31 +890,31 @@ Name | Description | Type | Example
 
 ### Response if generator is not recurring or does not exist
 
-`Status` `404 Not Found`
+`Status 404 Not Found`
 
 ## Delete Recurring Generator
 
 After deleting the recurring generator the server will respond with `204 No Content`.
 
-`DELETE` `/accounts/{slug}/recurring_generators/{id}.json`
+`DELETE /accounts/{slug}/recurring_generators/{id}.json`
 
 ### Request
 
-`DELETE` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}.json`
+`DELETE /accounts/{slug}/recurring_generators/{id}.json`
 
 #### Headers
 
-Name | Value
----|---
-`User-Agent` | `YourApp (yourname@example.com)`
+| Name | Value |
+|---|---|
+| `User-Agent` | `YourApp (yourname@example.com)` |
 
 #### URL Parameters
 
-Name | Description | Type | Example
----|---|---|---
-`slug` | Account name | `String` | `applecorp`
-`id` | Recurring generator ID | `Integer` | `12`
+| Name | Description | Type | Example |
+|---|---|---|---|
+| `slug` | Account name | `String` | `applecorp` |
+| `id` | Recurring generator ID | `Integer` | `12` |
 
 ### Response
 
-`Status` `204 No Content`
+`Status 204 No Content`

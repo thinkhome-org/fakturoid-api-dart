@@ -6,11 +6,11 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
 | `custom_id` | `String` | Identifier in your application |
-| `user_id` | `Integer` | User ID who created the subject |
+| `user_id` *(read-only)* | `Integer` | User ID who created the subject |
 | `type` | `String` | Type of subject. Values: `"customer"`, `"supplier"`, `"both"`. Default: `"customer"` |
-| `name` | `String` | Name of the subject |
+| `name` **(required)** | `String` | Name of the subject |
 | `full_name` | `String` | Contact person name |
 | `email` | `String` | Main email address receive invoice emails |
 | `email_copy` | `String` | Email copy address to receive invoice emails |
@@ -33,8 +33,8 @@
 | `registration_no` | `String` | Registration number (IČO) |
 | `vat_no` | `String` | VAT-payer VAT number (DIČ, IČ DPH in Slovakia, typically starts with the country code) |
 | `local_vat_no` | `String` | SK DIČ (only in Slovakia, does not start with country code) |
-| `unreliable` | `Boolean` | Unreliable VAT-payer |
-| `unreliable_checked_at` | `DateTime` | Date of last check for unreliable VAT-payer |
+| `unreliable` *(read-only)* | `Boolean` | Unreliable VAT-payer |
+| `unreliable_checked_at` *(read-only)* | `DateTime` | Date of last check for unreliable VAT-payer |
 | `legal_form` | `String` | A three-digit number (as a string). Describes whether subject is a physical/natural person or a company of some sort. For list of codes see CSV on the official Legal form page (corresponds to `chodnota` field). |
 | `vat_mode` | `String` | VAT mode |
 | `bank_account` | `String` | Bank account number |
@@ -53,16 +53,19 @@
 | `thank_you_email_text` | `String` | Thanks for payment custom email text |
 | `custom_estimate_email_text` | `String` | Estimate custom email text |
 | `webinvoice_history` | `String` | Webinvoice history. Values: `null`, `"disabled"`, `"recent"`, `"client_portal"`. Default: `null` (inherit from account settings) |
-| `html_url` | `String` | Subject HTML web address |
-| `url` | `String` | Subject API address |
-| `created_at` | `DateTime` | Date and time of subject creation |
-| `updated_at` | `DateTime` | Date and time of last subject update |
+| `tags` | `Array[String]` | List of tags |
+| `html_url` *(read-only)* | `String` | Subject HTML web address |
+| `url` *(read-only)* | `String` | Subject API address |
+| `created_at` *(read-only)* | `DateTime` | Date and time of subject creation |
+| `updated_at` *(read-only)* | `DateTime` | Date and time of last subject update |
+
+- **(required)**: Required attribute
+- *(read-only)*: Read-only attribute
+- *(write-only)*: Write-only attribute
+- Unmarked attributes are optional and can be omitted during request.
 
 Notes:
 
-- **Required attribute**: `name`
-- **Read-only attributes**: cannot be changed.
-- **Unmarked attributes** are optional and can be omitted during request.
 - To be able to set delivery address fields, `has_delivery_address` must be set to `true`.
 - Upon setting `has_delivery_address` to `false`, the delivery address is cleared.
 - Updating `setting_update_from_ares` will also update the deprecated `ares_update` attribute.
@@ -73,13 +76,11 @@ Notes:
 
 If query parameters `since` and `updated_since` are not valid date time format ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)) the server will respond with `400 Bad Request`.
 
-`GET` `/accounts/{slug}/subjects.json`
+`GET /accounts/{slug}/subjects.json`
 
 ### Request
 
-```http
-GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects.json
-```
+`GET /accounts/{slug}/subjects.json`
 
 #### Headers
 
@@ -101,10 +102,11 @@ GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects.json
 | `updated_since` | Subject created or updated after this date | `DateTime` | `2023-08-25T10:55:14+02:00` |
 | `page` | Page number (40 records per page) | `Integer` | `2` |
 | `custom_id` | Filter by your own ID | `String` | `315` |
+| `tag` | Filter by tag | `String` | `VIP` |
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -158,6 +160,7 @@ GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects.json
     "thank_you_email_text": null,
     "custom_estimate_email_text": null,
     "webinvoice_history": null,
+    "tags": [],
     "html_url": "https://app.fakturoid.cz/applecorp/subjects/16",
     "url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/subjects/16.json",
     "created_at": "2023-08-22T10:59:00.330+02:00",
@@ -171,13 +174,11 @@ GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects.json
 
 Following fields are being searched: `name`, `full_name`, `email`, `email_copy`, `registration_no`, `vat_no` and `private_note`.
 
-`GET` `/accounts/{slug}/subjects/search.json`
+`GET /accounts/{slug}/subjects/search.json`
 
 ### Request
 
-```http
-GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/search.json
-```
+`GET /accounts/{slug}/subjects/search.json`
 
 #### Headers
 
@@ -200,7 +201,7 @@ GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/search.json
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -220,13 +221,11 @@ GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/search.json
 
 ## Subject Detail
 
-`GET` `/accounts/{slug}/subjects/{id}.json`
+`GET /accounts/{slug}/subjects/{id}.json`
 
 ### Request
 
-```http
-GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
-```
+`GET /accounts/{slug}/subjects/{id}.json`
 
 #### Headers
 
@@ -243,7 +242,7 @@ GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -265,13 +264,11 @@ GET https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
 - If subject limit should be exceeded the server will respond with `403 Forbidden`. If you are on a free plan Zdarma, you will need to upgrade to a paid plan. If you are already on a paid plan, please contact support.
 - Request with invalid data will result in response `422 Unprocessable Content` with a JSON body describing errors found in the request.
 
-`POST` `/accounts/{slug}/subjects.json`
+`POST /accounts/{slug}/subjects.json`
 
 ### Request
 
-```http
-POST https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects.json
-```
+`POST /accounts/{slug}/subjects.json`
 
 #### Headers
 
@@ -297,13 +294,14 @@ POST https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects.json
   "country": "CZ",
   "registration_no": "47123737",
   "vat_no": "CZ47123737",
-  "variable_symbol": "1234567890"
+  "variable_symbol": "1234567890",
+  "tags": ["IT", "Services"]
 }
 ```
 
 ### Response
 
-`Status` `201 Created`
+`Status 201 Created`
 
 #### Headers
 
@@ -336,7 +334,7 @@ POST https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects.json
 
 ### Response
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -353,20 +351,18 @@ POST https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects.json
 
 ### Response if cannot add more subjects (limit would be exceeded)
 
-`Status` `403 Forbidden`
+`Status 403 Forbidden`
 
 ## Update Subject
 
 - If subject is successfully updated the server will respond with `200 OK` and a JSON body with its data.
 - Request with invalid data will result in response `422 Unprocessable Content` with a JSON body describing errors found in the request.
 
-`PATCH` `/accounts/{slug}/subjects/{id}.json`
+`PATCH /accounts/{slug}/subjects/{id}.json`
 
 ### Request
 
-```http
-PATCH https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
-```
+`PATCH /accounts/{slug}/subjects/{id}.json`
 
 #### Headers
 
@@ -392,7 +388,7 @@ PATCH https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 
@@ -419,7 +415,7 @@ PATCH https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
 
 ### Response
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
 
 #### Body
 
@@ -437,13 +433,11 @@ PATCH https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
 
 If a subject contains any documents it cannot be deleted and the server will respond with `422 Unprocessable Content`.
 
-`DELETE` `/accounts/{slug}/subjects/{id}.json`
+`DELETE /accounts/{slug}/subjects/{id}.json`
 
 ### Request
 
-```http
-DELETE https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
-```
+`DELETE /accounts/{slug}/subjects/{id}.json`
 
 #### Headers
 
@@ -460,11 +454,13 @@ DELETE https://app.fakturoid.cz/api/v3/accounts/{slug}/subjects/{id}.json
 
 ### Response
 
-`Status` `204 No Content`
+`Status 204 No Content`
 
 ### Response if subject cannot be deleted
 
-`Status` `422 Unprocessable Content`
+`Status 422 Unprocessable Content`
+
+#### Body
 
 ```json
 {

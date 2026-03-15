@@ -6,29 +6,21 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
-| `failed_deliveries_uuid` | `UUID` | Unique identifier used in the [Failed Webhook Deliveries](#failed-webhook-deliveries) endpoint |
-| `webhook_url` | `String` | URL of webhook endpoint |
-| `auth_header` | `String` | Value send in `Authorization` header |
-| `active` | `Boolean` | Send webhook? |
-| `events` | `Array[String]` | List of events when webhook is fired |
-| `url` | `String` | Webhook API address |
-| `created_at` | `DateTime` | Date and time of webhook creation |
-| `updated_at` | `DateTime` | Date and time of last webhook update |
+| `id` | `Integer` | Unique identifier in Fakturoid *(read-only)* |
+| `failed_deliveries_uuid` | `UUID` | Unique identifier used in the [Failed Webhook Deliveries](#failed-webhook-deliveries) endpoint *(read-only)* |
+| `webhook_url` | `String` | URL of webhook endpoint **(required)** *(editable)* |
+| `auth_header` | `String` | Value send in `Authorization` header *(write-only)* *(editable)* |
+| `active` | `Boolean` | Send webhook? *(editable)* |
+| `events` | `Array[String]` | List of events when webhook is fired **(required)** *(editable)* |
+| `url` | `String` | Webhook API address *(read-only)* |
+| `created_at` | `DateTime` | Date and time of webhook creation *(read-only)* |
+| `updated_at` | `DateTime` | Date and time of last webhook update *(read-only)* |
 
-Read-only attribute
-
-- `id`
-- `failed_deliveries_uuid`
-- `url`
-- `created_at`
-- `updated_at`
-
-Required attribute (must always be present).
-
-Write-only attribute (will not be returned).
-
-Unmarked attributes are optional and can be omitted during request.
+- **(required)** = must always be present.
+- *(read-only)* = cannot be changed.
+- *(write-only)* = will not be returned.
+- *(editable)* = can be changed on the web.
+- Unmarked attributes are optional and can be omitted during request.
 
 ### Restrictions
 
@@ -47,6 +39,8 @@ Unmarked attributes are optional and can be omitted during request.
 Webhooks are triggered when one of resources listed below is modified. Action may be triggered by user interaction, API call, or automatically (e.g. invoice is marked as overdue). Some events may include additional payload, which contains related resources to the event. For more information about the payload, please refer to the section on [Payload Content](#payload-content).
 
 #### Invoice
+
+See [invoices.md](invoices.md) for more information.
 
 | Event name | Additional payload | Description |
 |---|---|---|
@@ -68,6 +62,8 @@ Webhooks are triggered when one of resources listed below is modified. Action ma
 
 #### Generator
 
+See [generators.md](generators.md) for more information.
+
 | Event name | Additional payload | Description |
 |---|---|---|
 | `generator_created` |  | Generator was created. |
@@ -76,6 +72,8 @@ Webhooks are triggered when one of resources listed below is modified. Action ma
 | `generator_restored` |  | Generator was restored from the trash. |
 
 #### Recurring Generators
+
+See [recurringgenerators.md](recurringgenerators.md) for more information.
 
 | Event name | Additional payload | Description |
 |---|---|---|
@@ -87,6 +85,8 @@ Webhooks are triggered when one of resources listed below is modified. Action ma
 | `recurring_generator_paused` |  | Recurring generator was paused. |
 
 #### Expense
+
+See [expenses.md](expenses.md) for more information.
 
 | Event name | Additional payload | Description |
 |---|---|---|
@@ -103,6 +103,8 @@ Webhooks are triggered when one of resources listed below is modified. Action ma
 
 #### Inbox file
 
+See [inboxfiles.md](inboxfiles.md) for more information.
+
 | Event name | Additional payload | Description |
 |---|---|---|
 | `inbox_file_created` |  | Inbox file was created. |
@@ -115,6 +117,8 @@ Webhooks are triggered when one of resources listed below is modified. Action ma
 
 #### Inventory item
 
+See [inventoryitems.md](inventoryitems.md) for more information.
+
 | Event name | Additional payload | Description |
 |---|---|---|
 | `inventory_item_created` |  | Inventory item was created. |
@@ -125,6 +129,8 @@ Webhooks are triggered when one of resources listed below is modified. Action ma
 
 #### Inventory move
 
+See [inventorymoves.md](inventorymoves.md) for more information.
+
 | Event name | Additional payload | Description |
 |---|---|---|
 | `inventory_move_created` | `inventory_item: InventoryItem` | Inventory move was created. Modified `InventoryItem` is included in payload. |
@@ -132,6 +138,8 @@ Webhooks are triggered when one of resources listed below is modified. Action ma
 | `inventory_move_removed` | `inventory_item: InventoryItem` | Inventory move was deleted. Modified `InventoryItem` is included in payload. |
 
 #### Subject
+
+See [subjects.md](subjects.md) for more information.
 
 | Event name | Additional payload | Description |
 |---|---|---|
@@ -475,22 +483,22 @@ Each item in the response array represents a webhook event that failed to be del
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier of the webhook event |
-| `event_name` | `String` | Name of the event that triggered the webhook |
-| `idempotency_key` | `UUID` | UUID v7 sent in `Idempotency-Key` header during delivery |
-| `url` | `String` | URL the webhook was delivered to |
-| `body` | `Object` | Webhook payload (see [Payload Content](#payload-content)) |
-| `created_at` | `DateTime` | Date and time when the webhook event was created |
-| `updated_at` | `DateTime` | Date and time of last update |
-| `deliveries` | `Array` | List of delivery attempts |
-| `deliveries[].id` | `Integer` | Unique identifier of the delivery attempt |
-| `deliveries[].request_id` | `UUID` | Unique request identifier |
-| `deliveries[].response_status` | `String` | HTTP status code (e.g. `404`) or one of `ssl_error`, `connection_failed`, `timeout`, `unknown_error`. The list of error types may be extended in the future. |
-| `deliveries[].response_content_type` | `String` | Content type of the response (`null` if no response was received) |
-| `deliveries[].response_body` | `String` | Body of the response (`null` if no response was received) |
-| `deliveries[].started_at` | `DateTime` | Date and time when the delivery attempt started |
-| `deliveries[].finished_at` | `DateTime` | Date and time when the delivery attempt finished |
-| `deliveries[].created_at` | `DateTime` | Date and time when the delivery record was created |
+| `id` | `Integer` | Unique identifier of the webhook event *(read-only)* |
+| `event_name` | `String` | Name of the event that triggered the webhook *(read-only)* |
+| `idempotency_key` | `UUID` | UUID v7 sent in `Idempotency-Key` header during delivery *(read-only)* |
+| `url` | `String` | URL the webhook was delivered to *(read-only)* |
+| `body` | `Object` | Webhook payload (see [Payload Content](#payload-content)) *(read-only)* |
+| `created_at` | `DateTime` | Date and time when the webhook event was created *(read-only)* |
+| `updated_at` | `DateTime` | Date and time of last update *(read-only)* |
+| `deliveries` | `Array` | List of delivery attempts *(read-only)* |
+| `deliveries[].id` | `Integer` | Unique identifier of the delivery attempt *(read-only)* |
+| `deliveries[].request_id` | `UUID` | Unique request identifier *(read-only)* |
+| `deliveries[].response_status` | `String` | HTTP status code (e.g. `404`) or one of `ssl_error`, `connection_failed`, `timeout`, `unknown_error`. The list of error types may be extended in the future. *(read-only)* |
+| `deliveries[].response_content_type` | `String` | Content type of the response (`null` if no response was received) *(read-only)* |
+| `deliveries[].response_body` | `String` | Body of the response (`null` if no response was received) *(read-only)* |
+| `deliveries[].started_at` | `DateTime` | Date and time when the delivery attempt started *(read-only)* |
+| `deliveries[].finished_at` | `DateTime` | Date and time when the delivery attempt finished *(read-only)* |
+| `deliveries[].created_at` | `DateTime` | Date and time when the delivery record was created *(read-only)* |
 
 ```json
 [
@@ -564,10 +572,10 @@ Receiver must acknowledge the delivery by responding with a status code 2xx with
 
 | Attribute | Type | Description |
 |---|---|---|
-| `webhook_id` | `Integer` | Unique identifier of the webhook |
-| `event_name` | `String` | Name of the event |
-| `created_at` | `DateTime` | Date and time of the event |
-| `body` | `Object` | Event payload |
+| `webhook_id` | `Integer` | Unique identifier of the webhook *(read-only)* |
+| `event_name` | `String` | Name of the event *(read-only)* |
+| `created_at` | `DateTime` | Date and time of the event *(read-only)* |
+| `body` | `Object` | Event payload *(read-only)* |
 
 The body contains resources related to event. For instance, when an invoice is created, the body contains an `invoice` key with the serialized Invoice object. When additional attributes are listed in the table, they are also included in the body object. More information may be found in the attributes section of API documentation related to the resource.
 

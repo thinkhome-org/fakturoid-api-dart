@@ -6,14 +6,14 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
-| `format` | `String` | Format |
-| `preview` | `String` | Preview of number format |
-| `default` | `Boolean` | Default number format |
-| `created_at` | `DateTime` | Date and time of number format creation |
-| `updated_at` | `DateTime` | Date and time of last number format update |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `format` *(read-only)* | `String` | Format |
+| `preview` *(read-only)* | `String` | Preview of number format |
+| `default` *(read-only)* | `Boolean` | Default number format |
+| `created_at` *(read-only)* | `DateTime` | Date and time of number format creation |
+| `updated_at` *(read-only)* | `DateTime` | Date and time of last number format update |
 
-- Read-only attribute  
+- *(read-only)*: Read-only attribute
 - Unmarked attributes are optional and can be omitted during request.
 
 ## Number Formats Index
@@ -22,13 +22,11 @@ Number formats are read-only, please use the web interface to change or create a
 
 A number format can only be assigned when creating an invoice. An attempt to change the number format while editing an invoice will return `422 Unprocessable Content`.
 
-`GET` `/accounts/{slug}/number_formats/invoices.json`
+`GET /accounts/{slug}/number_formats/invoices.json`
 
 ### Request
 
-```http
-GET https://app.fakturoid.cz/api/v3/accounts/{slug}/number_formats/invoices.json
-```
+`GET /accounts/{slug}/number_formats/invoices.json`
 
 #### Headers
 
@@ -44,7 +42,7 @@ GET https://app.fakturoid.cz/api/v3/accounts/{slug}/number_formats/invoices.json
 
 ### Response
 
-`Status` `200 OK`
+`Status 200 OK`
 
 #### Body
 

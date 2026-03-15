@@ -6,15 +6,15 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
 | `custom_id` | `String` | Identifier in your application |
-| `name` | `String` | Template name |
+| `name` **(required)** | `String` | Template name |
 | `proforma` | `Boolean` | Issue invoice as a proforma. Default: `false` |
 | `paypal` | `Boolean` | Show PayPal pay button on invoice. Default: `false` |
 | `gopay` | `Boolean` | Show GoPay pay button on invoice. Default: `false` |
 | `tax_date_at_end_of_last_month` | `Boolean` | Set CED at the end of last month. Default: `false` |
 | `due` | `Integer` | Number of days until the invoice is overdue. Default: inherit from account settings |
-| `subject_id` | `Integer` | Subject ID |
+| `subject_id` **(required)** | `Integer` | Subject ID |
 | `number_format_id` | `Integer` | Number format ID. Default: inherit from default account settings |
 | `note` | `String` | Text before invoice lines |
 | `footer_note` | `String` | Text in invoice footer |
@@ -33,17 +33,17 @@
 | `supply_code` | `Integer` | Supply code for reverse charge |
 | `oss` | `String` | Use OSS mode on invoice. Values: `disabled`, `service`, `goods`. Default: `disabled` |
 | `round_total` | `Boolean` | Round total amount (VAT included). Default: `false` |
-| `subtotal` | `Decimal` | Total amount without VAT |
-| `total` | `Decimal` | Total amount with VAT |
-| `native_subtotal` | `Decimal` | Total amount without VAT in the account currency |
-| `native_total` | `Decimal` | Total amount with VAT in the account currency |
-| `rounding_adjustment` | `Decimal` | Rounding adjustment resulting from the total amount not subject to VAT. Default: `0.0` |
+| `subtotal` *(read-only)* | `Decimal` | Total amount without VAT |
+| `total` *(read-only)* | `Decimal` | Total amount with VAT |
+| `native_subtotal` *(read-only)* | `Decimal` | Total amount without VAT in the account currency |
+| `native_total` *(read-only)* | `Decimal` | Total amount with VAT in the account currency |
+| `rounding_adjustment` *(read-only)* | `Decimal` | Rounding adjustment resulting from the total amount not subject to VAT. Default: `0.0` |
 | `lines` | `Array[Object]` | List of lines to invoice |
-| `html_url` | `String` | Template HTML web address |
-| `url` | `String` | Template API address |
-| `subject_url` | `String` | API address of subject |
-| `created_at` | `DateTime` | Date and time of template creation |
-| `updated_at` | `DateTime` | Date and time of last template update |
+| `html_url` *(read-only)* | `String` | Template HTML web address |
+| `url` *(read-only)* | `String` | Template API address |
+| `subject_url` *(read-only)* | `String` | API address of subject |
+| `created_at` *(read-only)* | `DateTime` | Date and time of template creation |
+| `updated_at` *(read-only)* | `DateTime` | Date and time of last template update |
 
 ### VAT Price Mode
 
@@ -64,31 +64,31 @@
 
 | Attribute | Type | Description |
 |---|---|---|
-| `id` | `Integer` | Unique identifier in Fakturoid |
-| `name` | `String` | Line name |
+| `id` *(read-only)* | `Integer` | Unique identifier in Fakturoid |
+| `name` **(required)** | `String` | Line name |
 | `quantity` | `Decimal` | Quantity. Default: `1` |
 | `unit_name` | `String` | Unit name |
-| `unit_price` | `Decimal` | Unit price |
-| `vat_rate` | `Integer` / `Decimal` | VAT rate. Default: `0` |
-| `unit_price_without_vat` | `Decimal` | Unit price without VAT |
-| `unit_price_with_vat` | `Decimal` | Unit price including VAT |
-| `total_price_without_vat` | `Decimal` | Total price without VAT |
-| `total_vat` | `Decimal` | Total VAT |
-| `native_total_price_without_vat` | `Decimal` | Total price without VAT in account currency |
-| `native_total_vat` | `Decimal` | Total VAT in account currency |
+| `unit_price` **(required)** | `Decimal` | Unit price |
+| `vat_rate` **(required)** | `Integer` / `Decimal` | VAT rate. Default: `0` |
+| `unit_price_without_vat` *(read-only)* | `Decimal` | Unit price without VAT |
+| `unit_price_with_vat` *(read-only)* | `Decimal` | Unit price including VAT |
+| `total_price_without_vat` *(read-only)* | `Decimal` | Total price without VAT |
+| `total_vat` *(read-only)* | `Decimal` | Total VAT |
+| `native_total_price_without_vat` *(read-only)* | `Decimal` | Total price without VAT in account currency |
+| `native_total_vat` *(read-only)* | `Decimal` | Total VAT in account currency |
 | `inventory_item_id` | `Integer` | ID of the related inventory item, use this to set an ID during document creation |
 | `sku` | `String` | Stock Keeping Unit (SKU), use this to load data from an inventory item with matching SKU code. Other writable attributes may be specified too; they override values from the inventory item |
-| `inventory` | `Object` | Inventory information. Default: `null` |
+| `inventory` *(read-only)* | `Object` | Inventory information. Default: `null` |
 
 #### Inventory
 
 | Attribute | Type | Description |
 |---|---|---|
-| `item_id` | `Integer` | ID of the related inventory item |
-| `sku` | `String` | Stock Keeping Unit (SKU) |
-| `article_number_type` | `String` | Article number type (only if `article_number` is present). Values: `ian`, `ean`, `isbn` |
-| `article_number` | `String` | Article number (if present) |
-| `move_id` | `Integer` | ID of the related inventory move |
+| `item_id` *(read-only)* | `Integer` | ID of the related inventory item |
+| `sku` *(read-only)* | `String` | Stock Keeping Unit (SKU) |
+| `article_number_type` *(read-only)* | `String` | Article number type (only if `article_number` is present). Values: `ian`, `ean`, `isbn` |
+| `article_number` *(read-only)* | `String` | Article number (if present) |
+| `move_id` *(read-only)* | `Integer` | ID of the related inventory move |
 
 #### Line Example
 
@@ -224,13 +224,13 @@ For deleting the line the attribute `_destroy: true` must be included:
 
 | Attribute | Type | Description |
 |---|---|---|
-| `bank_account` | `String` | Bank account number |
-| `iban` | `String` | IBAN |
-| `swift_bic` | `String` | BIC (for SWIFT payments) |
+| `bank_account` *(read-only)* | `String` | Bank account number |
+| `iban` *(read-only)* | `String` | IBAN |
+| `swift_bic` *(read-only)* | `String` | BIC (for SWIFT payments) |
 
-- **Required attribute** — must always be present.
-- **Read-only attribute** — cannot be changed.
-- **Write-only attribute** — will not be returned.
+- **(required)** — must always be present.
+- *(read-only)* — cannot be changed.
+- *(write-only)* — will not be returned.
 - Unmarked attributes are optional and can be omitted during request.
 
 ## Generators Index
@@ -241,7 +241,7 @@ If query parameters `since` and `updated_since` are not valid date time format (
 
 ### Request
 
-`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/generators.json`
+`GET` `/accounts/{slug}/generators.json`
 
 #### Headers
 

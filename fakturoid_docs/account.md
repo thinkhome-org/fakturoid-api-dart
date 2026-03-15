@@ -23,106 +23,106 @@ Base API URL:
   ----------------------------------------------------------------------------------------
   Attribute                                Type                    Description
   ---------------------------------------- ----------------------- -----------------------
-  subdomain                                String                  Account identifier
+  subdomain *(read-only)*                  String                  Account identifier
                                                                    (slug)
 
-  plan                                     String                  Subscription plan name
+  plan *(read-only)*                       String                  Subscription plan name
 
-  plan_price                               Integer                 Price of subscription
+  plan_price *(read-only)*                 Integer                 Price of subscription
 
-  plan_paid_users                          Integer                 Number of paid users
+  plan_paid_users *(read-only)*            Integer                 Number of paid users
 
-  invoice_email                            String                  Email used for invoice
+  invoice_email *(read-only)*              String                  Email used for invoice
                                                                    communication
 
-  phone                                    String                  Contact phone
+  phone *(read-only)*                      String                  Contact phone
 
-  web                                      String                  Website
+  web *(read-only)*                        String                  Website
 
-  name                                     String                  Company name
+  name *(read-only)*                       String                  Company name
 
-  full_name                                String                  Account holder name
+  full_name *(read-only)*                  String                  Account holder name
 
-  registration_no                          String                  Company registration
+  registration_no *(read-only)*            String                  Company registration
                                                                    number
 
-  vat_no                                   String                  VAT number
+  vat_no *(read-only)*                     String                  VAT number
 
-  local_vat_no                             String                  Local VAT number
+  local_vat_no *(read-only)*               String                  Local VAT number
 
-  vat_mode                                 String                  VAT mode
+  vat_mode *(read-only)*                   String                  VAT mode
 
-  vat_price_mode                           String                  VAT calculation mode
+  vat_price_mode *(read-only)*             String                  VAT calculation mode
 
-  street                                   String                  Street
+  street *(read-only)*                     String                  Street
 
-  city                                     String                  City
+  city *(read-only)*                       String                  City
 
-  zip                                      String                  Postal code
+  zip *(read-only)*                        String                  Postal code
 
-  country                                  String                  ISO 3166‑1 country code
+  country *(read-only)*                    String                  ISO 3166‑1 country code
 
-  currency                                 String                  ISO 4217 currency code
+  currency *(read-only)*                   String                  ISO 4217 currency code
 
-  unit_name                                String                  Default measurement
+  unit_name *(read-only)*                  String                  Default measurement
                                                                    unit
 
-  vat_rate                                 Integer                 Default VAT rate
+  vat_rate *(read-only)*                   Integer                 Default VAT rate
 
-  displayed_note                           String                  Invoice footer text
+  displayed_note *(read-only)*             String                  Invoice footer text
 
-  invoice_note                             String                  Text shown before
+  invoice_note *(read-only)*               String                  Text shown before
                                                                    invoice lines
 
-  due                                      Integer                 Default invoice due
+  due *(read-only)*                        Integer                 Default invoice due
                                                                    days
 
-  invoice_language                         String                  Default invoice
+  invoice_language *(read-only)*           String                  Default invoice
                                                                    language
 
-  invoice_payment_method                   String                  Default payment method
+  invoice_payment_method *(read-only)*     String                  Default payment method
 
-  invoice_proforma                         Boolean                 Create proforma invoice
+  invoice_proforma *(read-only)*           Boolean                 Create proforma invoice
 
   invoice_hide_bank_account_for_payments   Array\[String\]         Hide bank account for
-                                                                   selected payments
+  *(read-only)*                                                    selected payments
 
-  fixed_exchange_rate                      Boolean                 Fixed exchange rate
+  fixed_exchange_rate *(read-only)*        Boolean                 Fixed exchange rate
 
-  invoice_selfbilling                      Boolean                 Self‑billing enabled
+  invoice_selfbilling *(read-only)*        Boolean                 Self‑billing enabled
 
-  default_estimate_type                    String                  Default estimate type
+  default_estimate_type *(read-only)*      String                  Default estimate type
 
-  send_overdue_email                       Boolean                 Automatic overdue
+  send_overdue_email *(read-only)*         Boolean                 Automatic overdue
                                                                    reminders
 
-  overdue_email_days                       Integer                 Days after due date to
+  overdue_email_days *(read-only)*         Integer                 Days after due date to
                                                                    send reminder
 
-  send_repeated_reminders                  Boolean                 Repeat overdue
+  send_repeated_reminders *(read-only)*    Boolean                 Repeat overdue
                                                                    reminders
 
   send_invoice_from_proforma_email         Boolean                 Send invoice when
-                                                                   proforma is paid
+  *(read-only)*                                                    proforma is paid
 
-  send_thank_you_email                     Boolean                 Send thank‑you email
-                                                                   when invoice is paid
+  send_thank_you_email *(read-only)*       Boolean                 Send thank‑you email
+  *(read-only)*                                                    when invoice is paid
 
-  invoice_paypal                           Boolean                 PayPal payments enabled
+  invoice_paypal *(read-only)*             Boolean                 PayPal payments enabled
 
-  invoice_gopay                            Boolean                 GoPay payments enabled
+  invoice_gopay *(read-only)*              Boolean                 GoPay payments enabled
 
-  digitoo_enabled                          Boolean                 Digitoo service enabled
+  digitoo_enabled *(read-only)*            Boolean                 Digitoo service enabled
 
   digitoo_auto_processing_enabled          Boolean                 Digitoo automatic
-                                                                   processing
+  *(read-only)*                                                    processing
 
   digitoo_remaining_extractions            Integer                 Remaining Digitoo
-                                                                   document extractions
+  *(read-only)*                                                    document extractions
 
-  created_at                               DateTime                Account creation time
+  created_at *(read-only)*                 DateTime                Account creation time
 
-  updated_at                               DateTime                Last modification time
+  updated_at *(read-only)*                 DateTime                Last modification time
   ----------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
