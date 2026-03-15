@@ -89,6 +89,17 @@ class InvoicesRepository {
 
   /// Vytvoří novou fakturu (nebo jiný dokument na základě atributu `document_type`).
   Future<Invoice> createInvoice(Invoice invoice, {int? relatedId}) async {
+    // API v3 podle lokální dokumentace nepodporuje vytváření estimate přes
+    // /invoices.json (`document_type=estimate` není povolená hodnota).
+    if (invoice.documentType == DocumentType.estimate) {
+      throw ArgumentError.value(
+        invoice.documentType,
+        'invoice.documentType',
+        'DocumentType.estimate is not supported by API v3 for invoice creation. '
+            'Create estimates via web UI and use EstimatesRepository for existing IDs.',
+      );
+    }
+
     final response = await _dio.post(
       'invoices.json',
       queryParameters: ApiUtils.removeNulls({'related_id': relatedId}),

@@ -126,11 +126,6 @@ void main() {
             }
             if (options.path.startsWith('invoices') &&
                 !options.path.contains('/')) {
-              // POST invoices.json - check if estimate
-              final data = options.data as Map<String, dynamic>?;
-              if (data?['document_type'] == 'estimate') {
-                return jsonResponseBody(mockEstimateResponse());
-              }
               return jsonResponseBody(mockInvoiceResponse());
             }
             if (options.path.contains('invoices/')) {
@@ -332,6 +327,18 @@ void main() {
 
       await client.invoices.fireAction(201, InvoiceFireAction.lock);
       expect(adapter.lastRequestOptions?.queryParameters['event'], 'lock');
+
+      await client.invoices.fireAction(201, InvoiceFireAction.unlock);
+      expect(adapter.lastRequestOptions?.queryParameters['event'], 'unlock');
+
+      await client.invoices.fireAction(
+        201,
+        InvoiceFireAction.undoUncollectible,
+      );
+      expect(
+        adapter.lastRequestOptions?.queryParameters['event'],
+        'undo_uncollectible',
+      );
     });
 
     test('Invoices and Expenses download methods coverage', () async {
