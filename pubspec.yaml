@@ -1,6 +1,6 @@
 name: fakturoid_api_dart
 description: Dart SDK for Fakturoid API v3 with OAuth 2.0, PKCE, typed models, and live-tested repositories.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/thinkhome-org/fakturoid-api-dart
 repository: https://github.com/thinkhome-org/fakturoid-api-dart
 issue_tracker: https://github.com/thinkhome-org/fakturoid-api-dart/issues
