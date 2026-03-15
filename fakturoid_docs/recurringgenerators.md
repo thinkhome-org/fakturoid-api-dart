@@ -1,0 +1,981 @@
+# Recurring Generators
+
+---
+
+## Attributes
+
+Attribute | Type | Description
+---|---|---
+`id` | `Integer` | Unique identifier in Fakturoid
+`custom_id` | `String` | Identifier in your application
+`name` | `String` | Generator name
+`active` | `Boolean` | Generator is active or paused
+`proforma` | `Boolean` | Issue invoice as a proforma
+`paypal` | `Boolean` | Show PayPal pay button on invoice
+`gopay` | `Boolean` | Show GoPay pay button on invoice
+`start_date` | `Date` | Start date
+`end_date` | `Date` | End date
+`months_period` | `Integer` | Number of months until the next invoice
+`next_occurrence_on` | `Date` | Next invoice date
+`last_day_in_month` | `Boolean` | Issue an invoice on the last day of the month
+`tax_date_at_end_of_last_month` | `Boolean` | Set CED at the end of last month
+`due` | `Integer` | Number of days until the invoice is overdue
+`send_email` | `Boolean` | Send invoice by email
+`subject_id` | `Integer` | Subject ID
+`number_format_id` | `Integer` | Number format ID
+`note` | `String` | Text before invoice lines
+`footer_note` | `String` | Text in invoice footer
+`legacy_bank_details` | `Object` | Display IBAN, BIC (SWIFT) and bank account number for legacy generators set without bank account ID
+`bank_account_id` | `Integer` | Bank account ID
+`iban_visibility` | `String` | Controls IBAN visibility on the document webinvoice and PDF. IBAN must be valid to show
+`tags` | `Array[String]` | List of tags
+`order_number` | `String` | Order number
+`currency` | `String` | Currency ISO code
+`exchange_rate` | `Decimal` | Exchange rate
+`payment_method` | `String` | Payment method
+`custom_payment_method` | `String` | Custom payment method (`payment_method` attribute must be set to `custom`, otherwise the `custom_payment_method` value is ignored and set to `null`)
+`language` | `String` | Invoice language
+`vat_price_mode` | `String` | Calculate VAT from base or final amount
+`transferred_tax_liability` | `Boolean` | Use reverse charge
+`supply_code` | `Integer` | Supply code for reverse charge
+`oss` | `String` | Use OSS mode on invoice
+`round_total` | `Boolean` | Round total amount (VAT included)
+`subtotal` | `Decimal` | Total amount without VAT
+`total` | `Decimal` | Total amount with VAT
+`native_subtotal` | `Decimal` | Total amount without VAT in the account currency
+`native_total` | `Decimal` | Total amount with VAT in the account currency
+`rounding_adjustment` | `Decimal` | Rounding adjustment resulting from the total amount not subject to VAT
+`lines` | `Array[Object]` | List of lines to invoice. You can use variables for inserting dates to your text.
+`html_url` | `String` | Generator HTML web address
+`url` | `String` | Generator API address
+`subject_url` | `String` | API address of subject
+`created_at` | `DateTime` | Date and time of generator creation
+`updated_at` | `DateTime` | Date and time of last generator update
+
+### Attribute flags
+
+Read-only attributes:
+- `id`
+- `active`
+- `proforma`
+- `paypal`
+- `gopay`
+- `legacy_bank_details`
+- `subtotal`
+- `total`
+- `native_subtotal`
+- `native_total`
+- `rounding_adjustment`
+- `html_url`
+- `url`
+- `subject_url`
+- `created_at`
+- `updated_at`
+
+Required attributes:
+- `name`
+- `start_date`
+- `end_date`
+- `months_period`
+- `subject_id`
+
+Write-only attributes:
+- `round_total`
+
+### Defaults and allowed values
+
+- `active`: values `true` (active), `false` (paused), default `true`
+- `proforma`: default `false`
+- `paypal`: default `false`
+- `gopay`: default `false`
+- `last_day_in_month`: default `false`
+- `tax_date_at_end_of_last_month`: default `false`
+- `due`: inherit from account settings
+- `send_email`: default `false`
+- `number_format_id`: inherit from default account settings
+- `legacy_bank_details`: default `null`
+- `bank_account_id`: inherit from account settings
+- `iban_visibility`: values `automatically`, `always`, default `automatically`
+- `currency`: inherit from account settings
+- `payment_method`: values `bank`, `cash`, `cod`, `card`, `paypal`, `custom`, default inherit from account settings
+- `custom_payment_method`: string up to 20 characters
+- `language`: values `cz`, `sk`, `en`, `de`, `fr`, `it`, `es`, `ru`, `pl`, `hu`, `ro`, default inherit from account settings
+- `vat_price_mode`: values `without_vat`, `from_total_with_vat`, default inherit from account settings
+- `transferred_tax_liability`: default `false`
+- `oss`: values `disabled`, `service`, `goods`, default `disabled`
+- `round_total`: default `false`
+- `rounding_adjustment`: default `0.0`
+
+## VAT Price Mode
+
+`vat_price_mode` settings is ignored in following cases:
+
+- Account is set as non VAT payer.
+- Reverse charge (`transferred_tax_liability`) is used.
+
+Attribute | Description
+---|---
+`null` | Inherited automatically from the account settings
+`"without_vat"` | The price in the invoice line is entered without VAT and the VAT is calculated automatically as a percentage from the line
+`"from_total_with_vat"` | The price in the invoice line is inclusive of VAT and the VAT is calculated from it
+
+## Lines
+
+### Attributes
+
+Attribute | Type | Description
+---|---|---
+`id` | `Integer` | Unique identifier in Fakturoid
+`name` | `String` | Line name
+`quantity` | `Decimal` | Quantity
+`unit_name` | `String` | Unit name
+`unit_price` | `Decimal` | Unit price
+`vat_rate` | `Integer` / `Decimal` | VAT Rate
+`unit_price_without_vat` | `Decimal` | Unit price without VAT
+`unit_price_with_vat` | `Decimal` | Unit price including VAT
+`total_price_without_vat` | `Decimal` | Total price without VAT
+`total_vat` | `Decimal` | Total VAT
+`native_total_price_without_vat` | `Decimal` | Total price without VAT in account currency
+`native_total_vat` | `Decimal` | Total VAT in account currency
+`inventory_item_id` | `Integer` | ID of the related inventory item, use this to set an ID during document creation
+`sku` | `String` | Stock Keeping Unit (SKU), use this to load data from an inventory item with matching SKU code
+`inventory` | `Object` | Inventory information
+
+Defaults:
+- `quantity`: default `1`
+- `vat_rate`: default `0`
+- `inventory`: default `null`
+
+### Inventory
+
+Attribute | Type | Description
+---|---|---
+`item_id` | `Integer` | ID of the related inventory item
+`sku` | `String` | Stock Keeping Unit (SKU)
+`article_number_type` | `String` | Article number type (only if `article_number` is present)
+`article_number` | `String` | Article number (if present)
+`move_id` | `Integer` | ID of the related inventory move
+
+Allowed values for `article_number_type`:
+- `ian`
+- `ean`
+- `isbn`
+
+### Line Example
+
+```json
+{
+  "id": 1304,
+  "name": "Disk 2TB",
+  "quantity": "2.0",
+  "unit_name": "ks",
+  "unit_price": "1000.0",
+  "vat_rate": 21,
+  "unit_price_without_vat": "1000.0",
+  "unit_price_with_vat": "1210.0",
+  "total_price_without_vat": "2000.0",
+  "total_vat": "420.0",
+  "native_total_price_without_vat": "2000.0",
+  "native_total_vat": "420.0",
+  "inventory": {
+    "item_id": 28,
+    "sku": "KU994RUR8465",
+    "article_number_type": "ian",
+    "article_number": "32165478",
+    "move_id": 52
+  }
+}
+```
+
+When editing a document, it is important to send the line `ID` with the lines, without it the line will be added again.
+
+The `unit_price_without_vat` and `unit_price_with_vat` attributes are read-only and are set based on the amount entered in `unit_price`, the `vat_rate` and the `vat_price_mode` attribute.
+
+The `unit_price_without_vat` and `unit_price_with_vat` attributes have the same value in the following cases:
+
+- The VAT rate is set to `0`.
+- Reverse charge is enabled (if reverse charge is enabled on the document, the `vat_price_mode` setting is ignored).
+
+You can use variables in recurring generators for inserting dates to your text.
+
+### More Examples
+
+#### Unit price without VAT
+
+##### Request
+
+```json
+{
+  "vat_price_mode": "without_vat",
+  "lines": [
+    {
+      "unit_price": "1000.0",
+      "vat_rate": "21"
+    }
+  ]
+}
+```
+
+##### Response
+
+```json
+{
+  "vat_price_mode": "without_vat",
+  "lines": [
+    {
+      "unit_price": "1000.0",
+      "vat_rate": "21",
+      "unit_price_without_vat": "1000.0",
+      "unit_price_with_vat": "1210.0"
+    }
+  ]
+}
+```
+
+#### Unit price with VAT
+
+##### Request
+
+```json
+{
+  "vat_price_mode": "from_total_with_vat",
+  "lines": [
+    {
+      "unit_price": "1210.0",
+      "vat_rate": "21"
+    }
+  ]
+}
+```
+
+##### Response
+
+```json
+{
+  "vat_price_mode": "from_total_with_vat",
+  "lines": [
+    {
+      "unit_price": "1000.0",
+      "vat_rate": "21",
+      "unit_price_without_vat": "1000.0",
+      "unit_price_with_vat": "1210.0"
+    }
+  ]
+}
+```
+
+#### Delete Line
+
+For deleting the line the attribute `_destroy: true` must be included:
+
+```json
+{
+  "id": 1234,
+  "name": "PC",
+  "quantity": "1.0",
+  "unit_name": "",
+  "unit_price": "20000.0",
+  "vat_rate": 21,
+  "_destroy": true
+}
+```
+
+## Legacy Bank Details
+
+Attribute | Type | Description
+---|---|---
+`bank_account` | `String` | Bank account number
+`iban` | `String` | IBAN
+`swift_bic` | `String` | BIC (for SWIFT payments)
+
+### Legend
+
+- **Required attribute** — must always be present.
+- **Read-only attribute** — cannot be changed.
+- **Write-only attribute** — will not be returned.
+- Unmarked attributes are optional and can be omitted during request.
+
+## Recurring Generators Index
+
+If query parameters `since` and `updated_since` are not valid date time format (ISO 8601) the server will respond with `400 Bad Request`.
+
+`GET` `/accounts/{slug}/recurring_generators.json`
+
+### Request
+
+`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators.json`
+
+#### Headers
+
+Name | Value
+---|---
+`User-Agent` | `YourApp (yourname@example.com)`
+
+#### URL Parameters
+
+Name | Description | Type | Example
+---|---|---|---
+`slug` | Account name | `String` | `applecorp`
+
+#### Query Parameters
+
+Name | Description | Type | Example
+---|---|---|---
+`since` | Recurring generators created after this date | `DateTime` | `2023-08-25T10:55:14+02:00`
+`updated_since` | Recurring generators created or updated after this date | `DateTime` | `2023-08-25T10:55:14+02:00`
+`page` | Page number (40 records per page) | `Integer` | `2`
+`subject_id` | Recurring generators for subject | `Integer` | `24`
+
+### Response
+
+`Status` `200 OK`
+
+#### Body
+
+```json
+[
+  {
+    "id": 24,
+    "custom_id": null,
+    "name": "Vývoj",
+    "active": true,
+    "proforma": false,
+    "paypal": false,
+    "gopay": false,
+    "start_date": "2023-10-11",
+    "end_date": null,
+    "months_period": 12,
+    "next_occurrence_on": "2024-10-11",
+    "last_day_in_month": false,
+    "tax_date_at_end_of_last_month": false,
+    "due": 14,
+    "send_email": false,
+    "subject_id": 37,
+    "number_format_id": null,
+    "note": null,
+    "footer_note": null,
+    "legacy_bank_details": null,
+    "bank_account_id": null,
+    "iban_visibility": "always",
+    "tags": [
+      "štítek"
+    ],
+    "order_number": null,
+    "currency": "CZK",
+    "payment_method": "bank",
+    "custom_payment_method": null,
+    "exchange_rate": "1.0",
+    "language": "cz",
+    "vat_price_mode": "without_vat",
+    "transferred_tax_liability": false,
+    "oss": "disabled",
+    "supply_code": null,
+    "subtotal": "50550.0",
+    "total": "61165.5",
+    "native_subtotal": "50550.0",
+    "native_total": "61165.5",
+    "lines": [
+      {
+        "id": 1292,
+        "name": "One plan",
+        "quantity": "1.0",
+        "unit_name": "",
+        "unit_price": "550.0",
+        "vat_rate": 21,
+        "unit_price_without_vat": "550.0",
+        "unit_price_with_vat": "665.5",
+        "inventory_item_id": null
+      },
+      {
+        "id": 1294,
+        "name": "Napojení na Fakturoid",
+        "quantity": "1.0",
+        "unit_name": "",
+        "unit_price": "50000.0",
+        "vat_rate": 21,
+        "unit_price_without_vat": "50000.0",
+        "unit_price_with_vat": "60500.0",
+        "inventory_item_id": null
+      }
+    ],
+    "html_url": "https://app.fakturoid.cz/applecorp/recurring_generators/24",
+    "url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/generators/24.json",
+    "subject_url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/subjects/37.json",
+    "created_at": "2023-10-11T13:38:21.603+02:00",
+    "updated_at": "2023-10-11T19:59:20.290+02:00"
+  }
+]
+```
+
+## Recurring Generator Detail
+
+`GET` `/accounts/{slug}/recurring_generators/{id}.json`
+
+### Request
+
+`GET` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}.json`
+
+#### Headers
+
+Name | Value
+---|---
+`User-Agent` | `YourApp (yourname@example.com)`
+
+#### URL Parameters
+
+Name | Description | Type | Example
+---|---|---|---
+`slug` | Account name | `String` | `applecorp`
+`id` | Recurring generator ID | `Integer` | `24`
+
+### Response
+
+`Status` `200 OK`
+
+#### Body
+
+```json
+{
+  "id": 24,
+  "custom_id": null,
+  "name": "Vývoj",
+  "active": true,
+  "proforma": false,
+  "paypal": false,
+  "gopay": false,
+  "start_date": "2023-10-11",
+  "end_date": null,
+  "months_period": 12,
+  "next_occurrence_on": "2024-10-11",
+  "last_day_in_month": false,
+  "tax_date_at_end_of_last_month": false,
+  "due": 14,
+  "send_email": false,
+  "subject_id": 37,
+  "number_format_id": null,
+  "note": null,
+  "footer_note": null,
+  "legacy_bank_details": null,
+  "bank_account_id": null,
+  "iban_visibility": "always",
+  "tags": [
+    "štítek"
+  ],
+  "order_number": null,
+  "currency": "CZK",
+  "payment_method": "bank",
+  "custom_payment_method": null,
+  "exchange_rate": "1.0",
+  "language": "cz",
+  "vat_price_mode": "without_vat",
+  "transferred_tax_liability": false,
+  "oss": "disabled",
+  "supply_code": null,
+  "subtotal": "50550.0",
+  "total": "61165.5",
+  "native_subtotal": "50550.0",
+  "native_total": "61165.5",
+  "lines": [
+    {
+      "id": 1292,
+      "name": "One plan",
+      "quantity": "1.0",
+      "unit_name": "",
+      "unit_price": "550.0",
+      "vat_rate": 21,
+      "unit_price_without_vat": "550.0",
+      "unit_price_with_vat": "665.5",
+      "inventory_item_id": null
+    },
+    {
+      "id": 1294,
+      "name": "Napojení na Fakturoid",
+      "quantity": "1.0",
+      "unit_name": "",
+      "unit_price": "50000.0",
+      "vat_rate": 21,
+      "unit_price_without_vat": "50000.0",
+      "unit_price_with_vat": "60500.0",
+      "inventory_item_id": null
+    }
+  ],
+  "html_url": "https://app.fakturoid.cz/applecorp/recurring_generators/24",
+  "url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/generators/24.json",
+  "subject_url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/subjects/37.json",
+  "created_at": "2023-10-11T13:38:21.603+02:00",
+  "updated_at": "2023-10-12T20:56:18.345+02:00"
+}
+```
+
+## Create Recurring Generator
+
+- After successful generator creation, you will receive a `201 Created` response from the server, the `location` header will be set to the address of the newly created generator.
+- If non-valid data is sent, you will receive a `422 Unprocessable Content` response from the server and a JSON with a list of errors in the sent data.
+- In the case where no bank account is specified in Fakturoid account, the API returns a `403 Forbidden`. The body of the response will contain a description of the error with a link to the bank account settings.
+- Only one recurring generator is allowed on the Zdarma, Na lehko and Na každý den plans, if you try to add another, the server will return `403 Forbidden`.
+
+`POST` `/accounts/{slug}/recurring_generators.json`
+
+### Request
+
+`POST` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators.json`
+
+#### Headers
+
+Name | Value
+---|---
+`User-Agent` | `YourApp (yourname@example.com)`
+`Content-Type` | `application/json`
+
+#### URL Parameters
+
+Name | Description | Type | Example
+---|---|---|---
+`slug` | Account name | `String` | `applecorp`
+
+#### Body
+
+```json
+{
+  "name": "Web service",
+  "start_date": "2023-10-13",
+  "months_period": "12",
+  "subject_id": "37",
+  "lines": [
+    {
+      "name": "One plan",
+      "quantity": "1",
+      "unit_price": "550",
+      "vat_rate": "21"
+    }
+  ]
+}
+```
+
+### Response
+
+`Status` `201 Created`
+
+#### Headers
+
+Name | Value
+---|---
+`Location` | `https://app.fakturoid.cz/api/v3/accounts/applecorp/generators/28.json`
+
+#### Body
+
+```json
+{
+  "id": 28,
+  "custom_id": null,
+  "name": "Web service",
+  "active": true,
+  "proforma": false,
+  "paypal": false,
+  "gopay": false,
+  "start_date": "2023-10-13",
+  "end_date": null,
+  "months_period": 12,
+  "next_occurrence_on": "2023-10-13",
+  "last_day_in_month": false,
+  "tax_date_at_end_of_last_month": false,
+  "due": 14,
+  "send_email": false,
+  "subject_id": 37,
+  "number_format_id": null,
+  "note": null,
+  "footer_note": null,
+  "legacy_bank_details": null,
+  "bank_account_id": null,
+  "iban_visibility": "automatically",
+  "tags": [],
+  "order_number": null,
+  "currency": "CZK",
+  "payment_method": "bank",
+  "custom_payment_method": null,
+  "exchange_rate": "1.0",
+  "language": "cz",
+  "vat_price_mode": "without_vat",
+  "transferred_tax_liability": false,
+  "oss": "disabled",
+  "supply_code": null,
+  "subtotal": "550.0",
+  "total": "665.5",
+  "native_subtotal": "550.0",
+  "native_total": "665.5",
+  "lines": [
+    {
+      "id": 1299,
+      "name": "One plan",
+      "quantity": "1.0",
+      "unit_name": "",
+      "unit_price": "550.0",
+      "vat_rate": 21,
+      "unit_price_without_vat": "550.0",
+      "unit_price_with_vat": "665.5",
+      "inventory_item_id": null
+    }
+  ],
+  "html_url": "https://app.fakturoid.cz/applecorp/recurring_generators/28",
+  "url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/generators/28.json",
+  "subject_url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/subjects/37.json",
+  "created_at": "2023-10-12T21:16:35.730+02:00",
+  "updated_at": "2023-10-12T21:16:35.730+02:00"
+}
+```
+
+### Request with invalid data
+
+#### Body
+
+```json
+{
+  "name": ""
+}
+```
+
+### Response
+
+`Status` `422 Unprocessable Content`
+
+#### Body
+
+```json
+{
+  "errors": {
+    "name": [
+      "je povinná položka"
+    ]
+  }
+}
+```
+
+### Response if missing bank account
+
+`Status` `403 Forbidden`
+
+#### Body
+
+```json
+{
+  "errors": {
+    "bank_account": [
+      "You have to setup bank account in your Fakturoid account https://app.fakturoid.cz/applecorp/settings/bank_accounts to create a generator."
+    ]
+  }
+}
+```
+
+### Response if cannot add more generators (limit would be exceeded)
+
+`Status` `403 Forbidden`
+
+## Update Recurring Generator
+
+- If generator is successfully updated the server will respond with `200 OK` and a JSON body with its data.
+- Request with invalid data will result in response `422 Unprocessable Content` with a JSON body describing errors found in the request.
+
+`PATCH` `/accounts/{slug}/recurring_generators/{id}.json`
+
+### Request
+
+`PATCH` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}.json`
+
+#### Headers
+
+Name | Value
+---|---
+`User-Agent` | `YourApp (yourname@example.com)`
+`Content-Type` | `application/json`
+
+#### URL Parameters
+
+Name | Description | Type | Example
+---|---|---|---
+`slug` | Account name | `String` | `applecorp`
+`id` | Recurring generator ID | `Integer` | `24`
+
+#### Body
+
+```json
+{
+  "name": "Web UI"
+}
+```
+
+### Response
+
+`Status` `200 OK`
+
+#### Body
+
+```json
+{
+  "id": 28,
+  "custom_id": null,
+  "name": "Web UI",
+  "active": true,
+  "proforma": false,
+  "paypal": false,
+  "gopay": false,
+  "start_date": "2023-10-13",
+  "end_date": null,
+  "months_period": 12,
+  "next_occurrence_on": "2023-10-13",
+  "last_day_in_month": false,
+  "tax_date_at_end_of_last_month": false,
+  "due": 14,
+  "send_email": false,
+  "subject_id": 37,
+  "number_format_id": null,
+  "note": null,
+  "footer_note": null,
+  "legacy_bank_details": null,
+  "bank_account_id": null,
+  "iban_visibility": "automatically",
+  "tags": [],
+  "order_number": null,
+  "currency": "CZK",
+  "payment_method": "bank",
+  "custom_payment_method": null,
+  "exchange_rate": "1.0",
+  "language": "cz",
+  "vat_price_mode": "without_vat",
+  "transferred_tax_liability": false,
+  "oss": "disabled",
+  "supply_code": null,
+  "subtotal": "550.0",
+  "total": "665.5",
+  "native_subtotal": "550.0",
+  "native_total": "665.5",
+  "lines": [
+    {
+      "id": 1299,
+      "name": "One plan",
+      "quantity": "1.0",
+      "unit_name": "",
+      "unit_price": "550.0",
+      "vat_rate": 21,
+      "unit_price_without_vat": "550.0",
+      "unit_price_with_vat": "665.5",
+      "inventory_item_id": null
+    }
+  ],
+  "html_url": "https://app.fakturoid.cz/applecorp/recurring_generators/28",
+  "url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/generators/28.json",
+  "subject_url": "https://app.fakturoid.cz/api/v3/accounts/applecorp/subjects/37.json",
+  "created_at": "2023-10-12T21:16:35.730+02:00",
+  "updated_at": "2023-10-12T21:35:22.409+02:00"
+}
+```
+
+### Request with invalid data
+
+#### Body
+
+```json
+{
+  "oss": "invoice"
+}
+```
+
+### Response
+
+`Status` `422 Unprocessable Content`
+
+#### Body
+
+```json
+{
+  "errors": {
+    "oss": [
+      "není v seznamu povolených hodnot"
+    ]
+  }
+}
+```
+
+## Pause Recurring Generator
+
+- If generator is successfully updated the server will respond with `200 OK` and a JSON body with its data.
+- Unsucessful request will result in response `422 Unprocessable Content` with a JSON body describing error or in response `404 Not Found` if generator is not recurring nor exists.
+
+`PATCH` `/accounts/{slug}/recurring_generators/{id}/pause.json`
+
+### Request
+
+`PATCH` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}/pause.json`
+
+#### Headers
+
+Name | Value
+---|---
+`User-Agent` | `YourApp (yourname@example.com)`
+
+#### URL Parameters
+
+Name | Description | Type | Example
+---|---|---|---
+`slug` | Account name | `String` | `applecorp`
+`id` | Generator ID | `Integer` | `28`
+
+### Response
+
+`Status` `200 OK`
+
+#### Body
+
+```json
+{
+  "id": 28,
+  "active": false
+}
+```
+
+### Response if generator is already paused
+
+`Status` `422 Unprocessable Content`
+
+#### Body
+
+```json
+{
+  "errors": {
+    "generator": [
+      "Generator is already paused"
+    ]
+  }
+}
+```
+
+### Response if generator is already finished
+
+`Status` `422 Unprocessable Content`
+
+#### Body
+
+```json
+{
+  "errors": {
+    "generator": [
+      "Generator is already finished"
+    ]
+  }
+}
+```
+
+### Response if generator is not recurring or does not exist
+
+`Status` `404 Not Found`
+
+## Activate Recurring Generator
+
+- If generator is successfully activated the server will respond with `200 OK` and a JSON body with its data.
+- Unsucessful request will result in response `422 Unprocessable Content` with a JSON body describing error or in response `404 Not Found` if generator is not recurring nor exists.
+- It is possible to specify the date of the next generator occurrence, it must be in the future.
+- If the generator has the `last_day_in_month` attribute set to `true`, the next occurrence will be the last day of the respective month.
+
+`PATCH` `/accounts/{slug}/recurring_generators/{id}/activate.json`
+
+### Request
+
+`PATCH` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}/activate.json`
+
+#### Headers
+
+Name | Value
+---|---
+`User-Agent` | `YourApp (yourname@example.com)`
+
+#### URL Parameters
+
+Name | Description | Type | Example
+---|---|---|---
+`slug` | Account name | `String` | `applecorp`
+`id` | Generator ID | `Integer` | `28`
+
+#### Body
+
+```json
+{
+  "next_occurrence_on": "2024-09-15"
+}
+```
+
+### Response
+
+`Status` `200 OK`
+
+#### Body
+
+```json
+{
+  "id": 28,
+  "active": true,
+  "last_day_in_month": false,
+  "next_occurrence_on": "2024-09-15"
+}
+```
+
+### Response if generator is already active
+
+`Status` `422 Unprocessable Content`
+
+#### Body
+
+```json
+{
+  "errors": {
+    "generator": [
+      "Generator is already active"
+    ]
+  }
+}
+```
+
+### Response if generator is already finished
+
+`Status` `422 Unprocessable Content`
+
+#### Body
+
+```json
+{
+  "errors": {
+    "generator": [
+      "Generator is already finished"
+    ]
+  }
+}
+```
+
+### Response if generator is not recurring or does not exist
+
+`Status` `404 Not Found`
+
+## Delete Recurring Generator
+
+After deleting the recurring generator the server will respond with `204 No Content`.
+
+`DELETE` `/accounts/{slug}/recurring_generators/{id}.json`
+
+### Request
+
+`DELETE` `https://app.fakturoid.cz/api/v3/accounts/{slug}/recurring_generators/{id}.json`
+
+#### Headers
+
+Name | Value
+---|---
+`User-Agent` | `YourApp (yourname@example.com)`
+
+#### URL Parameters
+
+Name | Description | Type | Example
+---|---|---|---
+`slug` | Account name | `String` | `applecorp`
+`id` | Recurring generator ID | `Integer` | `12`
+
+### Response
+
+`Status` `204 No Content`
