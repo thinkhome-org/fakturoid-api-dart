@@ -561,10 +561,7 @@ void main() {
 
       await repository.fireAction(11, ExpenseFireAction.unlock);
       expect(adapter.lastRequestOptions?.path, 'expenses/11/fire.json');
-      expect(
-        adapter.lastRequestOptions?.queryParameters,
-        {'event': 'unlock'},
-      );
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'unlock'});
 
       final attachment = await repository.downloadAttachment(11, 5);
       expect(attachment, Uint8List.fromList([9, 8, 7]));

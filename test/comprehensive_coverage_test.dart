@@ -331,10 +331,7 @@ void main() {
       );
 
       await client.invoices.fireAction(201, InvoiceFireAction.lock);
-      expect(
-        adapter.lastRequestOptions?.queryParameters['event'],
-        'lock',
-      );
+      expect(adapter.lastRequestOptions?.queryParameters['event'], 'lock');
     });
 
     test('Invoices and Expenses download methods coverage', () async {
@@ -404,16 +401,15 @@ void main() {
       expect(expense.attachments!.first.filename, 'faktura-dodavatel.pdf');
 
       // Search
-      final searchResult = await client.expenses.searchExpenses(query: 'server');
+      final searchResult = await client.expenses.searchExpenses(
+        query: 'server',
+      );
       expect(searchResult.items, isNotEmpty);
 
       // Fire action
       await client.expenses.fireAction(501, ExpenseFireAction.lock);
       expect(adapter.lastRequestOptions?.path, 'expenses/501/fire.json');
-      expect(
-        adapter.lastRequestOptions?.queryParameters['event'],
-        'lock',
-      );
+      expect(adapter.lastRequestOptions?.queryParameters['event'], 'lock');
     });
 
     test('Estimate response data validation', () async {
@@ -487,10 +483,7 @@ void main() {
 
     test('InventoryItems specialized lists coverage', () async {
       await client.inventoryItems.getArchivedItems();
-      expect(
-        adapter.lastRequestOptions?.path,
-        'inventory_items/archived.json',
-      );
+      expect(adapter.lastRequestOptions?.path, 'inventory_items/archived.json');
 
       await client.inventoryItems.getLowQuantityItems();
       expect(
