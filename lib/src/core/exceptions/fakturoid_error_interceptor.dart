@@ -49,11 +49,18 @@ class FakturoidErrorInterceptor extends Interceptor {
 
     switch (statusCode) {
       case 401:
-      case 403:
         fakturoidException = FakturoidAuthException(
           message,
-          statusCode: statusCode,
+          statusCode: 401,
           rateLimit: rateLimit,
+        );
+        break;
+      case 403:
+        fakturoidException = FakturoidApiErrorException(
+          message,
+          statusCode: 403,
+          rateLimit: rateLimit,
+          errorCode: errorCode,
         );
         break;
       case 402:

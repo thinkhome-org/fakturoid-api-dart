@@ -21,7 +21,9 @@ jobs:
         run: dart pub get
 
       - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+        run: |
+          dart format .
+          git diff --exit-code
 
       - name: Analyze project source
         run: dart analyze --fatal-infos

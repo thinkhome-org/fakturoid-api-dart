@@ -424,13 +424,25 @@ void main() {
         'event': 'mark_as_sent',
       });
 
-      await repository.fireAction(1, InvoiceFireAction.deliver);
+      await repository.fireAction(1, InvoiceFireAction.cancel);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'deliver'});
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'cancel'});
 
-      await repository.fireAction(1, InvoiceFireAction.pay);
+      await repository.fireAction(1, InvoiceFireAction.markAsUncollectible);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'pay'});
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'event': 'mark_as_uncollectible',
+      });
+
+      await repository.fireAction(1, InvoiceFireAction.unlock);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'unlock'});
+
+      await repository.fireAction(1, InvoiceFireAction.undoUncollectible);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'event': 'undo_uncollectible',
+      });
 
       final pdf = await repository.downloadInvoicePdf(10);
       expect(pdf, Uint8List.fromList([1, 2, 3]));
@@ -444,6 +456,21 @@ void main() {
         'invoices/10/attachments/99/download',
       );
       expect(adapter.lastRequestOptions?.responseType, ResponseType.bytes);
+    });
+
+    test('createInvoice rejects unsupported estimate document type', () async {
+      final adapter = RecordingAdapter(
+        onFetch: (options) => jsonResponseBody({'subject_id': 1}),
+      );
+      final repository = InvoicesRepository(createTestDio(adapter));
+
+      expect(
+        () => repository.createInvoice(
+          const Invoice(subjectId: 1, documentType: DocumentType.estimate),
+        ),
+        throwsA(isA<ArgumentError>()),
+      );
+      expect(adapter.lastRequestOptions, isNull);
     });
 
     test('invoice payments cover create, tax document and delete', () async {
@@ -1057,26 +1084,9 @@ void main() {
       expect(deliveries.rateLimit?.remaining, 398);
     });
 
-    test('estimates cover index, search, CRUD and actions', () async {
+    test('estimates cover supported operations for existing IDs', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path == 'invoices.json' && options.method == 'GET') {
-            return jsonResponseBody([
-              {'id': 1, 'number': '2026-001', 'subject_id': 1},
-            ]);
-          }
-          if (options.path == 'invoices/search.json') {
-            return jsonResponseBody([
-              {'id': 1, 'number': '2026-001', 'subject_id': 1},
-            ]);
-          }
-          if (options.path == 'invoices.json' && options.method == 'POST') {
-            return jsonResponseBody({
-              'id': 2,
-              'number': '2026-002',
-              'subject_id': 1,
-            }, 201);
-          }
           if (options.uri.path.contains('fire.json')) {
             return emptyResponseBody(204);
           }
@@ -1090,21 +1100,12 @@ void main() {
 
       final repository = EstimatesRepository(createTestDio(adapter));
 
-      await repository.getEstimates(page: 2, status: EstimateStatus.sent);
-      expect(adapter.lastRequestOptions?.path, 'invoices.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {
-        'page': 2,
-        'status': 'sent',
-        'document_type': 'estimate',
-      });
+      // getEstimates() and searchEstimates() were removed because
+      // Fakturoid API v3 does not support document_type=estimate as a
+      // query parameter (returns 400 "Parameter document_type is invalid").
 
-      await repository.searchEstimates(query: 'test', tags: ['urgent']);
-      expect(adapter.lastRequestOptions?.path, 'invoices/search.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {
-        'query': 'test',
-        'tags[]': ['urgent'],
-        'document_type': 'estimate',
-      });
+      await repository.getEstimate(1);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1.json');
 
       await repository.fireAction(1, EstimateFireAction.accept);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');

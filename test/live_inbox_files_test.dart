@@ -1,7 +1,21 @@
+import 'package:dio/dio.dart';
 import 'package:test/test.dart';
 import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 import 'support/live_test_support.dart';
+
+FakturoidException? _extractForbidden(Object error) {
+  FakturoidException? exception;
+  if (error is FakturoidException) {
+    exception = error;
+  } else if (error is DioException && error.error is FakturoidException) {
+    exception = error.error as FakturoidException;
+  }
+  if (exception != null && exception.statusCode == 403) {
+    return exception;
+  }
+  return null;
+}
 
 void main() {
   runLiveTest(
@@ -9,7 +23,7 @@ void main() {
     (context) async {
       final suffix = '${context.runId}-inbox';
       InboxFile? inboxFile;
-      FakturoidAuthException? ocrFailure;
+      FakturoidException? ocrFailure;
 
       try {
         inboxFile = await context.client.inboxFiles.createInboxFile(
@@ -28,7 +42,7 @@ void main() {
         try {
           await context.client.inboxFiles.sendToOcr(inboxFileId);
         } catch (error) {
-          ocrFailure = authError(error);
+          ocrFailure = _extractForbidden(error);
           if (ocrFailure == null) {
             rethrow;
           }

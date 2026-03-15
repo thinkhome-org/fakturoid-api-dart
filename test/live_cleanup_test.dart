@@ -239,7 +239,6 @@ void main() {
       final recurringGenerators = <RecurringGenerator>[];
       final invoices = <Invoice>[];
       final expenses = <Expense>[];
-      final estimates = <Estimate>[];
       final deletedInvoicePaymentIds = <int>[];
       final deletedExpensePaymentIds = <int>[];
 
@@ -274,13 +273,6 @@ void main() {
             (page) =>
                 client.expenses.getExpenses(subjectId: subjectId, page: page),
           ),
-        );
-        await _throttle();
-        await _ignoreErrors(
-          () => _collectPages(
-            (page) =>
-                client.estimates.getEstimates(subjectId: subjectId, page: page),
-          ).then((e) => estimates.addAll(e)),
         );
         await _throttle();
       }
@@ -367,16 +359,6 @@ void main() {
           }
 
           await _ignoreErrors(() => client.expenses.deleteExpense(expenseId));
-          await _throttle();
-        }
-      }
-
-      for (final estimate in estimates) {
-        final estimateId = estimate.id;
-        if (estimateId != null) {
-          await _ignoreErrors(
-            () => client.estimates.deleteEstimate(estimateId),
-          );
           await _throttle();
         }
       }
@@ -515,13 +497,6 @@ void main() {
         final remainingExpenses = await _collectPages(
           (page) =>
               client.expenses.getExpenses(subjectId: subjectId, page: page),
-        );
-        await _throttle();
-        await _ignoreErrors(
-          () => _collectPages(
-            (page) =>
-                client.estimates.getEstimates(subjectId: subjectId, page: page),
-          ).then((rem) => expect(rem, isEmpty)),
         );
         await _throttle();
         final remainingGenerators = await _collectPages(

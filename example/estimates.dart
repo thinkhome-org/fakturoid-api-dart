@@ -1,55 +1,38 @@
 import 'package:fakturoid_api_dart/fakturoid_api_dart.dart';
 
 /// Ukázka práce s nabídkami (Estimates).
+///
+/// Fakturoid API v3 nepodporuje vytváření ani listování nabídek přes API.
+/// Nabídky lze vytvářet pouze přes webové rozhraní Fakturoid.
+/// Přes API lze pracovat s existujícími nabídkami (detail, smazání, akce, PDF, zprávy).
 Future<void> runEstimatesExample(FakturoidClient client) async {
   print('--- Nabídky ---');
 
   try {
-    // 1. Seznam nabídek
-    final estimates = await client.estimates.getEstimates();
-    print('✅ Získáno ${estimates.items.length} nabídek.');
+    // Pro práci s nabídkami potřebujete znát ID nabídky
+    // (např. z webového rozhraní nebo z události/webhoku).
 
-    // 2. Vyhledávání v nabídkách
-    final searchResults = await client.estimates.searchEstimates(
-      query: 'Projekt',
-    );
-    print(
-      '🔍 Nalezeno ${searchResults.items.length} nabídek pro dotaz "Projekt".',
-    );
+    // 1. Detail nabídky (vyžaduje známé ID)
+    // final detail = await client.estimates.getEstimate(id);
+    // print('Detail nabídky: ${detail.number} (${detail.total})');
 
-    if (estimates.items.isNotEmpty) {
-      final firstEstimate = estimates.items.first;
-      final id = firstEstimate.id!;
+    // 2. Fire action (např. označit jako odeslanou, přijmout)
+    // await client.estimates.fireAction(id, EstimateFireAction.markAsSent);
 
-      // 3. Detail nabídky
-      final detail = await client.estimates.getEstimate(id);
-      print('ℹ️ Detail nabídky $id: ${detail.number} (${detail.total})');
+    // 3. Stáhnout PDF
+    // final pdfBytes = await client.estimates.downloadEstimatePdf(id);
 
-      // 4. Upravit nabídku
-      // await client.estimates.updateEstimate(id, detail.copyWith(note: 'Upravená poznámka'));
-      print('📝 Metoda updateEstimate zatím není implementována.');
+    // 4. Odeslat e-mailem
+    // await client.estimates.createMessage(id, email: 'klient@example.cz');
 
-      // 5. Fire action (např. označit jako odeslanou)
-      // await client.estimates.fireAction(id, EstimateFireAction.send);
-      print('⚡ Akce fireAction je k dispozici (např. odeslání).');
-
-      // 6. Stáhnout PDF
-      // final pdfBytes = await client.estimates.downloadEstimatePdf(id);
-      print('📄 Metoda downloadEstimatePdf je k dispozici.');
-
-      // 7. Vytvořit zprávu (odeslat e-mailem)
-      // await client.estimates.createMessage(id, email: 'klient@example.cz', message: 'Posílám nabídku.');
-      print('✉️ Metoda createMessage je k dispozici.');
-    }
-
-    // 8. Vytvoření nové nabídky (příklad s minimem dat)
-    // final newEstimate = await client.estimates.createEstimate(Estimate(...));
-    print('🆕 Metoda createEstimate je k dispozici.');
-
-    // 9. Smazání nabídky
+    // 5. Smazat nabídku
     // await client.estimates.deleteEstimate(id);
-    print('🗑️ Metoda deleteEstimate je k dispozici.');
+
+    print(
+      'Nabídky: metody pro detail, akce, PDF, zprávy a smazání jsou k dispozici.',
+    );
+    print('Poznámka: Listování a vytváření nabídek přes API není podporováno.');
   } catch (e) {
-    print('❌ Chyba při práci s nabídkami: $e');
+    print('Chyba při práci s nabídkami: $e');
   }
 }

@@ -1,75 +1,25 @@
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import '../core/exceptions/fakturoid_exceptions.dart';
-import '../core/responses/paginated_response.dart';
 import '../core/utils/api_utils.dart';
 import '../models/estimate.dart';
 import '../models/enums/estimate_enums.dart';
 
+/// Nabídky (estimates) sdílejí endpoint s fakturami (/invoices).
+///
+/// Fakturoid API v3 nepodporuje vytváření ani filtrování nabídek přes API.
+/// Nabídky lze vytvářet pouze přes webové rozhraní Fakturoid.
+/// Tento repository umožňuje pracovat s existujícími nabídkami (detail, smazání,
+/// akce, stažení PDF a odeslání e-mailem).
 class EstimatesRepository {
   final Dio _dio;
 
   EstimatesRepository(this._dio);
 
-  /// Seznam všech nabídek.
-  Future<PaginatedResponse<Estimate>> getEstimates({
-    DateTime? since,
-    DateTime? until,
-    DateTime? updatedSince,
-    DateTime? updatedUntil,
-    int? page,
-    int? subjectId,
-    String? customId,
-    String? number,
-    EstimateStatus? status,
-  }) async {
-    final response = await _dio.get(
-      'invoices.json',
-      queryParameters: ApiUtils.removeNulls({
-        'document_type': 'estimate',
-        'since': since?.toIso8601String(),
-        'until': until?.toIso8601String(),
-        'updated_since': updatedSince?.toIso8601String(),
-        'updated_until': updatedUntil?.toIso8601String(),
-        'page': page,
-        'subject_id': subjectId,
-        'custom_id': customId,
-        'number': number,
-        'status': status?.name,
-      }),
-    );
-
-    return PaginatedResponse<Estimate>.fromResponse(
-      response,
-      currentPage: page ?? 1,
-      fromJson: Estimate.fromJson,
-    );
-  }
-
-  /// Vyhledává v nabídkách pomocí fulltextu.
-  Future<PaginatedResponse<Estimate>> searchEstimates({
-    required String query,
-    int? page,
-    List<String>? tags,
-  }) async {
-    final response = await _dio.get(
-      'invoices/search.json',
-      queryParameters: ApiUtils.removeNulls({
-        'document_type': 'estimate',
-        'query': query,
-        'page': page,
-        'tags[]': tags,
-      }),
-    );
-
-    return PaginatedResponse<Estimate>.fromResponse(
-      response,
-      currentPage: page ?? 1,
-      fromJson: Estimate.fromJson,
-    );
-  }
-
   /// Získá detail jedné nabídky podle ID.
+  ///
+  /// Nabídky sdílejí endpoint s fakturami, takže ID musí být známé
+  /// (např. z webového rozhraní nebo z události/webhoku).
   Future<Estimate> getEstimate(int id) async {
     final response = await _dio.get('invoices/$id.json');
     return Estimate.fromJson(response.data);
