@@ -251,6 +251,7 @@ const _$DocumentTypeEnumMap = {
   DocumentType.correction: 'correction',
   DocumentType.taxDocument: 'tax_document',
   DocumentType.finalInvoice: 'final_invoice',
+  DocumentType.estimate: 'estimate',
 };
 
 const _$ProformaFollowupDocumentEnumMap = {

@@ -9,7 +9,7 @@ void main() {
   ) async {
     final suffix = '${context.runId}-expense-payment';
     Expense? expense;
-    InvoicePayment? payment;
+    ExpensePayment? payment;
 
     try {
       expense = await context.client.expenses.createExpense(
@@ -20,7 +20,7 @@ void main() {
 
       payment = await context.client.expensePayments.createPayment(
         expenseId,
-        InvoicePayment(
+        ExpensePayment(
           amount: '100.00',
           paidOn: isoDate(DateTime.now().toUtc()),
           bankAccountId: context.bankAccountId,

@@ -195,6 +195,159 @@ void main() {
       expect(webhook.failedDeliveriesUuid, 'failed-uuid');
     });
 
+    test('expense payment round-trip serialization', () {
+      final payment = ExpensePayment.fromJson({
+        'id': 100,
+        'paid_on': '2026-03-15',
+        'currency': 'CZK',
+        'amount': '5000.0',
+        'native_amount': '5000.0',
+        'mark_document_as_paid': true,
+        'variable_symbol': '12345',
+        'bank_account_id': 1,
+        'created_at': '2026-03-15T12:00:00.000Z',
+        'updated_at': '2026-03-15T12:00:00.000Z',
+      });
+
+      expect(payment.id, 100);
+      expect(payment.paidOn, '2026-03-15');
+      expect(payment.amount, '5000.0');
+      expect(payment.currency, 'CZK');
+      expect(payment.markDocumentAsPaid, isTrue);
+      expect(payment.variableSymbol, '12345');
+      expect(payment.bankAccountId, 1);
+
+      final json = payment.toJson();
+      expect(json['paid_on'], '2026-03-15');
+      expect(json['amount'], '5000.0');
+      expect(json['mark_document_as_paid'], isTrue);
+      expect(json['variable_symbol'], '12345');
+      expect(json.containsKey('proforma_followup_document'), isFalse);
+      expect(json.containsKey('send_thank_you_email'), isFalse);
+      expect(json.containsKey('tax_document_id'), isFalse);
+    });
+
+    test('account parses all fields', () {
+      final account = Account.fromJson({
+        'subdomain': 'test',
+        'plan': 'Na plno',
+        'plan_price': 999,
+        'plan_paid_users': 3,
+        'vat_mode': 'vat_payer',
+        'currency': 'CZK',
+        'vat_rate': 21,
+        'due': 14,
+        'send_overdue_email': true,
+        'digitoo_enabled': false,
+        'digitoo_remaining_extractions': 5,
+        'invoice_paypal': false,
+        'invoice_gopay': false,
+      });
+
+      expect(account.subdomain, 'test');
+      expect(account.planPrice, 999);
+      expect(account.vatMode, AccountVatMode.vatPayer);
+      expect(account.currency, 'CZK');
+      expect(account.vatRate, 21);
+      expect(account.digitooRemainingExtractions, 5);
+    });
+
+    test('bank account parses default field via isDefault', () {
+      final ba = BankAccount.fromJson({
+        'id': 1,
+        'name': 'Main',
+        'number': '123/0100',
+        'default': true,
+        'pairing': true,
+        'expense_pairing': false,
+        'payment_adjustment': true,
+      });
+
+      expect(ba.isDefault, isTrue);
+      expect(ba.pairing, isTrue);
+      expect(ba.expensePairing, isFalse);
+      expect(ba.paymentAdjustment, isTrue);
+    });
+
+    test('number format parses default field via isDefault', () {
+      final nf = NumberFormat.fromJson({
+        'id': 1,
+        'format': '#YYYY#-####',
+        'preview': '2026-0001',
+        'default': true,
+      });
+
+      expect(nf.isDefault, isTrue);
+      expect(nf.format, '#YYYY#-####');
+      expect(nf.preview, '2026-0001');
+    });
+
+    test('inbox file parses OCR status fields', () {
+      final file = InboxFile.fromJson({
+        'id': 50,
+        'filename': 'scan.pdf',
+        'bytesize': 245760,
+        'send_to_ocr': true,
+        'sent_to_ocr_at': '2026-03-10T11:00:00.000Z',
+        'ocr_status': 'processed',
+        'ocr_completed_at': '2026-03-10T11:02:00.000Z',
+        'download_url': 'https://example.com/download',
+      });
+
+      expect(file.bytesize, 245760);
+      expect(file.sendToOcr, isTrue);
+      expect(file.ocrStatus, OcrStatus.processed);
+      expect(file.sentToOcrAt, isNotNull);
+      expect(file.ocrCompletedAt, isNotNull);
+      expect(file.downloadUrl, 'https://example.com/download');
+    });
+
+    test('todo parses completed_at and related objects', () {
+      final todo = Todo.fromJson({
+        'id': 10,
+        'name': 'unpaired_payment',
+        'completed_at': '2026-03-10T12:00:00.000Z',
+        'text': 'Test todo',
+        'related_objects': [
+          {'type': 'Invoice', 'id': 201},
+        ],
+        'params': {'amount': '5000'},
+      });
+
+      expect(todo.completedAt, isNotNull);
+      expect(todo.relatedObjects, hasLength(1));
+      expect(todo.relatedObjects!.first.type, 'Invoice');
+      expect(todo.params?['amount'], '5000');
+    });
+
+    test('webhook failed delivery and delivery attempt parsing', () {
+      final delivery = WebhookFailedDelivery.fromJson({
+        'id': 1,
+        'event_name': 'invoice_paid',
+        'idempotency_key': 'abc-123',
+        'url': 'https://example.com/webhook',
+        'body': {'webhook_id': 1, 'event_name': 'invoice_paid'},
+        'deliveries': [
+          {
+            'id': 1,
+            'request_id': 'req-456',
+            'response_status': 500,
+            'response_content_type': 'text/html',
+            'response_body': 'Internal Server Error',
+            'started_at': '2026-03-10T10:00:00.000Z',
+            'finished_at': '2026-03-10T10:00:30.000Z',
+          },
+        ],
+      });
+
+      expect(delivery.eventName, 'invoice_paid');
+      expect(delivery.idempotencyKey, 'abc-123');
+      expect(delivery.body, isNotNull);
+      expect(delivery.deliveries, hasLength(1));
+      expect(delivery.deliveries!.first.responseStatus, 500);
+      expect(delivery.deliveries!.first.responseBody, 'Internal Server Error');
+    });
+
     test('paginated responses parse rate limit headers from docs', () {
       final response = Response<dynamic>(
         data: [

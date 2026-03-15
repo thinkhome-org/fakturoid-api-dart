@@ -36,6 +36,7 @@ export 'src/models/invoice_payment.dart';
 export 'src/models/estimate.dart';
 export 'src/models/inventory_retail_price.dart';
 export 'src/models/expense.dart';
+export 'src/models/expense_payment.dart';
 export 'src/models/bank_account.dart';
 export 'src/models/legacy_bank_details.dart';
 export 'src/models/line_inventory.dart';

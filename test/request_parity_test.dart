@@ -559,9 +559,12 @@ void main() {
       expect(adapter.lastRequestOptions?.path, 'expenses/11/fire.json');
       expect(adapter.lastRequestOptions?.queryParameters, {'event': 'lock'});
 
-      await repository.fireAction(11, ExpenseFireAction.pay);
+      await repository.fireAction(11, ExpenseFireAction.unlock);
       expect(adapter.lastRequestOptions?.path, 'expenses/11/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'pay'});
+      expect(
+        adapter.lastRequestOptions?.queryParameters,
+        {'event': 'unlock'},
+      );
 
       final attachment = await repository.downloadAttachment(11, 5);
       expect(attachment, Uint8List.fromList([9, 8, 7]));
@@ -583,7 +586,7 @@ void main() {
       );
       final repository = ExpensePaymentsRepository(createTestDio(adapter));
 
-      await repository.createPayment(5, const InvoicePayment(amount: '250'));
+      await repository.createPayment(5, const ExpensePayment(amount: '250'));
       expect(adapter.lastRequestOptions?.path, 'expenses/5/payments.json');
       expect(adapter.lastRequestOptions?.data, {'amount': '250'});
 
