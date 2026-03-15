@@ -44,11 +44,11 @@ print('Přihlášen k účtu: ${account.name}');
 
 ## Příklady použití
 
-Všechny agendy mají své samostatné ukázky v adresáři [examples/](./examples):
-- [Faktury](./examples/invoices.dart)
-- [Kontakty](./examples/subjects.dart)
-- [Sklad](./examples/inventory_items.dart)
-- [A mnoho dalších...](./examples/main.dart)
+Všechny agendy mají své samostatné ukázky v adresáři [example/](./example):
+- [Faktury](./example/invoices.dart)
+- [Kontakty](./example/subjects.dart)
+- [Sklad](./example/inventory_items.dart)
+- [A mnoho dalších...](./example/main.dart)
 
 ---
 Vytvořeno pro Dart komunitu kolem Fakturoidu.
