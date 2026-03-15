@@ -13,6 +13,7 @@ class ApiUtils {
     }
     throw StateError('Expected binary response data.');
   }
+
   /// Rekurzivně odstraní z JSON mapy a listů klíče s hodnotou null.
   /// Užitečné pro přípravu payloadu před odesláním (PATCH/POST požadavky),
   /// aby nedošlo k nechtěnému přepsání existujících dat na straně API.

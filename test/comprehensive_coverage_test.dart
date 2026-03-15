@@ -374,10 +374,7 @@ void main() {
       () async {
         await client.subjects.archiveSubject(1);
         expect(adapter.lastRequestOptions?.path, 'subjects/1/fire.json');
-        expect(
-          adapter.lastRequestOptions?.queryParameters['event'],
-          'archive',
-        );
+        expect(adapter.lastRequestOptions?.queryParameters['event'], 'archive');
 
         await client.subjects.unarchiveSubject(1);
         expect(adapter.lastRequestOptions?.path, 'subjects/1/fire.json');
