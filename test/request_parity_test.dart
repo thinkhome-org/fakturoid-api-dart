@@ -434,6 +434,16 @@ void main() {
         'event': 'mark_as_uncollectible',
       });
 
+      await repository.fireAction(1, InvoiceFireAction.unlock);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'unlock'});
+
+      await repository.fireAction(1, InvoiceFireAction.undoUncollectible);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'event': 'undo_uncollectible',
+      });
+
       final pdf = await repository.downloadInvoicePdf(10);
       expect(pdf, Uint8List.fromList([1, 2, 3]));
       expect(adapter.lastRequestOptions?.path, 'invoices/10/download.pdf');
@@ -446,6 +456,21 @@ void main() {
         'invoices/10/attachments/99/download',
       );
       expect(adapter.lastRequestOptions?.responseType, ResponseType.bytes);
+    });
+
+    test('createInvoice rejects unsupported estimate document type', () async {
+      final adapter = RecordingAdapter(
+        onFetch: (options) => jsonResponseBody({'subject_id': 1}),
+      );
+      final repository = InvoicesRepository(createTestDio(adapter));
+
+      expect(
+        () => repository.createInvoice(
+          const Invoice(subjectId: 1, documentType: DocumentType.estimate),
+        ),
+        throwsA(isA<ArgumentError>()),
+      );
+      expect(adapter.lastRequestOptions, isNull);
     });
 
     test('invoice payments cover create, tax document and delete', () async {
@@ -1059,26 +1084,9 @@ void main() {
       expect(deliveries.rateLimit?.remaining, 398);
     });
 
-    test('estimates cover index, search, CRUD and actions', () async {
+    test('estimates cover supported operations for existing IDs', () async {
       final adapter = RecordingAdapter(
         onFetch: (options) {
-          if (options.path == 'invoices.json' && options.method == 'GET') {
-            return jsonResponseBody([
-              {'id': 1, 'number': '2026-001', 'subject_id': 1},
-            ]);
-          }
-          if (options.path == 'invoices/search.json') {
-            return jsonResponseBody([
-              {'id': 1, 'number': '2026-001', 'subject_id': 1},
-            ]);
-          }
-          if (options.path == 'invoices.json' && options.method == 'POST') {
-            return jsonResponseBody({
-              'id': 2,
-              'number': '2026-002',
-              'subject_id': 1,
-            }, 201);
-          }
           if (options.uri.path.contains('fire.json')) {
             return emptyResponseBody(204);
           }

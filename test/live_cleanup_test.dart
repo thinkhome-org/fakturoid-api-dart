@@ -239,7 +239,6 @@ void main() {
       final recurringGenerators = <RecurringGenerator>[];
       final invoices = <Invoice>[];
       final expenses = <Expense>[];
-      final estimates = <Estimate>[];
       final deletedInvoicePaymentIds = <int>[];
       final deletedExpensePaymentIds = <int>[];
 
@@ -360,16 +359,6 @@ void main() {
           }
 
           await _ignoreErrors(() => client.expenses.deleteExpense(expenseId));
-          await _throttle();
-        }
-      }
-
-      for (final estimate in estimates) {
-        final estimateId = estimate.id;
-        if (estimateId != null) {
-          await _ignoreErrors(
-            () => client.estimates.deleteEstimate(estimateId),
-          );
           await _throttle();
         }
       }
