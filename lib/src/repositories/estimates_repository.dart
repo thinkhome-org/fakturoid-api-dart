@@ -119,7 +119,7 @@ class EstimatesRepository {
       );
     }
 
-    return _responseBytes(response.data);
+    return ApiUtils.responseBytes(response.data);
   }
 
   /// Odeslání nabídky e-mailem.
@@ -142,16 +142,4 @@ class EstimatesRepository {
       data: data.isEmpty ? null : data,
     );
   }
-}
-
-Uint8List _responseBytes(Object? data) {
-  if (data is Uint8List) {
-    return data;
-  }
-
-  if (data is List<int>) {
-    return Uint8List.fromList(data);
-  }
-
-  throw StateError('Expected binary response data.');
 }

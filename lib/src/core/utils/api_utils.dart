@@ -1,5 +1,18 @@
+import 'dart:typed_data';
+
 /// Pomocné funkce pro serializaci modelů v SDK
 class ApiUtils {
+  /// Bezpečně převede data z HTTP odpovědi na Uint8List.
+  /// Zpracuje jak Uint8List, tak List<int> odpovědi.
+  static Uint8List responseBytes(Object? data) {
+    if (data is Uint8List) {
+      return data;
+    }
+    if (data is List<int>) {
+      return Uint8List.fromList(data);
+    }
+    throw StateError('Expected binary response data.');
+  }
   /// Rekurzivně odstraní z JSON mapy a listů klíče s hodnotou null.
   /// Užitečné pro přípravu payloadu před odesláním (PATCH/POST požadavky),
   /// aby nedošlo k nechtěnému přepsání existujících dat na straně API.

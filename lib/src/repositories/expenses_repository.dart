@@ -128,6 +128,6 @@ class ExpensesRepository {
       'expenses/$expenseId/attachments/$attachmentId/download',
       options: Options(responseType: ResponseType.bytes),
     );
-    return Uint8List.fromList(response.data);
+    return ApiUtils.responseBytes(response.data);
   }
 }

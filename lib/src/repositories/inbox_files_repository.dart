@@ -50,7 +50,7 @@ class InboxFilesRepository {
       'inbox_files/$id/download',
       options: Options(responseType: ResponseType.bytes),
     );
-    return Uint8List.fromList(response.data);
+    return ApiUtils.responseBytes(response.data);
   }
 
   /// Smaže Inbox soubor.
