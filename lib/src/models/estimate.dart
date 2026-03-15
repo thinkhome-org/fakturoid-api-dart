@@ -74,6 +74,7 @@ abstract class Estimate with _$Estimate {
     String? total,
     @JsonKey(name: 'native_subtotal') String? nativeSubtotal,
     @JsonKey(name: 'native_total') String? nativeTotal,
+    @JsonKey(name: 'rounding_adjustment') String? roundingAdjustment,
     List<InvoiceLine>? lines,
     @JsonKey(name: 'vat_rates_summary') List<VatRateSummary>? vatRatesSummary,
     List<DocumentAttachment>? attachments,

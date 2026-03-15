@@ -146,6 +146,12 @@ class FakturoidClient {
   /// Přepne klienta na jiný účet (změní slug v URL).
   /// Užitečné, pokud uživatel má přístup k více účtům.
   void switchAccount(String slug) {
-    _accountDio.options.baseUrl = '${_rootDio.options.baseUrl}/accounts/$slug/';
+    final rootBaseUrl = _rootDio.options.baseUrl.endsWith('/')
+        ? _rootDio.options.baseUrl.substring(
+            0,
+            _rootDio.options.baseUrl.length - 1,
+          )
+        : _rootDio.options.baseUrl;
+    _accountDio.options.baseUrl = '$rootBaseUrl/accounts/$slug/';
   }
 }
