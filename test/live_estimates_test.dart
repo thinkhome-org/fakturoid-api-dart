@@ -14,14 +14,12 @@ void main() {
   // Tento test ověřuje pouze metody, které pracují s existujícími nabídkami
   // (detail, akce, PDF, zprávy), ale ty vyžadují známé ID nabídky.
   // Proto je test přeskočen - nelze automaticky vytvořit testovací data.
-  runLiveTest(
-    'estimates repository works with existing estimates by ID',
-    (context) async {
-      // Without an existing estimate ID, we can only verify the repository exists
-      // and the methods are callable. Full integration testing requires
-      // an estimate created via the web interface.
-      expect(context.client.estimates, isA<EstimatesRepository>());
-    },
-    skip: true,
-  );
+  runLiveTest('estimates repository works with existing estimates by ID', (
+    context,
+  ) async {
+    // Without an existing estimate ID, we can only verify the repository exists
+    // and the methods are callable. Full integration testing requires
+    // an estimate created via the web interface.
+    expect(context.client.estimates, isA<EstimatesRepository>());
+  }, skip: true);
 }

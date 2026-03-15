@@ -28,7 +28,9 @@ Future<void> runEstimatesExample(FakturoidClient client) async {
     // 5. Smazat nabídku
     // await client.estimates.deleteEstimate(id);
 
-    print('Nabídky: metody pro detail, akce, PDF, zprávy a smazání jsou k dispozici.');
+    print(
+      'Nabídky: metody pro detail, akce, PDF, zprávy a smazání jsou k dispozici.',
+    );
     print('Poznámka: Listování a vytváření nabídek přes API není podporováno.');
   } catch (e) {
     print('Chyba při práci s nabídkami: $e');
