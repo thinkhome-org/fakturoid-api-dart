@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'token_storage.dart';
 import 'token_model.dart';
@@ -49,10 +50,8 @@ class AuthRepository {
     final codeChallenge = PkceUtils.generateCodeChallenge(codeVerifier);
 
     // Create a secure state to prevent CSRF attacks
-    final stateBytes = List<int>.generate(
-      16,
-      (i) => DateTime.now().microsecondsSinceEpoch % 256,
-    );
+    final random = Random.secure();
+    final stateBytes = List<int>.generate(16, (i) => random.nextInt(256));
     final state = base64UrlEncode(stateBytes).replaceAll('=', '');
 
     await _tokenStorage.savePkceVerifier(codeVerifier);

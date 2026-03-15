@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:dio/dio.dart';
 import 'auth_repository.dart';
 import 'token_storage.dart';
@@ -7,7 +8,7 @@ class FakturoidAuthInterceptor extends Interceptor {
   final AuthRepository _authRepository;
   final Dio _dio;
 
-  bool _isRefreshing = false;
+  Completer<String?>? _refreshCompleter;
 
   FakturoidAuthInterceptor({
     required TokenStorage tokenStorage,
@@ -27,6 +28,27 @@ class FakturoidAuthInterceptor extends Interceptor {
     options.headers['Authorization'] = '$tokenType $token';
   }
 
+  /// Refreshes the token, ensuring only one refresh happens at a time.
+  /// Concurrent callers wait for the same refresh result.
+  Future<String?> _performRefresh() async {
+    if (_refreshCompleter != null) {
+      return _refreshCompleter!.future;
+    }
+
+    _refreshCompleter = Completer<String?>();
+    try {
+      final newToken = await _authRepository.refreshToken();
+      _refreshCompleter!.complete(newToken);
+      return newToken;
+    } catch (e) {
+      _refreshCompleter!.complete(null);
+      await _tokenStorage.clearAll();
+      return null;
+    } finally {
+      _refreshCompleter = null;
+    }
+  }
+
   @override
   Future<void> onRequest(
     RequestOptions options,
@@ -42,20 +64,9 @@ class FakturoidAuthInterceptor extends Interceptor {
       return handler.next(options);
     }
 
-    try {
-      if (!_isRefreshing) {
-        _isRefreshing = true;
-        final newToken = await _authRepository.refreshToken();
-        _isRefreshing = false;
-
-        if (newToken != null) {
-          await _applyAuthorizationHeader(options);
-          return handler.next(options);
-        }
-      }
-    } catch (e) {
-      _isRefreshing = false;
-      await _tokenStorage.clearAll();
+    final newToken = await _performRefresh();
+    if (newToken != null) {
+      await _applyAuthorizationHeader(options);
     }
 
     return handler.next(options);
@@ -73,23 +84,17 @@ class FakturoidAuthInterceptor extends Interceptor {
         return handler.next(err);
       }
 
-      if (!_isRefreshing) {
-        _isRefreshing = true;
+      final newToken = await _performRefresh();
+      if (newToken != null) {
+        final opts = err.requestOptions;
+        opts.extra['auth_retry'] = true;
+        await _applyAuthorizationHeader(opts);
+
         try {
-          final newToken = await _authRepository.refreshToken();
-          _isRefreshing = false;
-
-          if (newToken != null) {
-            final opts = err.requestOptions;
-            opts.extra['auth_retry'] = true;
-            await _applyAuthorizationHeader(opts);
-
-            final response = await _dio.fetch(opts);
-            return handler.resolve(response);
-          }
+          final response = await _dio.fetch(opts);
+          return handler.resolve(response);
         } catch (e) {
-          _isRefreshing = false;
-          await _tokenStorage.clearAll();
+          // Retry failed, fall through to next handler
         }
       }
     }
