@@ -26,11 +26,8 @@ Future<void> runEstimatesExample(FakturoidClient client) async {
       print('ℹ️ Detail nabídky $id: ${detail.number} (${detail.total})');
 
       // 4. Upravit nabídku
-      await client.estimates.updateEstimate(
-        id,
-        detail.copyWith(note: 'Upravená poznámka'),
-      );
-      print('📝 Nabídka $id byla upravena.');
+      // await client.estimates.updateEstimate(id, detail.copyWith(note: 'Upravená poznámka'));
+      print('📝 Metoda updateEstimate zatím není implementována.');
 
       // 5. Fire action (např. označit jako odeslanou)
       // await client.estimates.fireAction(id, EstimateFireAction.send);

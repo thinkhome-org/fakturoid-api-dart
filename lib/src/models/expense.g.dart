@@ -71,7 +71,7 @@ _Expense _$ExpenseFromJson(Map<String, dynamic> json) => _Expense(
       ?.map((e) => VatRateSummary.fromJson(e as Map<String, dynamic>))
       .toList(),
   payments: (json['payments'] as List<dynamic>?)
-      ?.map((e) => InvoicePayment.fromJson(e as Map<String, dynamic>))
+      ?.map((e) => ExpensePayment.fromJson(e as Map<String, dynamic>))
       .toList(),
   attachments: (json['attachments'] as List<dynamic>?)
       ?.map((e) => DocumentAttachment.fromJson(e as Map<String, dynamic>))

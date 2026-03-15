@@ -75,24 +75,6 @@ class EstimatesRepository {
     return Estimate.fromJson(response.data);
   }
 
-  /// Vytvoří novou nabídku.
-  Future<Estimate> createEstimate(Estimate estimate) async {
-    final data = ApiUtils.removeNulls(estimate.toJson());
-    data['document_type'] = 'estimate';
-
-    final response = await _dio.post('invoices.json', data: data);
-    return Estimate.fromJson(response.data);
-  }
-
-  /// Upraví existující nabídku.
-  Future<Estimate> updateEstimate(int id, Estimate estimate) async {
-    final response = await _dio.patch(
-      'invoices/$id.json',
-      data: ApiUtils.removeNulls(estimate.toJson()),
-    );
-    return Estimate.fromJson(response.data);
-  }
-
   /// Smaže nabídku podle ID.
   Future<void> deleteEstimate(int id) async {
     await _dio.delete('invoices/$id.json');
@@ -119,7 +101,7 @@ class EstimatesRepository {
       );
     }
 
-    return _responseBytes(response.data);
+    return ApiUtils.responseBytes(response.data);
   }
 
   /// Odeslání nabídky e-mailem.
@@ -142,16 +124,4 @@ class EstimatesRepository {
       data: data.isEmpty ? null : data,
     );
   }
-}
-
-Uint8List _responseBytes(Object? data) {
-  if (data is Uint8List) {
-    return data;
-  }
-
-  if (data is List<int>) {
-    return Uint8List.fromList(data);
-  }
-
-  throw StateError('Expected binary response data.');
 }
