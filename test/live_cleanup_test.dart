@@ -276,13 +276,6 @@ void main() {
           ),
         );
         await _throttle();
-        await _ignoreErrors(
-          () => _collectPages(
-            (page) =>
-                client.estimates.getEstimates(subjectId: subjectId, page: page),
-          ).then((e) => estimates.addAll(e)),
-        );
-        await _throttle();
       }
 
       final webhooks = await _collectPages(
@@ -515,13 +508,6 @@ void main() {
         final remainingExpenses = await _collectPages(
           (page) =>
               client.expenses.getExpenses(subjectId: subjectId, page: page),
-        );
-        await _throttle();
-        await _ignoreErrors(
-          () => _collectPages(
-            (page) =>
-                client.estimates.getEstimates(subjectId: subjectId, page: page),
-          ).then((rem) => expect(rem, isEmpty)),
         );
         await _throttle();
         final remainingGenerators = await _collectPages(

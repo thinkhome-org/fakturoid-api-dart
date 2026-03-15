@@ -29,7 +29,7 @@ Future<void> runInvoicesExample(FakturoidClient client) async {
       print('📝 Faktura $id byla upravena.');
 
       // 5. Fire action
-      // await client.invoices.fireAction(id, InvoiceFireAction.pay);
+      // await client.invoices.fireAction(id, InvoiceFireAction.markAsSent);
       print('⚡ Akce fireAction je k dispozici.');
 
       // 6. Stáhnout PDF

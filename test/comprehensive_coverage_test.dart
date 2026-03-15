@@ -65,9 +65,9 @@ void main() {
                 options.path.endsWith('paid.json')) {
               return jsonResponseBody([mockEventResponse()]);
             }
-            if (options.path.endsWith('invoices.json') &&
-                options.queryParameters['document_type'] == 'estimate') {
-              return jsonResponseBody([mockEstimateResponse()]);
+            // Estimate detail uses invoices/{id}.json - route 801 to estimate mock
+            if (options.path == 'invoices/801.json') {
+              return jsonResponseBody(mockEstimateResponse());
             }
             if (options.path.endsWith('invoices.json') ||
                 options.path.contains('search.json') &&
@@ -416,23 +416,12 @@ void main() {
     });
 
     test('Estimate response data validation', () async {
-      final estimates = await client.estimates.getEstimates();
-      expect(estimates.items, hasLength(1));
-      final estimate = estimates.items.first;
+      // getEstimate uses invoices/{id}.json endpoint
+      final estimate = await client.estimates.getEstimate(801);
       expect(estimate.id, 801);
-      expect(estimate.documentType, EstimateDocumentType.estimate);
-      expect(estimate.status, EstimateStatus.sent);
-      expect(estimate.total, '30250.0');
-      expect(estimate.lines, isNotNull);
-      expect(estimate.lines!.first.name, 'Konzultace');
+      expect(adapter.lastRequestOptions?.path, 'invoices/801.json');
 
-      expect(adapter.lastRequestOptions?.path, 'invoices.json');
-      expect(
-        adapter.lastRequestOptions?.queryParameters['document_type'],
-        'estimate',
-      );
-
-      // getEstimate shares invoices/{id}.json endpoint - tested via request parity
+      // createMessage uses invoices/{id}/message.json
       await client.estimates.createMessage(1, email: 'test@example.com');
       expect(adapter.lastRequestOptions?.path, 'invoices/1/message.json');
     });

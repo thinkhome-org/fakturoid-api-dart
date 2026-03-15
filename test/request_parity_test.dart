@@ -424,13 +424,15 @@ void main() {
         'event': 'mark_as_sent',
       });
 
-      await repository.fireAction(1, InvoiceFireAction.deliver);
+      await repository.fireAction(1, InvoiceFireAction.cancel);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'deliver'});
+      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'cancel'});
 
-      await repository.fireAction(1, InvoiceFireAction.pay);
+      await repository.fireAction(1, InvoiceFireAction.markAsUncollectible);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {'event': 'pay'});
+      expect(adapter.lastRequestOptions?.queryParameters, {
+        'event': 'mark_as_uncollectible',
+      });
 
       final pdf = await repository.downloadInvoicePdf(10);
       expect(pdf, Uint8List.fromList([1, 2, 3]));
@@ -1090,21 +1092,12 @@ void main() {
 
       final repository = EstimatesRepository(createTestDio(adapter));
 
-      await repository.getEstimates(page: 2, status: EstimateStatus.sent);
-      expect(adapter.lastRequestOptions?.path, 'invoices.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {
-        'page': 2,
-        'status': 'sent',
-        'document_type': 'estimate',
-      });
+      // getEstimates() and searchEstimates() were removed because
+      // Fakturoid API v3 does not support document_type=estimate as a
+      // query parameter (returns 400 "Parameter document_type is invalid").
 
-      await repository.searchEstimates(query: 'test', tags: ['urgent']);
-      expect(adapter.lastRequestOptions?.path, 'invoices/search.json');
-      expect(adapter.lastRequestOptions?.queryParameters, {
-        'query': 'test',
-        'tags[]': ['urgent'],
-        'document_type': 'estimate',
-      });
+      await repository.getEstimate(1);
+      expect(adapter.lastRequestOptions?.path, 'invoices/1.json');
 
       await repository.fireAction(1, EstimateFireAction.accept);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
