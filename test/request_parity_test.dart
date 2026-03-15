@@ -1106,14 +1106,6 @@ void main() {
         'document_type': 'estimate',
       });
 
-      await repository.createEstimate(const Estimate(subjectId: 1));
-      expect(adapter.lastRequestOptions?.method, 'POST');
-      expect(adapter.lastRequestOptions?.path, 'invoices.json');
-      expect(adapter.lastRequestOptions?.data, {
-        'subject_id': 1,
-        'document_type': 'estimate',
-      });
-
       await repository.fireAction(1, EstimateFireAction.accept);
       expect(adapter.lastRequestOptions?.path, 'invoices/1/fire.json');
       expect(adapter.lastRequestOptions?.queryParameters, {'event': 'accept'});

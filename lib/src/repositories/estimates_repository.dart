@@ -75,24 +75,6 @@ class EstimatesRepository {
     return Estimate.fromJson(response.data);
   }
 
-  /// Vytvoří novou nabídku.
-  Future<Estimate> createEstimate(Estimate estimate) async {
-    final data = ApiUtils.removeNulls(estimate.toJson());
-    data['document_type'] = 'estimate';
-
-    final response = await _dio.post('invoices.json', data: data);
-    return Estimate.fromJson(response.data);
-  }
-
-  /// Upraví existující nabídku.
-  Future<Estimate> updateEstimate(int id, Estimate estimate) async {
-    final response = await _dio.patch(
-      'invoices/$id.json',
-      data: ApiUtils.removeNulls(estimate.toJson()),
-    );
-    return Estimate.fromJson(response.data);
-  }
-
   /// Smaže nabídku podle ID.
   Future<void> deleteEstimate(int id) async {
     await _dio.delete('invoices/$id.json');

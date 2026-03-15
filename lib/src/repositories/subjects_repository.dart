@@ -100,7 +100,10 @@ class SubjectsRepository {
 
   /// Provede akci s kontaktem (např. archivace, obnovení).
   Future<void> fireAction(int id, SubjectFireAction action) async {
-    await _dio.post('subjects/$id/fire.json', data: {'event': action.value});
+    await _dio.post(
+      'subjects/$id/fire.json',
+      queryParameters: {'event': action.value},
+    );
   }
 
   /// Archivuje kontakt.

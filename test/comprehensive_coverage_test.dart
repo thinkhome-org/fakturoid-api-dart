@@ -370,15 +370,21 @@ void main() {
     });
 
     test(
-      'Subjects archive and unarchive correctly use fireAction with body',
+      'Subjects archive and unarchive correctly use fireAction with query params',
       () async {
         await client.subjects.archiveSubject(1);
         expect(adapter.lastRequestOptions?.path, 'subjects/1/fire.json');
-        expect(adapter.lastRequestOptions?.data, {'event': 'archive'});
+        expect(
+          adapter.lastRequestOptions?.queryParameters['event'],
+          'archive',
+        );
 
         await client.subjects.unarchiveSubject(1);
         expect(adapter.lastRequestOptions?.path, 'subjects/1/fire.json');
-        expect(adapter.lastRequestOptions?.data, {'event': 'unarchive'});
+        expect(
+          adapter.lastRequestOptions?.queryParameters['event'],
+          'unarchive',
+        );
       },
     );
 

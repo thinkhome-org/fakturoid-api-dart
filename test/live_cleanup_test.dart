@@ -354,7 +354,7 @@ void main() {
           final detailedExpense = await client.expenses.getExpense(expenseId);
           await _throttle();
           for (final payment
-              in detailedExpense.payments ?? const <InvoicePayment>[]) {
+              in detailedExpense.payments ?? const <ExpensePayment>[]) {
             final paymentId = payment.id;
             if (paymentId != null) {
               deletedExpensePaymentIds.add(paymentId);
