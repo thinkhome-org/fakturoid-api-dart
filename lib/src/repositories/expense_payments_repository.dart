@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import '../core/utils/api_utils.dart';
-import '../models/invoice_payment.dart';
+import '../models/expense_payment.dart';
 
 class ExpensePaymentsRepository {
   final Dio _dio;
@@ -10,15 +10,15 @@ class ExpensePaymentsRepository {
   /// Vytvoří novou platbu k nákladu (expense).
   ///
   /// Většina polí (např. amount) je volitelná a Fakturoid je dopočítá.
-  Future<InvoicePayment> createPayment(
+  Future<ExpensePayment> createPayment(
     int expenseId,
-    InvoicePayment payment,
+    ExpensePayment payment,
   ) async {
     final response = await _dio.post(
       'expenses/$expenseId/payments.json',
       data: ApiUtils.removeNulls(payment.toJson()),
     );
-    return InvoicePayment.fromJson(response.data);
+    return ExpensePayment.fromJson(response.data);
   }
 
   /// Smaže existující platbu k nákladu.

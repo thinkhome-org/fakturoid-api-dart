@@ -20,8 +20,7 @@ enum ExpenseStatus {
 
 enum ExpenseFireAction {
   lock('lock'),
-  unlock('unlock'),
-  pay('pay');
+  unlock('unlock');
 
   final String value;
   const ExpenseFireAction(this.value);
